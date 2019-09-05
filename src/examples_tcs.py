@@ -27,6 +27,7 @@ license_text='''
 
 import logging, sys
 import StringIO
+import pdb, os, copy
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -47,8 +48,8 @@ def case1_synthesis(formula, ts_file):
     for u, v, d in dfa_inf.g.edges_iter(data=True):
         logging.debug('({}, {}): {}'.format(u, v, d))
 
-    dfa_inf.visualize(draw='matplotlib')
-    plt.show()
+    # dfa_inf.visualize(draw='matplotlib')
+    # plt.show()
 
     logging.debug('\nEnd of translate\n\n')
 
@@ -64,10 +65,69 @@ def case1_synthesis(formula, ts_file):
     ts.read_from_file(ts_file)
     ets = expand_duration_ts(ts)
 
+    print '\n\n'
+    print 'ts output\n'
+    print dir(ts)
+    print '\n\n'
+    print 'ets output\n'
+    print dir(ets)
+    print '\n\n'
+    print 'ets.g output graph structure'
+    print dir(ets.g)
+    # set breakpoint
+    # pdb.set_trace()
+
     for name, dfa in [('normal', dfa_0), ('infinity', dfa_inf)]:
         logging.info('Constructing product automaton with %s DFA!', name)
         pa = ts_times_fsa(ets, dfa)
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
+
+        # Added for debugging, find structure of pa.g
+        # print '\n\n'
+        # print dir(pa.g)
+        # print '\n\n'
+        # print pa.size()
+        # print '\n\n'
+        # print pa.g.edges()
+        # print '\n\n'
+        # set breakpoint
+        # pdb.set_trace()
+
+        # Print nodes of the Product Automata to a file
+        if os.path.isfile('../output/pa_print_nodes_obs.txt'):
+            with open('../output/pa_print_nodes_obs.txt', 'a+') as f1:
+                if name == 'normal':
+                    f1.write('normal\n')
+                else:
+                    f1.write('infinity\n')
+                f1.write('\n'.join('%s %s' % x for x in pa.g.nodes()))
+        else:
+            with open('../output/pa_print_nodes_obs.txt', 'w+') as f1:
+                if name == 'normal':
+                    f1.write('normal\n')
+                else:
+                    f1.write('infinity\n')
+                f1.write('\n'.join('%s %s' % x for x in pa.g.nodes()))
+                f1.write('\n\n')
+        f1.close()
+
+        # Print edges of the Product Automata to a file
+        if os.path.isfile('../output/pa_print_edges_obs.txt'):
+            with open('../output/pa_print_edges_obs.txt', 'a+') as f2:
+                if name == 'normal':
+                    f2.write('normal\n')
+                else:
+                    f2.write('infinity\n')
+                f2.write('\n'.join('%s %s' % x for x in pa.g.edges()))
+        else:
+            with open('../output/pa_print_edges_obs.txt', 'w+') as f2:
+                if name == 'normal':
+                    f2.write('normal\n')
+                else:
+                    f2.write('infinity\n')
+                f2.write('\n'.join('%s %s' % x for x in pa.g.edges()))
+                f2.write('\n\n')
+        f2.close()
 
         if name == 'infinity':
             for u in pa.g.nodes_iter():
@@ -75,6 +135,21 @@ def case1_synthesis(formula, ts_file):
 
             pa.visualize(draw='matplotlib')
             plt.show()
+
+        # Make an updated version of the PA in order to account for an obstacle
+        # pa_prime = copy.deepcopy(pa)
+        # print dir(pa_prime.g)
+        # pdb.set_trace()
+        # edge_set_new = []
+        # for i in pa_prime.g.edges():
+        #    if i > obstacle.pos + obstacle.radius:
+        #        edge_set_new = append(i)
+        #    else:
+        #        edge_set_new = append(update_edges(i))
+
+        # compute optimal path in Pa_Prime and project onto the TS
+        # policy_2, output_2, tau_2 = compute_control_policy(pa_prime, dfa, dfa.kind)
+        # logging.info('Max deadline: %s', tau_2)
 
         # compute optimal path in PA and then project onto the TS
         policy, output, tau = compute_control_policy(pa, dfa, dfa.kind)
@@ -124,7 +199,7 @@ def case3_learning(formula, traces_file):
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../data/examples_tcs.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_tcs3_obs.log', level=loglevel,
                         format=fs, datefmt=dfs)
 
     root = logging.getLogger()
@@ -135,15 +210,13 @@ def setup_logging():
 
 if __name__ == '__main__':
     setup_logging()
-    sys.path
-    print sys.path
     # case study 1: Synthesis
     # phi = '[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]'
-    phi = '[H^1 A]^[0, 6] * [H^1 C]^[0, 6]'
-    case1_synthesis(phi, '../data/ts_synthesis.txt')
+    phi = '[H^1 A]^[0, 3] * [H^1 D]^[0, 6]'
+    case1_synthesis(phi, '../data/tsprime_synthesis_RP1.txt')
     # case study 2: Verification
-    phi1 = '[H^1 A]^[1, 2]'
-    case2_verification(phi1, '../data/ts_verification.txt')
+    # phi1 = '[H^1 A]^[1, 2]'
+    # case2_verification(phi1, '../data/ts_verification.txt')
     # phi2 = '[H^3 !B]^[1, 4]'
     # case2_verification(phi2, '../data/ts_verification.txt')
     # case study 3: Learning
