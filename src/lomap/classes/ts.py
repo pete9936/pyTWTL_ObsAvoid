@@ -83,7 +83,7 @@ class Ts(Model):
 
 		# We store state attributes in a dict keyed by states as
 		# we haven't defined them yet
-		# RP 9/5: This can act as our update as well
+		# RP 9/5: This can act as our update as well...
 		state_attr = dict();
 		try:
 			while(line_cnt < len(lines) and lines[line_cnt] != ';'):
