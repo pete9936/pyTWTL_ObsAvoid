@@ -33,6 +33,7 @@ from operator import attrgetter
 
 import numpy as np
 import networkx as nx
+import pdb            # for debugging
 
 from lomap import Ts, Model
 from lomap import ts_times_ts
@@ -275,16 +276,31 @@ def simple_control_policy(pa):
     if not pa.final:
         return None
     # add virtual node with incoming edges from all final states
-    pa.g.add_edges_from([(p, 'virtual') for p in pa.final]) # possibly add default weight
+    pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
     # compute optimal path in PA and then project onto the TS
     pa_path = nx.shortest_path(pa.g, source=pa.init.keys()[0], target='virtual', weight='weight')
-
-    # Add breakpoint here...
-    pdb.set_trace()
 
     assert pa_path[-2] in pa.final
     pa.g.remove_node('virtual')
     return [x for x, _ in pa_path[:-1]]
+
+def simple_control_policy2(pa, init_key):
+    '''Computes a control policy which minimizes the total length (makespan)
+    of the policy. It can be used on product automata obtained from both normal
+    and infinity specification FSAs. In the infinity automata case, the returned
+    policy corresponds to a valid relaxation, but it may not in general provide
+    the best temporal relaxation.
+    '''
+    if not pa.final:
+        return None
+    # add virtual node with incoming edges from all final states
+    pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
+    # compute optimal path in PA and then project onto the TS
+    pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='weight')
+
+    assert pa_path[-2] in pa.final
+    pa.g.remove_node('virtual')
+    return pa_path[:-1]
 
 def partial_control_policies(pa, dfa, init, finish, constraint=None):
     '''Computes all partial optimal control policies between the set of initial
@@ -296,11 +312,12 @@ def partial_control_policies(pa, dfa, init, finish, constraint=None):
     are pruned.
     '''
     #TODO: return path lengths as well if requested
+
     logging.debug('[PartialControl] init: %s, final: %s, constraint: %s',
                   init, finish, constraint)
     sat_paths = []
     for state in (p for p in pa.g.nodes_iter() if p[1] in init):
-        paths = nx.shortest_path(pa.g, source=state, weight='weight') # may not need modification
+        paths = nx.shortest_path(pa.g, source=state, weight='weight')
         if constraint is None:
             sat_paths.extend([path for p, path in paths.iteritems()
                                        if p[1] in finish])
@@ -320,7 +337,6 @@ def partial_control_policies(pa, dfa, init, finish, constraint=None):
         if not [p for p in path[:-1] if p[1] in finish]:
             sat_paths_aux.append(path)
     sat_paths = sat_paths_aux
-
     return sat_paths
 
 def partial_control_policies2(pa, dfa, init, finish, constraint=None):
@@ -360,13 +376,12 @@ def partial_control_policies2(pa, dfa, init, finish, constraint=None):
                   path[-2][1] in C and # is in restriction
                   # the edge activates properly
                   dfa.g[path[-2][1]][p[1]]['input'] <= constraint[path[-2][1]]])
-
     return sat_paths
 
 def relaxed_control_policy(tree, dfa, pa, constraint=None):
     '''Computes a control policy with minimum maximum temporal relaxation. It
-    also returns the value of the optimal relaxation.
-    '''
+    also returns the value of the optimal relaxation. '''
+
     assert tree.wdf
 
     if tree.unr: # primitive/unrelaxable formula
@@ -387,10 +402,10 @@ def relaxed_control_policy(tree, dfa, pa, constraint=None):
 
         M = ControlPathsSet()
         for cp in M_ch:
-            paths = nx.shortest_path(pa.g, target=cp.path[0], weight='weight') # may not need modification
+            paths = nx.shortest_path(pa.g, target=cp.path[0], weight='weight')
             sat_paths = [p[:-1]+cp.path for p_i, p in paths.iteritems()
                                          if p_i in tree.init]
-            tau = max(len(cp.path)+tree.low-tree.high, cp.tau) #TODO: should I subtract -1?
+            tau = max(len(cp.path)+tree.low-tree.high, cp.tau) #TODO: should I subtract -1? (Not RP)
             M.paths.extend([ControlPath(p, tau) for p in sat_paths])
         return M
 
@@ -438,11 +453,13 @@ def compute_control_policy(pa, dfa, kind):
         optimal_ts_path = simple_control_policy(pa)
         optimal_tau = None
     elif kind == DFAType.Infinity:
-        policies = relaxed_control_policy(dfa.tree, dfa, pa)
+        # Find the policies given the initial state
+        policies = relaxed_control_policy(dfa.tree, dfa, pa) # This makes me think you don't need the initial
         if not policies:
             return None, None, None
         # keep only policies which start from the initial PA state
-        policies.paths = [p for p in policies if p.path[0] in pa.init.keys()]
+        pa_init_keys = pa.init.keys()
+        policies.paths = [p for p in policies if p.path[0] in pa_init_keys]
         # choose optimal policy with respect to temporal robustness
         optimal_pa_path = min(policies, key=attrgetter('tau'))
         optimal_ts_path = [x for x, _ in optimal_pa_path.path]
@@ -450,9 +467,22 @@ def compute_control_policy(pa, dfa, kind):
     else:
         raise ValueError('Invalid value for the type of automata construction!')
     if optimal_ts_path is None:
-        return None, None, None
+        return None, None, None, None
     output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
-    return optimal_ts_path, output_word, optimal_tau
+    return optimal_ts_path, optimal_pa_path.path, output_word, optimal_tau
+
+def compute_control_policy2(pa, dfa, init_loc):
+    ''' Computes a control policy from product automaton pa. This takes into
+    account the updated initial state where collision was detected. Will update
+    this in the future for computational efficiency. *** '''
+    pdb.set_trace()
+    # Get the shortest simple path
+    optimal_pa_path = simple_control_policy2(pa, init_loc)
+    optimal_ts_path = [x for x, _ in optimal_pa_path]
+    if optimal_ts_path is None:
+        return None, None
+    # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
+    return optimal_ts_path, optimal_pa_path
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal

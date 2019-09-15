@@ -69,11 +69,6 @@ def case1_synthesis(formula, ts_file):
             pa.visualize(draw='matplotlib')
             plt.show()
 
-        # Make an updated version of the PA in order to account for an obstacle
-        # count = 0
-        # control_policy = [] # set empty control policy that will be iteratively updated
-        # while count < 10: # need a better way of defining goal has been reached...
-
         # Make a copy of the nominal PA to change
         pa_prime = copy.deepcopy(pa)
         # set breakpoint
@@ -83,14 +78,7 @@ def case1_synthesis(formula, ts_file):
 
         # Compute optimal path in Pa_Prime and project onto the TS
         # Need to account for weight introduced in the pa_prime structure for control policy_2
-        policy_2, output_2, tau_2 = compute_control_policy(pa_prime, dfa, dfa.kind)
-
-        # Update control policy
-        # This will error out if we go beyond bound, temporary patch made with if statement...
-        # if len(policy_2) >= count:
-        #    control_policy.append(policy_2[count-1])
-        # else:
-        #    control_policy.append(policy_2[-1])
+        policy_2, pa_policy_2, output_2, tau_2 = compute_control_policy(pa_prime, dfa, dfa.kind)
 
         logging.info('Max deadline: %s', tau_2)
         if policy_2 is not None:
@@ -176,22 +164,6 @@ def update_weight(ts, pa_prime, obs_loc):
                     temp.append(weight_new)
                     pa_prime.g.add_weighted_edges_from([tuple(temp)])
                     break
-
-    # Need to implement a method which goes beyond the first ring, essentially
-    # updating the weights of edges based on the distance function *****
-    # C_k = 10 # a scalar parameter related to the radius of obstacle update
-    # neighborhood = 0.6 # defines influence region of obstacle upd
-    # for key, (u, v) in node_set.items():
-    #   distance = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
-    #   if distance <= neighborhood:
-    #       weight_new = C_k*math.exp(-distance/(2*sig**2))
-    #       for i in pa_prime.g.edges():
-    #           for item in i:
-    #               if key in item and weight > 1:
-    #                   temp = list(i)
-    #                   temp.append(weight_new)
-    #                   pa_prime.g.add_weighted_edges_from([tuple(temp)])
-    #                   break
     return pa_prime
 
 def setup_logging():
@@ -210,4 +182,4 @@ if __name__ == '__main__':
     # case study 1: Synthesis
     # phi = '[H^2 A]^[0, 6] * ([H^1 B]^[0, 3] | [H^1 C]^[1, 4]) * [H^1 D]^[0, 6]'
     phi = '[H^1 A]^[0, 3] * [H^1 Base2]^[0, 9]'
-    case1_synthesis(phi, '../data/ts_synthesis_RP1.txt')
+    case1_synthesis(phi, '../data/ts_synthesis_RP2_1.txt')

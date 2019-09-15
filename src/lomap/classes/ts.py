@@ -67,7 +67,6 @@ class Ts(Model):
 		for init in self.init:
 			if self.init[init] != 1:
 				raise FileError('Initial probability of state %s cannot be %f in a transition system.' % (init, self.init[init]))
-		# RP 9/5: What is meant by initial probability here?
 
 		##
 		# End of part-1
@@ -83,7 +82,6 @@ class Ts(Model):
 
 		# We store state attributes in a dict keyed by states as
 		# we haven't defined them yet
-		# RP 9/5: This can act as our update as well...
 		state_attr = dict();
 		try:
 			while(line_cnt < len(lines) and lines[line_cnt] != ';'):
