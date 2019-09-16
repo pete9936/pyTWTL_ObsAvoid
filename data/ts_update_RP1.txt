@@ -1,0 +1,11 @@
+name Update DTS
+init {'Obstacle':1}
+;
+Obstacle {'prop':{'Obstacle'}, 'position': (0.25, 0.75)}
+;
+A Base {'duration': 10}
+D Base {'duration': 10}
+E Base {'duration': 10}
+Base A {'duration': 10}
+Base D {'duration': 10}
+Base E {'duration': 10}

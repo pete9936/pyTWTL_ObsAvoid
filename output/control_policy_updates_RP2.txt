@@ -1,0 +1,24 @@
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+
+Control Policy for agent 2 at step 1:  F -> 1 -> Base2 -> 1 -> D -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A
+
+Control Policy for agent 3 at step 1:  Base2 -> 1 -> F -> 1 -> F -> 1 -> F
+

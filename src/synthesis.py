@@ -475,7 +475,6 @@ def compute_control_policy2(pa, dfa, init_loc):
     ''' Computes a control policy from product automaton pa. This takes into
     account the updated initial state where collision was detected. Will update
     this in the future for computational efficiency. *** '''
-    pdb.set_trace()
     # Get the shortest simple path
     optimal_pa_path = simple_control_policy2(pa, init_loc)
     optimal_ts_path = [x for x, _ in optimal_pa_path]
@@ -483,6 +482,14 @@ def compute_control_policy2(pa, dfa, init_loc):
         return None, None
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path
+
+def compute_control_relaxation(pa_control_policy, ts_control_policy, dfa):
+    ''' Used to find the relaxation of the final trajectory due to the updated
+        path for dynamic obstacle avoidance. '''
+        
+    optimal_tau = None # Change this ***
+    output_word = policy_output_word(ts_control_policy, set(dfa.props.keys()))
+    return output_word, optimal_tau
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal

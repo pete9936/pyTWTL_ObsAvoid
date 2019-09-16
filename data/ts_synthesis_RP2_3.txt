@@ -1,0 +1,46 @@
+name Simple DTS
+init {'B':1}
+;
+Base {'prop': set(), 'position': (0.5, 0.5)}
+A {'prop':{'A'}, 'position': (0, 1)}
+B {'prop':{'B'}, 'position': (0, 0)}
+C {'prop':{'C'}, 'position': (0.5, 0)}
+D {'prop':{'D'}, 'position': (1, 0)}
+E {'prop':{'E'}, 'position': (1, 1)}
+F {'prop':{'F'}, 'position': (1.5, 1)}
+Base2 {'prop':{'Base2'}, 'position': (1.25, 0.5)}
+G {'prop':{'G'}, 'position': (2, 0.5)}
+;
+Base Base {'duration': 1}
+A A {'duration': 1}
+B B {'duration': 1}
+C C {'duration': 1}
+D D {'duration': 1}
+E E {'duration': 1}
+F F {'duration': 1}
+Base2 Base2 {'duration': 1}
+G G {'duration': 1}
+A B {'duration': 1}
+A Base {'duration': 1}
+B A {'duration': 1}
+B C {'duration': 1}
+C B {'duration': 1}
+C D {'duration': 1}
+D C {'duration': 1}
+D E {'duration': 1}
+D Base {'duration': 1}
+D Base2 {'duration': 1}
+E D {'duration': 1}
+E Base {'duration': 1}
+E F {'duration': 1}
+F E {'duration': 1}
+F G {'duration': 1}
+F Base2 {'duration': 1}
+G F {'duration': 1}
+G Base2 {'duration': 1}
+Base A {'duration': 1}
+Base D {'duration': 1}
+Base E {'duration': 1}
+Base2 D {'duration': 1}
+Base2 F {'duration': 1}
+Base2 G {'duration': 1}

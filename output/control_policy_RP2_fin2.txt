@@ -1,0 +1,12 @@
+Nominal Control Policy for agent 1.
+Generated control policy is: Base -> 1 -> A -> 1 -> A -> 1 -> A -> 1 -> Base -> 1 -> E -> 1 -> F -> 1 -> G -> 1 -> G -> 1 -> G 
+
+Final Control policy for agent 1.
+Generated control policy is: ['Base', 'A', 'A', 'A', 'Base', 'D', 'Base2', 'G', 'G', 'G'] 
+
+Nominal Control Policy for agent 2.
+Generated control policy is: Base2 -> 1 -> G -> 1 -> G -> 1 -> G -> 1 -> F -> 1 -> E -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A 
+
+Final Control policy for agent 2.
+Generated control policy is: ['Base2', 'G', 'G', 'G', 'F', 'E', 'Base', 'A', 'A', 'A'] 
+
