@@ -1,5 +1,5 @@
 name Simple DTS
-init {'B':1}
+init {'D':1}
 ;
 Base {'prop': set(), 'position': (0.5, 0.5)}
 A {'prop':{'A'}, 'position': (0, 1)}

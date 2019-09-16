@@ -461,6 +461,7 @@ def compute_control_policy(pa, dfa, kind):
         pa_init_keys = pa.init.keys()
         policies.paths = [p for p in policies if p.path[0] in pa_init_keys]
         # choose optimal policy with respect to temporal robustness
+        # pdb.set_trace()
         optimal_pa_path = min(policies, key=attrgetter('tau'))
         optimal_ts_path = [x for x, _ in optimal_pa_path.path]
         optimal_tau = optimal_pa_path.tau
@@ -486,7 +487,7 @@ def compute_control_policy2(pa, dfa, init_loc):
 def compute_control_relaxation(pa_control_policy, ts_control_policy, dfa):
     ''' Used to find the relaxation of the final trajectory due to the updated
         path for dynamic obstacle avoidance. '''
-        
+
     optimal_tau = None # Change this ***
     output_word = policy_output_word(ts_control_policy, set(dfa.props.keys()))
     return output_word, optimal_tau
