@@ -1,0 +1,24 @@
+Nominal Control Policy for agent 1.
+Generated PA control policy is: Base 0) -> (A 1) -> (A 2) -> (A 3) -> (Base 3) -> (E 3) -> (F 3) -> (G 4) -> (G 5) -> (G 6) 
+Generated TS control policy is: Base -> 1 -> A -> 1 -> A -> 1 -> A -> 1 -> Base -> 1 -> E -> 1 -> F -> 1 -> G -> 1 -> G -> 1 -> G 
+
+Final Control policy for agent 1.
+Generated PA control policy is: (Base 0) -> (A 1) -> (A 2) -> (A 3) -> (Base 3) -> (E 3) -> (F 3) -> (G 4) -> (G 5) -> (G 6) 
+Generated TS control policy is:  ['Base', 'A', 'A', 'A', 'Base', 'E', 'F', 'G', 'G', 'G'] 
+
+Nominal Control Policy for agent 2.
+Generated PA control policy is: Base2 0) -> (G 1) -> (G 2) -> (G 3) -> (F 3) -> (E 3) -> (Base 3) -> (A 4) -> (A 5) -> (A 6) 
+Generated TS control policy is: Base2 -> 1 -> G -> 1 -> G -> 1 -> G -> 1 -> F -> 1 -> E -> 1 -> Base -> 1 -> A -> 1 -> A -> 1 -> A 
+
+Final Control policy for agent 2.
+Generated PA control policy is: (Base2 0) -> (G 1) -> (G 2) -> (G 3) -> (F 3) -> (Base2 3) -> (D 3) -> (Base 3) -> (A 4) -> (A 5) -> (A 6) 
+Generated TS control policy is:  ['Base2', 'G', 'G', 'G', 'F', 'Base2', 'D', 'Base', 'A', 'A', 'A'] 
+
+Nominal Control Policy for agent 3.
+Generated PA control policy is: D 0) -> (C 0) -> (B 1) -> (B 2) -> (B 3) -> (A 3) -> (Base 3) -> (E 4) -> (E 5) -> (E 6) -> (E 7) -> (E 8) 
+Generated TS control policy is: D -> 1 -> C -> 1 -> B -> 1 -> B -> 1 -> B -> 1 -> A -> 1 -> Base -> 1 -> E -> 1 -> E -> 1 -> E -> 1 -> E -> 1 -> E 
+
+Final Control policy for agent 3.
+Generated PA control policy is: (D 0) -> (C 0) -> (B 1) -> (B 2) -> (B 3) -> (A 3) -> (B 3) -> (C 3) -> (D 3) -> (E 4) -> (E 5) -> (E 6) -> (E 7) -> (E 8) 
+Generated TS control policy is:  ['D', 'C', 'B', 'B', 'B', 'A', 'B', 'C', 'D', 'E', 'E', 'E', 'E', 'E'] 
+

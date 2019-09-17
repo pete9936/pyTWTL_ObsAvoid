@@ -90,132 +90,100 @@ def case1_synthesis(formulas, ts_files):
             ts_control_policy_dict[key] = []
             pa_control_policy_dict[key] = []
             # Concatenate nominal policies for searching
-            if key == 2:
-                policy_match = zip(ts_control_policy_dict[key-1], ts_policy_dict_nom[key])
-                nom_length_max = len(ts_control_policy_dict[key-1])
-            elif key == 3:
-                policy_match = zip(ts_control_policy_dict[key-2], ts_control_policy_dict[key-1], ts_policy_dict_nom[key])
-                nom_length_max = max(len(ts_control_policy_dict[key-2]), len(ts_control_policy_dict[key-1]))
-            else:
-                logging.info('More than 3 robots not accounted for in code (yet..)!')
+            ts_shortest = float('inf')
+            for init_key in ts_policy_dict_nom:
+                if init_key == key:
+                    break
+                else:
+                    if len(ts_policy_dict_nom[init_key]) < ts_shortest:
+                        ts_shortest = len(ts_policy_dict_nom[init_key])
+            temp_match = [[] for i in range(ts_shortest)]
+
+            # match up all policies into a list of lists
+            for init_key in ts_policy_dict_nom:
+                while init_key < key:
+                    for ind, item in enumerate(ts_policy_dict_nom[init_key]):
+                        temp_match[ind].append(item)
+                    break
+
+            # Now account for the current policy
+            ts_temp = copy.deepcopy(ts_policy_dict_nom[key])
+            for ind, item in enumerate(ts_temp):
+                if ind >= ts_shortest:
+                    break
+                else:
+                    temp_match[ind].append(item)
+
+            # Create the policy match list of tuples
+            policy_match = temp_match
+            # Initialize vars
             traj_length = 0
             iter_step = 0
             ts_policy = copy.deepcopy(ts_policy_dict_nom[key])
             pa_policy = list(copy.deepcopy(pa_policy_dict_nom[key]))
-            while traj_length < nom_length_max and ts_policy:
-                if key == 2:
-                    for u, v in policy_match:
-                        policy_match.pop(0)
-                        if u != v:
+            while policy_match:
+                for policy in policy_match:
+                    policy_match.pop(0)
+                    append_flag = True
+                    for item in policy[:-1]:
+                        if item != policy[-1]:
+                            append_flag = True
+                        else:
+                            append_flag = False
+                            break
+                    if append_flag == True:
                             ts_control_policy_dict[key].append(ts_policy.pop(0))
                             pa_control_policy_dict[key].append(pa_policy.pop(0))
                             traj_length += 1
                             break
-                        else:
-                            # update recompute steps for resolution
-                            iter_step += 1
-                            # Update PA with new weights, node to change is u
-                            pa_prime = update_weight(pa_nom_dict[key], [u])
-                            # Now recompute the control policy with updated edge weights
-                            init_loc = pa_control_policy_dict[key][-1]
-                            # Get control policy from current location
-                            ts_policy, pa_policy = \
-                                    compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
-                            pa_policy = list(pa_policy)
-                            # Write updates to file
-                            write_to_iter_file(ts_policy, ts_dict[key], ets_dict[key], key, iter_step)
-                            # Get rid of the duplicate node
-                            ts_policy.pop(0)
-                            pa_policy.pop(0)
-                            # Must update policy match
-                            policy_match = zip(ts_control_policy_dict[key-1][traj_length:], ts_policy)
-                            break
-                elif key == 3:
-                    # Need to account for varied size when returned, (e.g. if policy_match only has 2 elements!!!)
-                    # Need to add a check on policy_match
-                    if not policy_match:
-                        if len(ts_control_policy_dict[key-2]) <= traj_length:
-                            policy_match = zip(ts_control_policy_dict[key-1][traj_length:], ts_policy)
-                        elif len(ts_control_policy_dict[key-1]) <= traj_length:
-                            policy_match = zip(ts_control_policy_dict[key-2][traj_length:], ts_policy)
-                    if len(policy_match[0]) == 3:
-                        for u, v, w in policy_match:
-                            policy_match.pop(0)
-                            if w != (u or v):
-                                ts_control_policy_dict[key].append(ts_policy.pop(0))
-                                pa_control_policy_dict[key].append(pa_policy.pop(0))
-                                traj_length += 1
+                    else: # append_flag == False
+                        iter_step += 1
+                        # Update PA with new weights, node to change is u
+                        pa_prime = update_weight(pa_nom_dict[key], policy[:-1])
+                        # Now recompute the control policy with updated edge weights
+                        init_loc = pa_control_policy_dict[key][-1]
+                        # Get control policy from current location
+                        ts_policy, pa_policy = \
+                                compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
+                        pa_policy = list(pa_policy)
+                        # Write updates to file
+                        write_to_iter_file(ts_policy, ts_dict[key], ets_dict[key], key, iter_step)
+                        pdb.set_trace()
+                        # Get rid of the duplicate node
+                        ts_policy.pop(0)
+                        pa_policy.pop(0)
+                        # Must update policy match
+                        match_shortest = float('inf')
+                        for match_key in ts_policy_dict_nom:
+                            if match_key == key:
                                 break
                             else:
-                                # update recompute steps for resolution
-                                iter_step += 1
-                                # Update PA with new weights, node to change is u
-                                pa_prime = update_weight(pa_nom_dict[key], [u, v])
-                                # Now recompute the control policy with updated edge weights
-                                init_loc = pa_control_policy_dict[key][-1]
-                                # Get control policy from current location
-                                ts_policy, pa_policy = \
-                                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
-                                pa_policy = list(pa_policy)
-                                # Write updates to file
-                                write_to_iter_file(ts_policy, ts_dict[key], ets_dict[key], key, iter_step)
-                                # Get rid of the duplicate node
-                                ts_policy.pop(0)
-                                pa_policy.pop(0)
-                                # Must update policy match
-                                pdb.set_trace()
-                                if len(ts_control_policy_dict[key-2]) <= traj_length:
-                                    policy_match = zip(ts_control_policy_dict[key-1][traj_length:], ts_policy)
-                                elif len(ts_control_policy_dict[key-1]) <= traj_length:
-                                    policy_match = zip(ts_control_policy_dict[key-2][traj_length:], ts_policy)
-                                else:
-                                    policy_match = zip(ts_control_policy_dict[key-2][traj_length:],\
-                                                       ts_control_policy_dict[key-1][traj_length:], ts_policy)
-                                break
-                    elif len(policy_match[0]) == 2:
-                        for u, v in policy_match:
-                            policy_match.pop(0)
-                            if u != v:
-                                ts_control_policy_dict[key].append(ts_policy.pop(0))
-                                pa_control_policy_dict[key].append(pa_policy.pop(0))
-                                traj_length += 1
+                                if len(ts_policy_dict_nom[match_key]) > traj_length:
+                                    if len(ts_policy_dict_nom[match_key][traj_length:]) < ts_shortest:
+                                        ts_shortest = len(ts_policy_dict_nom[match_key][traj_length:])
+                        temp_match = [[] for i in range(ts_shortest)]
+                        # Add all previous control policies to temp_match
+                        for match_key in ts_policy_dict_nom:
+                            if match_key == key:
                                 break
                             else:
-                                # update recompute steps for resolution
-                                iter_step += 1
-                                # Update PA with new weights, node to change is u
-                                pa_prime = update_weight(pa_nom_dict[key], [u])
-                                # Now recompute the control policy with updated edge weights
-                                init_loc = pa_control_policy_dict[key][-1]
-                                # Get control policy from current location
-                                ts_policy, pa_policy = \
-                                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
-                                pa_policy = list(pa_policy)
-                                # Write updates to file
-                                write_to_iter_file(ts_policy, ts_dict[key], ets_dict[key], key, iter_step)
-                                # Must update policy match
-                                if len(ts_control_policy_dict[key-2]) <= traj_length:
-                                    policy_match = zip(ts_control_policy_dict[key-1][traj_length:], ts_policy)
-                                elif len(ts_control_policy_dict[key-1]) <= traj_length:
-                                    policy_match = zip(ts_control_policy_dict[key-2][traj_length:], ts_policy)
-                                else:
-                                    policy_match = zip(ts_control_policy_dict[key-2][traj_length:],\
-                                                       ts_control_policy_dict[key-1][traj_length:], ts_policy)
+                                if len(ts_policy_dict_nom[match_key]) > traj_length:
+                                    for ind, item in enumerate(ts_policy_dict_nom[match_key][traj_length:]):
+                                        temp_match[ind].append(item)
+                        # Now account for the current policy
+                        for ind, item in enumerate(ts_policy):
+                            if ind >= ts_shortest:
                                 break
-                else:
-                    logging.info('More than 3 robots, not accounted for in code (yet..)!')
+                            else:
+                                temp_match[ind].append(item)
+                        # Set policy_match
+                        policy_match = temp_match
+                        break
 
             # Finalize the control policies due to possibly being the longest policy
             while ts_policy:
                 ts_control_policy_dict[key].append(ts_policy.pop(0))
                 pa_control_policy_dict[key].append(pa_policy.pop(0))
-
-    # Find the final relaxation
-    tau_fin_dict = {}
-    output_fin_dict = {}
-    # for key in pa_nom_dict:
-    #    output_fin_dict[key], tau_fin_dict[key] = compute_control_relaxation(pa_control_policy_dict[key],\
-    #                                                        ts_control_policy_dict[key], dfa_dict[key])
 
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
@@ -255,13 +223,13 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
         print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
-    if os.path.isfile('../output/control_policy_updates_RP2.txt'):
+    if os.path.isfile('../output/control_policy_updates_RP3.txt'):
         with open('../output/control_policy_updates_RP2.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
     else:
-        with open('../output/control_policy_updates_RP2.txt', 'w+') as f1:
+        with open('../output/control_policy_updates_RP3.txt', 'w+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -281,7 +249,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
         if os.path.isfile('../output/control_policy_RP2.txt'):
-            with open('../output/control_policy_RP2.txt', 'a+') as f2:
+            with open('../output/control_policy_RP3.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Generated PA control policy is: ')
                 f2.write(') -> ('.join('%s %s' % x for x in pa_nom_policy))
@@ -291,7 +259,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
-            with open('../output/control_policy_RP2.txt', 'w+') as f2:
+            with open('../output/control_policy_RP3.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Generated PA control policy is: ')
                 f2.write(') -> ('.join('%s %s' % x for x in pa_nom_policy))
@@ -308,7 +276,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP2.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_RP3.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
