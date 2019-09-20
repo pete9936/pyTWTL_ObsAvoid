@@ -1,6 +1,9 @@
 name Simple DTS
 init {'Base':1}
 ;
+Base {'prop': set(), 'position': (0.0, -2.5)}
+Base2 {'prop':{'Base2'}, 'position': (2.0, -2.5)}
+Base3 {'prop':{'Base3'}, 'position': (0.5, -0.5)}
 1 {'prop':{'1'}, 'position': (0.0, -0.0)}
 2 {'prop':{'2'}, 'position': (0.5, -0.0)}
 3 {'prop':{'3'}, 'position': (1.0, -0.0)}
@@ -8,7 +11,6 @@ init {'Base':1}
 5 {'prop':{'5'}, 'position': (2.0, -0.0)}
 6 {'prop':{'6'}, 'position': (2.5, -0.0)}
 7 {'prop':{'7'}, 'position': (0.0, -0.5)}
-Base3 {'prop':{'Base3'}, 'position': (0.5, -0.5)}
 9 {'prop':{'9'}, 'position': (1.0, -0.5)}
 10 {'prop':{'10'}, 'position': (1.5, -0.5)}
 11 {'prop':{'11'}, 'position': (2.0, -0.5)}
@@ -31,11 +33,9 @@ Base3 {'prop':{'Base3'}, 'position': (0.5, -0.5)}
 28 {'prop':{'28'}, 'position': (1.5, -2.0)}
 29 {'prop':{'29'}, 'position': (2.0, -2.0)}
 30 {'prop':{'30'}, 'position': (2.5, -2.0)}
-Base {'prop': set(), 'position': (0.0, -2.5)}
 32 {'prop':{'32'}, 'position': (0.5, -2.5)}
 33 {'prop':{'33'}, 'position': (1.0, -2.5)}
 34 {'prop':{'34'}, 'position': (1.5, -2.5)}
-Base2 {'prop':{'Base2'}, 'position': (2.0, -2.5)}
 36 {'prop':{'36'}, 'position': (2.5, -2.5)}
 ;
 1 1 {'duration': 1}

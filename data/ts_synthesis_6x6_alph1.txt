@@ -1,6 +1,7 @@
 name Simple DTS
 init {'Base':1}
 ;
+Base {'prop': set(), 'position': (0.0, -2.5)}
 A {'prop':{'A'}, 'position': (0.0, -0.0)}
 Base3 {'prop':{'Base3'}, 'position': (0.5, -0.0)}
 C {'prop':{'C'}, 'position': (1.0, -0.0)}
@@ -31,7 +32,6 @@ a {'prop':{'a'}, 'position': (1.0, -2.0)}
 b {'prop':{'b'}, 'position': (1.5, -2.0)}
 c {'prop':{'c'}, 'position': (2.0, -2.0)}
 d {'prop':{'d'}, 'position': (2.5, -2.0)}
-Base {'prop': set(), 'position': (0.0, -2.5)}
 f {'prop':{'f'}, 'position': (0.5, -2.5)}
 g {'prop':{'g'}, 'position': (1.0, -2.5)}
 h {'prop':{'h'}, 'position': (1.5, -2.5)}
@@ -42,7 +42,7 @@ A A {'duration': 1}
 A Base3 {'duration': 1}
 A G {'duration': 1}
 Base3 A {'duration': 1}
-Base3 B {'duration': 1}
+Base3 Base3 {'duration': 1}
 Base3 C {'duration': 1}
 Base3 H {'duration': 1}
 C Base3 {'duration': 1}
@@ -173,7 +173,7 @@ d c {'duration': 1}
 d d {'duration': 1}
 d j {'duration': 1}
 Base Y {'duration': 1}
-Base e {'duration': 1}
+Base Base {'duration': 1}
 Base f {'duration': 1}
 f Z {'duration': 1}
 f Base {'duration': 1}
@@ -189,7 +189,7 @@ h h {'duration': 1}
 h Base2 {'duration': 1}
 Base2 c {'duration': 1}
 Base2 h {'duration': 1}
-Base2 i {'duration': 1}
+Base2 Base2 {'duration': 1}
 Base2 j {'duration': 1}
 j d {'duration': 1}
 j Base2 {'duration': 1}
