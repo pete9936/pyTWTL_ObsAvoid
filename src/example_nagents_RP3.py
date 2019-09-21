@@ -227,7 +227,7 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
     if os.path.isfile('../output/control_policy_updates_RP3.txt'):
-        with open('../output/control_policy_updates_RP2.txt', 'a+') as f1:
+        with open('../output/control_policy_updates_RP3.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -251,7 +251,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
             print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
-        if os.path.isfile('../output/control_policy_RP2.txt'):
+        if os.path.isfile('../output/control_policy_RP3.txt'):
             with open('../output/control_policy_RP3.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Generated PA control policy is: (')

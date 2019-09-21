@@ -1,2 +1,0 @@
-Control Policy for agent 2 at step 1:  N -> 1 -> T -> 1 -> U -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
-
