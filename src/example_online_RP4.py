@@ -106,67 +106,104 @@ def case1_synthesis(formulas, ts_files):
     # Create the policy match list of tuples
     policy_match = temp_match
 
-    # Initialize vars
+    # Initialize vars, give nominal policies
     iter_step = 0
+    append_flag = True
     running = True
-    ts_policy = copy.deepcopy(ts_policy_dict_nom[key])
-    pa_policy = list(copy.deepcopy(pa_policy_dict_nom[key]))
+    traj_length = 0
+    ts_policy = copy.deepcopy(ts_policy_dict_nom)
+    pa_policy = copy.deepcopy(pa_policy_dict_nom)
+    key_list = []
+    for key in ts_policy:
+        key_list.append(key)
 
     # Iterate through all policies sequentially
     # Using ts_policy as check ensures that all policies are appended
-    while ts_policy:
-        # Need a way to account for what sets policy_match is taking from (use the keys as a return list later ***)
-        for ind, node in enumerate(policy_match[0]):
-            if ind > 0:
-                prev_nodes = policy_match[0][0:ind-1]
-                if node in prev_nodes:
-                    weighted_nodes = prev_nodes
-                    policy_flag[ind] = 0
-                    break
+    while running:
+        while policy_match:
+            for ind, node in enumerate(policy_match[0]):
+                if ind < 1:
+                    append_flag = True
                 else:
-                    policy_flag[ind] = 1
-        # Append trajectories
-        if 0 not in policy_flag:
-            for key in ts_policy:
-                ts_control_policy_dict[key].append(ts_policy[key].pop(0))
-                pa_control_policy_dict[key].append(pa_policy[key].pop(0))
-            policy_match.pop(0)
-            break
-        else:
-            # Update weights and new policies to match
-            iter_step += 1
-            # Update PA with new weights
-            # This for loop simply finds index of the 0
-            for key, pflag in enumerate(policy_flag):
-                if pflag == 0:
+                    prev_nodes = policy_match[0][0:ind]
+                    if node in prev_nodes:
+                        weighted_nodes = prev_nodes
+                        policy_flag[key_list[ind]-1] = 0
+                        append_flag = False
+                        break
+                    else:
+                        policy_flag[key_list[ind]-1] = 1
+                        append_flag = True
+            # Append trajectories
+            if append_flag:
+                for key in ts_policy:
+                    ts_control_policy_dict[key].append(ts_policy[key].pop(0))
+                    pa_policy_temp = list(pa_policy[key])
+                    pa_control_policy_dict[key].append(pa_policy_temp.pop(0))
+                    pa_policy[key] = tuple(pa_policy_temp)
+                policy_match.pop(0)
+                traj_length += 1
+                break
+            else:
+                # Update weights and new policies to match
+                iter_step += 1
+                # Update PA with new weights
+                # This for loop simply finds index of the 0
+                for key, pflag in enumerate(policy_flag):
+                    if pflag == 0:
+                        break
+                key = key+1
+                pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+                # Now recompute the control policy with updated edge weights
+                init_loc = pa_control_policy_dict[key][-1]
+                # Get control policy from current location
+                ts_policy[key], pa_policy[key] = \
+                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
+                # Write updates to file
+                write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
+                # Get rid of the duplicate node
+                ts_policy[key].pop(0)
+                pa_policy_temp = list(pa_policy[key])
+                pa_policy_temp.pop(0)
+                pa_policy[key] = tuple(pa_policy_temp)
+                # Determine if last policy
+                if len(ts_policy) == 1:
                     break
-            key = key+1
-            pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-            # Now recompute the control policy with updated edge weights
-            init_loc = pa_control_policy_dict[key][-1]
-            # Get control policy from current location
-            ts_policy[key], pa_policy[key] = \
-                    compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
-            pa_policy = list(pa_policy)
-            # Write updates to file
-            # write_to_iter_file(ts_policy, ts_dict[key], ets_dict[key], key, iter_step)
-            # Get rid of the duplicate node
-            ts_policy[key].pop(0)
-            pa_policy[key].pop(0)
-
-            # Determine if last policy (maybe not here, hmm maybe ***)
-            # if len(ts_policy) == 1:
-            #    running = False
-            #    break
-
-            # Must update policy match
+                # Must update policy match
+                match_shortest = float('inf')
+                for match_key in ts_policy:
+                    if len(ts_policy[match_key]) < ts_shortest:
+                        ts_shortest = len(ts_policy[match_key])
+                temp_match = [[] for i in range(ts_shortest)]
+                # Add all previous control policies to temp_match
+                # Need a way to account for what sets policy_match is taking from
+                key_list = []
+                for match_key in ts_policy:
+                    key_list.append(match_key)
+                    for ind, item in enumerate(ts_policy[match_key]):
+                        if ind >= ts_shortest:
+                            break
+                        else:
+                            temp_match[ind].append(item)
+                # Set policy_match
+                policy_match = temp_match
+        # Update policy_match now that a trajectory has finalized and policy_match is empty
+        if ts_policy:
+            for key in ts_policy:
+                if len(ts_policy[key]) == 0:
+                    ts_policy.pop(key)
+                    pa_policy.pop(key)
+                    break
             match_shortest = float('inf')
             for match_key in ts_policy:
                 if len(ts_policy[match_key]) < ts_shortest:
                     ts_shortest = len(ts_policy[match_key])
             temp_match = [[] for i in range(ts_shortest)]
             # Add all previous control policies to temp_match
+            # Need a way to account for what sets policy_match is taking from
+            key_list = []
             for match_key in ts_policy:
+                key_list.append(match_key)
                 for ind, item in enumerate(ts_policy[match_key]):
                     if ind >= ts_shortest:
                         break
@@ -174,12 +211,8 @@ def case1_synthesis(formulas, ts_files):
                         temp_match[ind].append(item)
             # Set policy_match
             policy_match = temp_match
-
-
-        # Finalize the control policies due to possibly being the longest policy
-        while ts_policy[key]:
-            ts_control_policy_dict[key].append(ts_policy[key].pop(0))
-            pa_control_policy_dict[key].append(pa_policy[key].pop(0))
+        else:
+            running = False
 
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
