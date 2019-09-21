@@ -324,5 +324,5 @@ if __name__ == '__main__':
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
     # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']
-    ts_files = ['../data/ts_synthesis_6x6_alph1.txt', '../data/ts_synthesis_6x6_alph2.txt', '../data/ts_synthesis_6x6_alph3.txt']
+    ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
     case1_synthesis(phi, ts_files)
