@@ -1,15 +1,15 @@
 # Copyright (C) 2012-2015, Alphan Ulusoy (alphan@bu.edu)
-# 
+#
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation; either version 2 of the License, or
 # (at your option) any later version.
-# 
+#
 # This program is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License along
 # with this program; if not, write to the Free Software Foundation, Inc.,
 # 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
@@ -17,7 +17,7 @@
 import networkx as nx
 import itertools
 from .product import ts_times_ts
-from optimal_run import optimal_run
+from .optimal_run import optimal_run
 from .dijkstra import *
 from ..classes.buchi import Buchi
 from ..classes.ts import Ts
@@ -45,14 +45,14 @@ def pretty_print(agent_cnt, prefix, suffix):
 		hdr_line_2 += string.ljust('-------', 20)
 	logger.info(hdr_line_1)
 	logger.info(hdr_line_2)
-	
+
 	logger.info('*** Prefix: ***')
 	for s in prefix:
 		line = ''
 		for ss in s:
 			line += string.ljust('%s' % (ss,), 20)
 		logger.info(line)
-	
+
 	logger.info('*** Suffix: ***')
 	for s in suffix:
 		line = ''
@@ -84,7 +84,7 @@ def robust_multi_agent_optimal_run(ts_tuple, rhos, formula, opt_prop):
 			complement_ts_and_run(ts, prefixes[i], suffix_cycles[i])
 		logger.info('Prefixes: %s', prefixes)
 		logger.info('Suffix Cycles: %s', suffix_cycles)
-		
+
 		# Construct the buchi for the negation of the formula
 		b = Buchi()
 		neg_formula = '! (%s)' % formula

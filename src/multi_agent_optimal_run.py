@@ -18,8 +18,9 @@ import networkx as nx
 import itertools
 import heapq
 import logging
-from ..algorithms.product import ts_times_ts
-from optimal_run import optimal_run
+import pdb     # for debugging
+from lomap.algorithms.product import ts_times_ts
+from lomap.algorithms.optimal_run import optimal_run
 
 # Logger configuration
 logger = logging.getLogger(__name__)

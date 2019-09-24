@@ -27,7 +27,6 @@
 
 import lomap
 import logging
-import pdb  # for debugging
 from collections import namedtuple
 
 # Logger configuration
@@ -37,7 +36,6 @@ def main():
 
 	Rho = namedtuple('Rho', ['lower', 'upper'])
 	rhos = [Rho(lower=0.98, upper=1.04), Rho(lower=0.98, upper=1.04)]
-	pdb.set_trace()
 
 	# Case Study 1
 #	with lomap.Timer('IJRR 2013 Case-Study 1'):
@@ -74,7 +72,6 @@ def main():
 		r1.read_from_file('./robot_1.txt')
 		r2.read_from_file('./robot_2.txt')
 		ts_tuple = (r1, r2)
-		pdb.set_trace()
 		formula = '[]<>gather && [](gather->(r1gather4 && r2gather2)) && [](r1gather -> X(!r1gather U r1upload)) && [](r2gather -> X(!r2gather U r2upload))'
 		opt_prop = set(['r1gather4','r2gather2'])
 		logger.info('Formula: %s', formula)

@@ -47,7 +47,6 @@ def case1_synthesis(formulas, ts_files):
         ts_dict[ind+1] = Ts(directed=True, multi=False)
         ts_dict[ind+1].read_from_file(ts_f)
         ets_dict[ind+1] = expand_duration_ts(ts_dict[ind+1])
-
     # Get the nominal PA for each agent
     pa_nom_dict = {}
     for key in dfa_dict:
@@ -97,7 +96,9 @@ def case1_synthesis(formulas, ts_files):
     temp_match = [[] for i in range(ts_shortest)]
 
     # match up all policies into a list of lists
+    policy_match_index = []
     for init_key in ts_policy_dict_nom:
+        policy_match_index.append(init_key)
         for ind, item in enumerate(ts_policy_dict_nom[init_key]):
             if ind >= ts_shortest:
                 break
@@ -127,13 +128,47 @@ def case1_synthesis(formulas, ts_files):
                 else:
                     prev_nodes = policy_match[0][0:ind]
                     if node in prev_nodes:
-                        weighted_nodes = prev_nodes
                         policy_flag[key_list[ind]-1] = 0
                         append_flag = False
                         break
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
+            weighted_nodes = prev_nodes
+            # Update weights if transitioning between same two nodes
+            ts_prev_states = []
+            ts_index = []
+            if len(policy_match[0]) > 1 and traj_length >= 1:
+                for key in ts_control_policy_dict:
+                    if len(ts_control_policy_dict[key]) == traj_length:
+                        ts_prev_states.append(ts_control_policy_dict[key][-1])
+                        ts_index.append(key)
+            if ts_prev_states:
+                for ind1, ts_state in enumerate(ts_prev_states):
+                    for ind2, node in enumerate(policy_match[0]):
+                        if ts_state == node:
+                            ts_comp_ind = ts_index[ind1]
+                            pol_comp_ind = policy_match_index[ind2]
+                            if ts_comp_ind != pol_comp_ind:
+                                if policy_match_index[ind2] in ts_index and ts_index[ind1] in policy_match_index:
+                                    if policy_match[0][policy_match_index.index(ts_comp_ind)] == ts_state and \
+                                        ts_prev_states[ts_index.index(pol_comp_ind)] == node:
+                                        if ind > ind2:
+                                            weighted_nodes = weighted_nodes[0:ind2+1]
+                                            policy_flag[key_list[ind]-1] = 1
+                                            policy_flag[key_list[ind2]-1] = 0
+                                            append_flag = False
+                                            break
+                                        elif ind == ind2:
+                                            weighted_nodes.append(node)
+                                            append_flag = False
+                                            break
+                    else:
+                        continue
+                    break
+            else:
+                append_flag = True
+            # pdb.set_trace()
             # Append trajectories
             if append_flag:
                 for key in ts_policy:
@@ -178,8 +213,10 @@ def case1_synthesis(formulas, ts_files):
                 # Add all previous control policies to temp_match
                 # Need a way to account for what sets policy_match is taking from
                 key_list = []
+                policy_match_index = []
                 for match_key in ts_policy:
                     key_list.append(match_key)
+                    policy_match_index.append(match_key)
                     for ind, item in enumerate(ts_policy[match_key]):
                         if ind >= ts_shortest:
                             break
@@ -202,8 +239,10 @@ def case1_synthesis(formulas, ts_files):
             # Add all previous control policies to temp_match
             # Need a way to account for what sets policy_match is taking from
             key_list = []
+            policy_match_index = []
             for match_key in ts_policy:
                 key_list.append(match_key)
+                policy_match_index.append(match_key)
                 for ind, item in enumerate(ts_policy[match_key]):
                     if ind >= ts_shortest:
                         break

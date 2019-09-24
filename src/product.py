@@ -16,11 +16,12 @@
 
 import networkx as nx
 import itertools as it
-from ..classes.model import Model
-from ..classes.ts import Ts
-from ..classes.markov import Markov
+from lomap.classes.model import Model
+from lomap.classes.ts import Ts
+from lomap.classes.markov import Markov
 import sys
 import logging
+import pdb
 
 # Logger configuration
 logger = logging.getLogger(__name__)
@@ -197,6 +198,7 @@ def ts_times_ts(ts_tuple):
 			# Next state label. Singleton if transition taken, tuple if traveling state
 			next_state = tuple(map(lambda ss, ns, tl, ts: (ss,ns,w_min+ts) if w_min < tl else ns, source_state, next_state, time_left, time_spent))
 
+			pdb.set_trace()
 			# Add node if new
 			if(next_state not in product_ts.g):
 				 # Props satisfied at next_state is the union of props
