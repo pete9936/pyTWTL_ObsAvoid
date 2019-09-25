@@ -1,5 +1,5 @@
 '''
-.. module:: example_online_RP4.py
+.. module:: example_neighbors_RP6.py
    :synopsis: Case studies for American Control Conference (2020).
 
 .. moduleauthor:: Ryan Peterson <pete9936@umn.edu.edu>
@@ -23,8 +23,6 @@ from lomap import Ts
 
 
 def case1_synthesis(formulas, ts_files):
-    startFull = timeit.default_timer()
-    startOff = timeit.default_timer()
     dfa_dict = {}
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
@@ -44,18 +42,12 @@ def case1_synthesis(formulas, ts_files):
 
     ts_dict = {}
     ets_dict = {}
-    startTS = timeit.default_timer()
     for ind, ts_f in enumerate(ts_files):
         ts_dict[ind+1] = Ts(directed=True, multi=False)
         ts_dict[ind+1].read_from_file(ts_f)
         ets_dict[ind+1] = expand_duration_ts(ts_dict[ind+1])
-    stopTS = timeit.default_timer()
-    for ind in ts_dict:
-        print 'Size of TS:', ets_dict[ind].size()
-        print 'Run Time (s) to get all three TS: ', stopTS - startTS
     # Get the nominal PA for each agent
     pa_nom_dict = {}
-    startPA = timeit.default_timer()
     for key in dfa_dict:
         logging.info('Constructing product automaton with infinity DFA!')
         pa = ts_times_fsa(ets_dict[key], dfa_dict[key])
@@ -64,14 +56,8 @@ def case1_synthesis(formulas, ts_files):
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
         # for u in pa.g.nodes_iter():
         #     logging.debug('{} -> {}'.format(u, pa.g.neighbors(u)))
-        # pa.visualize(draw='matplotlib')
-        # plt.show()
         # Make a copy of the nominal PA to change
         pa_nom_dict[key] = copy.deepcopy(pa)
-    stopPA = timeit.default_timer()
-    for key in pa_nom_dict:
-        print 'Size of TS:', pa_nom_dict[key].size()
-        print 'Run Time (s) to get all three TS: ', stopPA - startPA
 
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
@@ -127,10 +113,6 @@ def case1_synthesis(formulas, ts_files):
     key_list = []
     for key in ts_policy:
         key_list.append(key)
-
-    stopOff = timeit.default_timer()
-    print 'Offline run time for all initial setup: ', stopOff - startOff
-    startOnline = timeit.default_timer()
     # Iterate through all policies sequentially
     # Using ts_policy as check ensures that all policies are appended
     while running:
@@ -208,7 +190,7 @@ def case1_synthesis(formulas, ts_files):
                 ts_policy[key], pa_policy[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
                 # Write updates to file
-                write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
+                # write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
                 # Get rid of the duplicate node
                 ts_policy[key].pop(0)
                 pa_policy_temp = list(pa_policy[key])
@@ -266,10 +248,6 @@ def case1_synthesis(formulas, ts_files):
         else:
             running = False
 
-    stopOnline = timeit.default_timer()
-    print 'Online run time for safe algorithm: ', stopOnline - startOnline
-    stopFull = timeit.default_timer()
-    print 'Full run time for safe algorithm: ', stopFull - startFull
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \

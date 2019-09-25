@@ -1,3 +1,0 @@
-Control Policy with obstacle present.
-Generated control policy is: Base -> 1 -> A -> 1 -> A -> 1 -> Base -> 1 -> E -> 1 -> F -> 1 -> Base2 -> 1 -> Base2 
-

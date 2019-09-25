@@ -24,21 +24,12 @@ from lomap.algorithms.product import ts_times_ts
 
 
 def case1_synthesis(formulas, ts_files):
-    dfa_dict = {}
+
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
-        # logging.debug('alphabet: {}'.format(dfa_inf.props))
-        # for u, v, d in dfa_inf.g.edges_iter(data=True):
-        #    logging.debug('({}, {}): {}'.format(u, v, d))
-        # dfa_inf.visualize(draw='matplotlib')
-        # plt.show()
-        # logging.debug('\nEnd of translate\n\n')
-        # logging.info('The bound of formula "%s" is (%d, %d)!', f, *bdd)
-        # logging.info('Translated formula "%s" to infinity DFA of size (%d, %d)!',
-        #              f, *dfa_inf.size())
-        dfa_dict[ind+1] = copy.deepcopy(dfa_inf)
-    logging.debug('\n\nStart policy computation\n')
 
+    logging.debug('\n\nStart policy computation\n')
+    # pdb.set_trace()
     startG = timeit.default_timer()
     r1 = Ts(directed=True, multi=False)
     r2 = Ts(directed=True, multi=False)
@@ -53,46 +44,39 @@ def case1_synthesis(formulas, ts_files):
     ets_tuple = (ets1, ets2)
     # Construct the team TS
     startTS = timeit.default_timer()
+
     team_ts = ts_times_ts(ets_tuple)
+    print 'Size of team TS before pruning:', team_ts.size()
     # Prune team_ts to avoid duplicate nodes
-    # team_ts.nodes() = list(dict.fromkeys(team_TS.nodes()))
-    # print team_ts.nodes()
+    for node in team_ts.g.nodes():
+        if node[0] == node[1]:
+            team_ts.g.remove_node(node)
+
     stopTS = timeit.default_timer()
-    print 'Size of team TS:', team_ts.size()
+    print 'Size of team TS after pruning:', team_ts.size()
     print 'Run Time (s) to get team TS: ', stopTS - startTS
-    # pdb.set_trace()
+
 	# Find the optimal run and shortest prefix on team_ts
-	# prefix_length, prefix_on_team_ts, suffix_cycle_cost, suffix_cycle_on_team_ts = optimal_run(team_ts, formula, opt_prop)
-    # ets1 = expand_duration_ts(r1)
+    # Get the nominal PA
+    logging.info('Constructing product automaton with infinity DFA!')
+    startPA = timeit.default_timer()
+    pa = ts_times_fsa(team_ts, dfa_inf)
+    stopPA = timeit.default_timer()
+    # Give initial weight attribute to all edges in pa
+    nx.set_edge_attributes(pa.g,"weight",1)
+    logging.info('Product automaton size is: (%d, %d)', *pa.size())
+    print 'Product automaton size is:', pa.size()
+    print 'Run Time (s) to get PA for one agent: ', stopPA - startPA
+    # pdb.set_trace()
 
-    # Get the nominal PA for each agent
-    pa_nom_dict = {}
-    ts_policy_dict = {}
-    pa_policy_dict = {}
-    output_dict = {}
-    tau_dict = {}
-    for key in dfa_dict:
-        logging.info('Constructing product automaton with infinity DFA!')
-        startPA = timeit.default_timer()
-        pa = ts_times_fsa(team_ts, dfa_dict[key])
-        stopPA = timeit.default_timer()
-        # Give initial weight attribute to all edges in pa
-        # nx.set_edge_attributes(pa.g,"weight",1)
-        logging.info('Product automaton size is: (%d, %d)', *pa.size())
-        print 'Product automaton size is:', pa.size()
-        print 'Run Time (s) to get PA for one agent: ', stopPA - startPA
-        # pdb.set_trace()
-
-        # Compute the optimal path in PA and project onto the TS
-        startPath = timeit.default_timer()
-        ts_policy_dict[key], pa_policy_dict[key], output_dict[key], tau_dict[key] = \
-                    compute_control_policy(pa, dfa_dict[key], dfa_dict[key].kind)
-        stopPath = timeit.default_timer()
-        print 'Run Time (s) to get optimal path for one agent: ', stopPath - startPath # No Chance...
-        # pdb.set_trace()
+    # Compute the optimal path in PA and project onto the TS
+    startPath = timeit.default_timer()
+    ts_policy, pa_policy, output, tau = compute_control_policy(pa, dfa_inf, dfa_inf.kind)
+    stopPath = timeit.default_timer()
+    print 'Run Time (s) to get optimal path for agents is: ', stopPath - startPath # No Chance...
 
     stopG = timeit.default_timer()
-    print 'Run Time (s) to get optimal policies for all three aents is: ', stopG - startG
+    print 'Run Time (s) for full algorithm: ', stopG - startG
     pdb.set_trace()
 
 
@@ -110,13 +94,16 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    # phi1 = '([H^2 F]^[0, 7] * [H^2 P]^[0, 7]) & ([H^2 N]^[0, 8] * [H^2 H]^[0, 7])'
+    phi1 = '[H^2 F]^[0, 7] * [H^2 P]^[0, 7]'
+    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
     # Add another agent with a separate TWTL to coordinate
     phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
     # Add a third agent ***
     phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     # Currently set to use the same transition system
-    phi = [phi1, phi2]
-    # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']
-    ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt']
+    # phi = [phi1, phi2, phi3]
+    phi = [phi1]
+    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
+    ts_files = ['../data/ts_synthesis_4x4_1.txt', '../data/ts_synthesis_4x4_2.txt']
     case1_synthesis(phi, ts_files)

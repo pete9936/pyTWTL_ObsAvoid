@@ -149,8 +149,8 @@ class ControlPathsSet(object):
         for pl in M_left:
             for pr in M_right:
                 if pl.path[-1] == pr.path[0]:
-                    logging.debug('[Cat] accept %s + %s ; max(%s, %s)',
-                                  pl, pr, pl.tau, pr.tau)
+                    # logging.debug('[Cat] accept %s + %s ; max(%s, %s)',
+                    #              pl, pr, pl.tau, pr.tau)
                     M.paths.append(ControlPath(pl.path[:-1] + pr.path,
                                                tau=max(pl.tau, pr.tau-1)))
         return M
@@ -313,8 +313,8 @@ def partial_control_policies(pa, dfa, init, finish, constraint=None):
     '''
     #TODO: return path lengths as well if requested
 
-    logging.debug('[PartialControl] init: %s, final: %s, constraint: %s',
-                  init, finish, constraint)
+    # logging.debug('[PartialControl] init: %s, final: %s, constraint: %s',
+    #              init, finish, constraint)
     sat_paths = []
     for state in (p for p in pa.g.nodes_iter() if p[1] in init):
         paths = nx.shortest_path(pa.g, source=state, weight='weight')
@@ -461,7 +461,6 @@ def compute_control_policy(pa, dfa, kind):
         pa_init_keys = pa.init.keys()
         policies.paths = [p for p in policies if p.path[0] in pa_init_keys]
         # choose optimal policy with respect to temporal robustness
-        # pdb.set_trace()
         optimal_pa_path = min(policies, key=attrgetter('tau'))
         optimal_ts_path = [x for x, _ in optimal_pa_path.path]
         optimal_tau = optimal_pa_path.tau
