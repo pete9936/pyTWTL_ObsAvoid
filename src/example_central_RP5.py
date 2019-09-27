@@ -17,67 +17,68 @@ import matplotlib.pyplot as plt
 import twtl
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_control_relaxation
+                      verify, compute_control_policy2, compute_control_relaxation, \
+                      compute_multiagent_policy
 from learning import learn_deadlines
 from lomap import Ts
-from lomap.algorithms.product import ts_times_ts
+from product import ts_times_ts, pa_times_pa
 
 
 def case1_synthesis(formulas, ts_files):
 
+    startG = timeit.default_timer()
+    dfa_dict = {}
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
+        dfa_dict[ind+1] = copy.deepcopy(dfa_inf)
 
-    logging.debug('\n\nStart policy computation\n')
-    # pdb.set_trace()
-    startG = timeit.default_timer()
-    r1 = Ts(directed=True, multi=False)
-    r2 = Ts(directed=True, multi=False)
-    # r3 = Ts(directed=True, multi=False)
-    r1.read_from_file(ts_files[0])
-    r2.read_from_file(ts_files[1])
-    # r3.read_from_file(ts_files[2])
-    ets1 = expand_duration_ts(r1)
-    ets2 = expand_duration_ts(r2)
-    # ets3 = expand_duration_ts(r3)
-    ts_tuple = (r1, r2)
-    ets_tuple = (ets1, ets2)
-    # Construct the team TS
-    startTS = timeit.default_timer()
+    ts_dict = {}
+    ets_dict = {}
+    for ind, ts_f in enumerate(ts_files):
+        ts_dict[ind+1] = Ts(directed=True, multi=False)
+        ts_dict[ind+1].read_from_file(ts_f)
+        ets_dict[ind+1] = expand_duration_ts(ts_dict[ind+1])
 
-    team_ts = ts_times_ts(ets_tuple)
-    print 'Size of team TS before pruning:', team_ts.size()
-    # Prune team_ts to avoid duplicate nodes
-    for node in team_ts.g.nodes():
-        if node[0] == node[1]:
-            team_ts.g.remove_node(node)
-
-    stopTS = timeit.default_timer()
-    print 'Size of team TS after pruning:', team_ts.size()
-    print 'Run Time (s) to get team TS: ', stopTS - startTS
+    # r1 = Ts(directed=True, multi=False)
+    # r1.read_from_file(ts_files[0])
+    # ets1 = expand_duration_ts(r1)
+    # ets_tuple = (ets1, ets2)
 
 	# Find the optimal run and shortest prefix on team_ts
     # Get the nominal PA
     logging.info('Constructing product automaton with infinity DFA!')
     startPA = timeit.default_timer()
-    pa = ts_times_fsa(team_ts, dfa_inf)
+    pa_dict = {}
+    for key in dfa_dict:
+        logging.info('Constructing product automaton with infinity DFA!')
+        pa = ts_times_fsa(ets_dict[key], dfa_dict[key])
+        # Give initial weight attribute to all edges in pa
+        nx.set_edge_attributes(pa.g,"weight",1)
+        logging.info('Product automaton size is: (%d, %d)', *pa.size())
+        # Make a copy of the nominal PA to change
+        pa_dict[key] = copy.deepcopy(pa)
+
+    # Calculate PA for the entire system
+    pa_tuple = (pa_dict[1], pa_dict[2])
+    ets_tuple = (ets_dict[1], ets_dict[2])
+    team_ts = ts_times_ts(ets_tuple)
+    team_pa = pa_times_pa(pa_tuple, team_ts)
+
     stopPA = timeit.default_timer()
-    # Give initial weight attribute to all edges in pa
-    nx.set_edge_attributes(pa.g,"weight",1)
-    logging.info('Product automaton size is: (%d, %d)', *pa.size())
-    print 'Product automaton size is:', pa.size()
-    print 'Run Time (s) to get PA for one agent: ', stopPA - startPA
-    # pdb.set_trace()
+    print 'Product automaton size is:', team_pa.size()
+    print 'Run Time (s) to get PA is: ', stopPA - startPA
+
+    startPath = timeit.default_timer()
 
     # Compute the optimal path in PA and project onto the TS
-    startPath = timeit.default_timer()
-    ts_policy, pa_policy, output, tau = compute_control_policy(pa, dfa_inf, dfa_inf.kind)
+    pa_policy_multi = compute_multiagent_policy(team_pa)
+
     stopPath = timeit.default_timer()
-    print 'Run Time (s) to get optimal path for agents is: ', stopPath - startPath # No Chance...
+    print 'Run Time (s) to get optimal paths for agents is: ', stopPath - startPath
 
     stopG = timeit.default_timer()
     print 'Run Time (s) for full algorithm: ', stopG - startG
-    pdb.set_trace()
+    print 'PA Policy for 2 agents: ', pa_policy_multi
 
 
 def setup_logging():
@@ -94,16 +95,15 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    # phi1 = '([H^2 F]^[0, 7] * [H^2 P]^[0, 7]) & ([H^2 N]^[0, 8] * [H^2 H]^[0, 7])'
     phi1 = '[H^2 F]^[0, 7] * [H^2 P]^[0, 7]'
     # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
     # Add another agent with a separate TWTL to coordinate
-    phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    phi2 = '[H^2 N]^[0, 8] * [H^2 G]^[0, 7]'
+    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
     # Add a third agent ***
-    phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     # Currently set to use the same transition system
-    # phi = [phi1, phi2, phi3]
-    phi = [phi1]
-    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
+    phi = [phi1, phi2]
+    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt']
     ts_files = ['../data/ts_synthesis_4x4_1.txt', '../data/ts_synthesis_4x4_2.txt']
     case1_synthesis(phi, ts_files)

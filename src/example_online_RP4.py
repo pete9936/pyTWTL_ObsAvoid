@@ -29,11 +29,6 @@ def case1_synthesis(formulas, ts_files):
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
 
-        # logging.debug('alphabet: {}'.format(dfa_inf.props))
-        # for u, v, d in dfa_inf.g.edges_iter(data=True):
-        #    logging.debug('({}, {}): {}'.format(u, v, d))
-        # dfa_inf.visualize(draw='matplotlib')
-        # plt.show()
         logging.debug('\nEnd of translate\n\n')
         logging.info('The bound of formula "%s" is (%d, %d)!', f, *bdd)
         logging.info('Translated formula "%s" to infinity DFA of size (%d, %d)!',
@@ -62,16 +57,12 @@ def case1_synthesis(formulas, ts_files):
         # Give initial weight attribute to all edges in pa
         nx.set_edge_attributes(pa.g,"weight",1)
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
-        # for u in pa.g.nodes_iter():
-        #     logging.debug('{} -> {}'.format(u, pa.g.neighbors(u)))
-        # pa.visualize(draw='matplotlib')
-        # plt.show()
         # Make a copy of the nominal PA to change
         pa_nom_dict[key] = copy.deepcopy(pa)
     stopPA = timeit.default_timer()
     for key in pa_nom_dict:
         print 'Size of TS:', pa_nom_dict[key].size()
-        print 'Run Time (s) to get all three TS: ', stopPA - startPA
+    print 'Run Time (s) to get all three TS: ', stopPA - startPA
 
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
@@ -120,6 +111,8 @@ def case1_synthesis(formulas, ts_files):
     # Initialize vars, give nominal policies
     iter_step = 0
     append_flag = True
+    final_flag = False
+    final_count = 0
     running = True
     traj_length = 0
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
@@ -181,9 +174,13 @@ def case1_synthesis(formulas, ts_files):
                     break
             else:
                 append_flag = True
-            # pdb.set_trace()
+            if final_flag == True:
+                final_count += 1
+                policy_flag[key_list[ind]-1] = 0
+            if final_count > 2:
+                final_count = 0
             # Append trajectories
-            if append_flag:
+            if append_flag and final_count <= 1:
                 for key in ts_policy:
                     ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                     pa_policy_temp = list(pa_policy[key])
@@ -201,9 +198,27 @@ def case1_synthesis(formulas, ts_files):
                     if pflag == 0:
                         break
                 key = key+1
+
                 pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
+
+                # Check if pa_prime.final is in the set of weigghted nodes
+                final_state_count = 0
+                for p in pa_prime.final:
+                    for node in weighted_nodes:
+                        if node in p:
+                            final_state_count += 1
+                            break
+                # if all final nodes occupied, update final_set to be all nodes
+                # This should really be refined later...
+                if final_state_count == len(pa_prime.final):
+                    final_flag = True
+                    # policy_flag[key_list[key]-1] = 0
+                    for node in pa_prime.g.nodes():
+                        if node != init_loc:
+                            pa_prime.final.add(node)
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
@@ -213,6 +228,10 @@ def case1_synthesis(formulas, ts_files):
                 ts_policy[key].pop(0)
                 pa_policy_temp = list(pa_policy[key])
                 pa_policy_temp.pop(0)
+                # account for final state issue
+                if final_flag == True:
+                    ts_policy[key].append(ts_policy[key][0])
+                    pa_policy_temp.append(pa_policy_temp[0])
                 pa_policy[key] = tuple(pa_policy_temp)
                 # Determine if last policy
                 if len(ts_policy) == 1:
@@ -244,7 +263,22 @@ def case1_synthesis(formulas, ts_files):
                     ts_policy.pop(key)
                     pa_policy.pop(key)
                     break
-            match_shortest = float('inf')
+            # Fix later *****
+            if ts_policy:
+                for key in ts_policy:
+                    if len(ts_policy[key]) == 0:
+                        ts_policy.pop(key)
+                        pa_policy.pop(key)
+                        break
+            if not ts_policy:
+                running = False
+                break
+            # key_range = len(ts_policy)
+            # for index in range(key_range):
+            #    if len(ts_policy[index+1]) == 0:
+            #        ts_policy.pop(index+1)
+            #        pa_policy.pop(index+1)
+            ts_shortest = float('inf')
             for match_key in ts_policy:
                 if len(ts_policy[match_key]) < ts_shortest:
                     ts_shortest = len(ts_policy[match_key])
@@ -284,10 +318,11 @@ def obstacle_update():
     obs_location = (1,0) # this corresponds to node D
     return obs_location
 
-def update_weight(pa_prime, s_token):
+def update_weight(pa, s_token):
     ''' Update edge weights of PA when a collision between nodes is detected.
     This searches the edges and if an edge is connected to the obstacle node
     then we assign updated weight. '''
+    pa_prime = copy.deepcopy(pa)
     for s in s_token:
         for i in pa_prime.g.edges():
             for item in i:
@@ -372,11 +407,14 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    phi1 = '[H^1 f]^[0, 2]'
     # Add another agent with a separate TWTL to coordinate
-    phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    phi2 = '[H^1 Z]^[0, 2]'
     # Add a third agent ***
-    phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    phi3 = '[H^1 f]^[0, 2]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
     # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']

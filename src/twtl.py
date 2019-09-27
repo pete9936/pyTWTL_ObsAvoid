@@ -27,7 +27,7 @@ license_text='''
 
 import logging
 import itertools as it
-# import pdb
+import pdb
 
 from antlr3 import ANTLRStringStream, CommonTokenStream
 from antlr3.tree import CommonTreeNodeStream
@@ -259,6 +259,7 @@ def translate(formula, kind='both', norm=False, optimize=True):
     lexer = twtlLexer(ANTLRStringStream(formula))
     lexer.setAlphabet(set())
     tokens = CommonTokenStream(lexer)
+    # Add debug spot here ***
     parser = twtlParser(tokens)
     phi = parser.formula()
 
@@ -282,6 +283,7 @@ def translate(formula, kind='both', norm=False, optimize=True):
     if DFAType.Infinity in kind:
         setDFAType(DFAType.Infinity)
         setOptimizationFlag(optimize)
+        # Debugging done here ***
         nodes = CommonTreeNodeStream(t)
         nodes.setTokenStream(tokens)
         translator = twtl2dfa(nodes)

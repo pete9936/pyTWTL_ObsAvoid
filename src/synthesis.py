@@ -266,6 +266,21 @@ def policy_output_word(path_ts, ap):
         output_word = [set([x]) & ap for x in path_ts]
     return output_word
 
+def multi_control_policy(pa):
+    '''Computes a control policy which minimizes the total length (makespan)
+    of the policy. It can be used on product automata obtained from both normal
+    and infinity specification FSAs. In the infinity automata case, the returned
+    policy corresponds to a valid relaxation, but it may not in general provide
+    the best temporal relaxation.
+    '''
+    if not pa.final:
+        return None
+    target_node = tuple(pa.final)
+    # compute optimal path in PA and then project onto the TS
+    pa_path = nx.shortest_path(pa.g, source=pa.init.keys()[0], target=target_node, weight='weight')
+
+    return pa_path
+
 def simple_control_policy(pa):
     '''Computes a control policy which minimizes the total length (makespan)
     of the policy. It can be used on product automata obtained from both normal
@@ -482,6 +497,15 @@ def compute_control_policy2(pa, dfa, init_loc):
         return None, None
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path
+
+def compute_multiagent_policy(pa):
+    ''' This calculates the shortest path on a combined product automaton
+    for multiple agents to find the optimal centralized path '''
+    # Get the shortest simple path
+    optimal_pa_path = multi_control_policy(pa)
+    if optimal_pa_path is None:
+        return None
+    return optimal_pa_path
 
 def compute_control_relaxation(pa_control_policy, ts_control_policy, dfa):
     ''' Used to find the relaxation of the final trajectory due to the updated
