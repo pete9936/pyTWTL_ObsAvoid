@@ -1,4 +1,0 @@
-Control Policy for agent 2 at step 1:  b -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N -> 1 -> N -> 1 -> N -> 1 -> O -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
-
-Control Policy for agent 2 at step 2:  N -> 1 -> H -> 1 -> I -> 1 -> J -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
-

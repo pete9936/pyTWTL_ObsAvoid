@@ -80,7 +80,6 @@ def case1_synthesis(formulas, ts_files):
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
     pa_control_policy_dict = {}
-
     # Set a Boolean vector to indicate if a path needs to be recomputed
     policy_flag = [1]*len(ts_files)
 
@@ -140,7 +139,8 @@ def case1_synthesis(formulas, ts_files):
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
-            weighted_nodes = prev_nodes
+            temp = prev_nodes
+            weighted_nodes = temp
             # Update weights if transitioning between same two nodes
             ts_prev_states = []
             ts_index = []
@@ -159,6 +159,7 @@ def case1_synthesis(formulas, ts_files):
                                 if policy_match_index[ind2] in ts_index and ts_index[ind1] in policy_match_index:
                                     if policy_match[0][policy_match_index.index(ts_comp_ind)] == ts_state and \
                                         ts_prev_states[ts_index.index(pol_comp_ind)] == node:
+                                        pdb.set_trace()
                                         if ind > ind2:
                                             weighted_nodes = weighted_nodes[0:ind2+1]
                                             policy_flag[key_list[ind]-1] = 1
@@ -174,6 +175,9 @@ def case1_synthesis(formulas, ts_files):
                     break
             else:
                 append_flag = True
+            if len(ts_policy) == 1 and final_flag == True:
+                weighted_nodes = []
+                append_flag = False
             if final_flag == True:
                 final_count += 1
                 policy_flag[key_list[ind]-1] = 0
@@ -199,26 +203,35 @@ def case1_synthesis(formulas, ts_files):
                         break
                 key = key+1
 
-                pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
 
                 # Check if pa_prime.final is in the set of weigghted nodes
                 final_state_count = 0
-                for p in pa_prime.final:
+                for p in pa_nom_dict[key].final:
                     for node in weighted_nodes:
                         if node in p:
                             final_state_count += 1
                             break
                 # if all final nodes occupied, update final_set to be all nodes
                 # This should really be refined later...
-                if final_state_count == len(pa_prime.final):
+                if final_state_count == len(pa_nom_dict[key].final):
                     final_flag = True
-                    # policy_flag[key_list[key]-1] = 0
+                else:
+                    final_flag = False
+                if final_flag:
+                    for prev in ts_prev_states:
+                        if prev not in weighted_nodes:  # Revise this later ****
+                            weighted_nodes.append(prev)
+                    for weight in weighted_nodes:
+                        if init_loc[0] == weight:
+                            weighted_nodes.remove(weight)
+                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
                     for node in pa_prime.g.nodes():
                         if node != init_loc:
                             pa_prime.final.add(node)
+                else:
+                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
@@ -258,26 +271,15 @@ def case1_synthesis(formulas, ts_files):
                 policy_match = temp_match
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
-            for key in ts_policy:
-                if len(ts_policy[key]) == 0:
-                    ts_policy.pop(key)
-                    pa_policy.pop(key)
-                    break
-            # Fix later *****
-            if ts_policy:
-                for key in ts_policy:
-                    if len(ts_policy[key]) == 0:
-                        ts_policy.pop(key)
-                        pa_policy.pop(key)
-                        break
+            # Iterating through the keys
+            for key, val in ts_policy.items():
+                if len(val) == 0:
+                    del ts_policy[key]
+                    del pa_policy[key]
             if not ts_policy:
                 running = False
                 break
-            # key_range = len(ts_policy)
-            # for index in range(key_range):
-            #    if len(ts_policy[index+1]) == 0:
-            #        ts_policy.pop(index+1)
-            #        pa_policy.pop(index+1)
+
             ts_shortest = float('inf')
             for match_key in ts_policy:
                 if len(ts_policy[match_key]) < ts_shortest:
@@ -312,10 +314,9 @@ def case1_synthesis(formulas, ts_files):
 
 
 def obstacle_update():
-    ''' This is a simple obstacle model, currently always stays at D. Will want
-        to expand this to more realistic model in the future. Single integrator
-        dynamics to start. '''
-    obs_location = (1,0) # this corresponds to node D
+    ''' This is a simple obstacle model. Will want to expand this to more
+    realistic model in the future. Single integrator dynamics to start. '''
+    obs_location = (1,0)
     return obs_location
 
 def update_weight(pa, s_token):

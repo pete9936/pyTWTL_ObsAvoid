@@ -1,4 +1,2 @@
-Control Policy for agent 3 at step 1:  Z -> 1 -> Y
-
-Control Policy for agent 3 at step 2:  Y -> 1 -> Base
+Control Policy for agent 3 at step 1:  T -> 1 -> S -> 1 -> Y -> 1 -> Base -> 1 -> f -> 1 -> f
 
