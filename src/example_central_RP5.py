@@ -39,12 +39,6 @@ def case1_synthesis(formulas, ts_files):
         ts_dict[ind+1].read_from_file(ts_f)
         ets_dict[ind+1] = expand_duration_ts(ts_dict[ind+1])
 
-    # r1 = Ts(directed=True, multi=False)
-    # r1.read_from_file(ts_files[0])
-    # ets1 = expand_duration_ts(r1)
-    # ets_tuple = (ets1, ets2)
-
-	# Find the optimal run and shortest prefix on team_ts
     # Get the nominal PA
     logging.info('Constructing product automaton with infinity DFA!')
     startPA = timeit.default_timer()
@@ -63,19 +57,18 @@ def case1_synthesis(formulas, ts_files):
     ets_tuple = (ets_dict[1], ets_dict[2])
     team_ts = ts_times_ts(ets_tuple)
     team_pa = pa_times_pa(pa_tuple, team_ts)
+    # pdb.set_trace()
 
     stopPA = timeit.default_timer()
     print 'Product automaton size is:', team_pa.size()
     print 'Run Time (s) to get PA is: ', stopPA - startPA
 
     startPath = timeit.default_timer()
-
     # Compute the optimal path in PA and project onto the TS
     pa_policy_multi = compute_multiagent_policy(team_pa)
 
     stopPath = timeit.default_timer()
     print 'Run Time (s) to get optimal paths for agents is: ', stopPath - startPath
-
     stopG = timeit.default_timer()
     print 'Run Time (s) for full algorithm: ', stopG - startG
     print 'PA Policy for 2 agents: ', pa_policy_multi

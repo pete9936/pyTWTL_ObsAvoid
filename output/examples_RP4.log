@@ -1,7 +1,7 @@
-10/07/2019 01:22:07 PM DEBUG [hold] Prop: f Duration: 1 Negation: False Props: set(['f'])
-10/07/2019 01:22:07 PM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 f )
-10/07/2019 01:22:07 PM DEBUG [spec] spec: [H^1 f]^[0, 2]
-10/07/2019 01:22:07 PM DEBUG [spec] mode: Infinity DFA: 
+10/08/2019 12:14:51 AM DEBUG [hold] Prop: f Duration: 1 Negation: False Props: set(['f'])
+10/08/2019 12:14:51 AM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 f )
+10/08/2019 12:14:51 AM DEBUG [spec] spec: [H^1 f]^[0, 2]
+10/08/2019 12:14:51 AM DEBUG [spec] mode: Infinity DFA: 
 Name: (Eventually (Hold 1 f ) 0 2 )
 Directed: True
 Multi: False
@@ -12,7 +12,7 @@ Final: set([2])
 Nodes: [(0, {}), (1, {}), (2, {})]
 Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'f', 'weight': 0, 'label': u'f'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'f', 'weight': 0, 'label': u'f'})]
 		
-10/07/2019 01:22:07 PM DEBUG [spec] tree:
+10/08/2019 12:14:51 AM DEBUG [spec] tree:
  Op: Eventually Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([2])
@@ -21,18 +21,18 @@ Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(el
    Init: set([0])
    Final: set([2])
 
-10/07/2019 01:22:07 PM DEBUG [spec] No of nodes: 3
-10/07/2019 01:22:07 PM DEBUG [spec] No of edges: 4
-10/07/2019 01:22:07 PM DEBUG 
+10/08/2019 12:14:51 AM DEBUG [spec] No of nodes: 3
+10/08/2019 12:14:51 AM DEBUG [spec] No of edges: 4
+10/08/2019 12:14:51 AM DEBUG 
 End of translate
 
 
-10/07/2019 01:22:07 PM INFO The bound of formula "[H^1 f]^[0, 2]" is (1, 2)!
-10/07/2019 01:22:07 PM INFO Translated formula "[H^1 f]^[0, 2]" to infinity DFA of size (3, 4)!
-10/07/2019 01:22:07 PM DEBUG [hold] Prop: Z Duration: 1 Negation: False Props: set(['Z'])
-10/07/2019 01:22:07 PM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 Z )
-10/07/2019 01:22:07 PM DEBUG [spec] spec: [H^1 Z]^[0, 2]
-10/07/2019 01:22:07 PM DEBUG [spec] mode: Infinity DFA: 
+10/08/2019 12:14:51 AM INFO The bound of formula "[H^1 f]^[0, 2]" is (1, 2)!
+10/08/2019 12:14:51 AM INFO Translated formula "[H^1 f]^[0, 2]" to infinity DFA of size (3, 4)!
+10/08/2019 12:14:51 AM DEBUG [hold] Prop: Z Duration: 1 Negation: False Props: set(['Z'])
+10/08/2019 12:14:51 AM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 Z )
+10/08/2019 12:14:51 AM DEBUG [spec] spec: [H^1 Z]^[0, 2]
+10/08/2019 12:14:51 AM DEBUG [spec] mode: Infinity DFA: 
 Name: (Eventually (Hold 1 Z ) 0 2 )
 Directed: True
 Multi: False
@@ -43,7 +43,7 @@ Final: set([2])
 Nodes: [(0, {}), (1, {}), (2, {})]
 Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'Z', 'weight': 0, 'label': u'Z'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'Z', 'weight': 0, 'label': u'Z'})]
 		
-10/07/2019 01:22:07 PM DEBUG [spec] tree:
+10/08/2019 12:14:51 AM DEBUG [spec] tree:
  Op: Eventually Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([2])
@@ -52,18 +52,18 @@ Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(el
    Init: set([0])
    Final: set([2])
 
-10/07/2019 01:22:07 PM DEBUG [spec] No of nodes: 3
-10/07/2019 01:22:07 PM DEBUG [spec] No of edges: 4
-10/07/2019 01:22:07 PM DEBUG 
+10/08/2019 12:14:51 AM DEBUG [spec] No of nodes: 3
+10/08/2019 12:14:51 AM DEBUG [spec] No of edges: 4
+10/08/2019 12:14:51 AM DEBUG 
 End of translate
 
 
-10/07/2019 01:22:07 PM INFO The bound of formula "[H^1 Z]^[0, 2]" is (1, 2)!
-10/07/2019 01:22:07 PM INFO Translated formula "[H^1 Z]^[0, 2]" to infinity DFA of size (3, 4)!
-10/07/2019 01:22:07 PM DEBUG [hold] Prop: f Duration: 1 Negation: False Props: set(['f'])
-10/07/2019 01:22:07 PM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 f )
-10/07/2019 01:22:07 PM DEBUG [spec] spec: [H^1 f]^[0, 2]
-10/07/2019 01:22:07 PM DEBUG [spec] mode: Infinity DFA: 
+10/08/2019 12:14:51 AM INFO The bound of formula "[H^1 Z]^[0, 2]" is (1, 2)!
+10/08/2019 12:14:51 AM INFO Translated formula "[H^1 Z]^[0, 2]" to infinity DFA of size (3, 4)!
+10/08/2019 12:14:51 AM DEBUG [hold] Prop: f Duration: 1 Negation: False Props: set(['f'])
+10/08/2019 12:14:51 AM DEBUG [eventually] Low: 0 High: 2 DFA: (Hold 1 f )
+10/08/2019 12:14:51 AM DEBUG [spec] spec: [H^1 f]^[0, 2]
+10/08/2019 12:14:51 AM DEBUG [spec] mode: Infinity DFA: 
 Name: (Eventually (Hold 1 f ) 0 2 )
 Directed: True
 Multi: False
@@ -74,7 +74,7 @@ Final: set([2])
 Nodes: [(0, {}), (1, {}), (2, {})]
 Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'f', 'weight': 0, 'label': u'f'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'f', 'weight': 0, 'label': u'f'})]
 		
-10/07/2019 01:22:07 PM DEBUG [spec] tree:
+10/08/2019 12:14:51 AM DEBUG [spec] tree:
  Op: Eventually Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([2])
@@ -83,34 +83,34 @@ Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(el
    Init: set([0])
    Final: set([2])
 
-10/07/2019 01:22:07 PM DEBUG [spec] No of nodes: 3
-10/07/2019 01:22:07 PM DEBUG [spec] No of edges: 4
-10/07/2019 01:22:07 PM DEBUG 
+10/08/2019 12:14:51 AM DEBUG [spec] No of nodes: 3
+10/08/2019 12:14:51 AM DEBUG [spec] No of edges: 4
+10/08/2019 12:14:51 AM DEBUG 
 End of translate
 
 
-10/07/2019 01:22:07 PM INFO The bound of formula "[H^1 f]^[0, 2]" is (1, 2)!
-10/07/2019 01:22:07 PM INFO Translated formula "[H^1 f]^[0, 2]" to infinity DFA of size (3, 4)!
-10/07/2019 01:22:07 PM DEBUG 
+10/08/2019 12:14:51 AM INFO The bound of formula "[H^1 f]^[0, 2]" is (1, 2)!
+10/08/2019 12:14:51 AM INFO Translated formula "[H^1 f]^[0, 2]" to infinity DFA of size (3, 4)!
+10/08/2019 12:14:51 AM DEBUG 
 
 Start policy computation
 
-10/07/2019 01:22:07 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
-10/07/2019 01:22:07 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
-10/07/2019 01:22:07 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
-10/07/2019 01:22:07 PM INFO Constructing product automaton with infinity DFA!
-10/07/2019 01:22:07 PM INFO Product automaton size is: (35, 140)
-10/07/2019 01:22:07 PM INFO Constructing product automaton with infinity DFA!
-10/07/2019 01:22:07 PM INFO Product automaton size is: (35, 140)
-10/07/2019 01:22:07 PM INFO Constructing product automaton with infinity DFA!
-10/07/2019 01:22:07 PM INFO Product automaton size is: (35, 140)
-10/07/2019 01:22:07 PM INFO Generated control policy is: T -> 1 -> S -> 1 -> Y -> 1 -> Base -> 1 -> f -> 1 -> f
-10/07/2019 01:22:07 PM INFO Max deadline: 0
-10/07/2019 01:22:07 PM INFO Generated output word is: [(), ('f',), ('f',)]
-10/07/2019 01:22:07 PM INFO Generated control policy is: Base -> 1 -> f -> 1 -> f
-10/07/2019 01:22:07 PM INFO Max deadline: 3
-10/07/2019 01:22:07 PM INFO Generated output word is: [(), (), (), (), ('Z',), ('Z',)]
-10/07/2019 01:22:07 PM INFO Generated control policy is: Base2 -> 1 -> h -> 1 -> b -> 1 -> a -> 1 -> Z -> 1 -> Z
-10/07/2019 01:22:07 PM INFO Max deadline: 4
-10/07/2019 01:22:07 PM INFO Generated output word is: [(), (), (), (), (), ('f',), ('f',)]
-10/07/2019 01:22:07 PM INFO Generated control policy is: Base3 -> 1 -> H -> 1 -> N -> 1 -> T -> 1 -> Z -> 1 -> f -> 1 -> f
+10/08/2019 12:14:51 AM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/08/2019 12:14:51 AM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/08/2019 12:14:51 AM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/08/2019 12:14:51 AM INFO Constructing product automaton with infinity DFA!
+10/08/2019 12:14:51 AM INFO Product automaton size is: (35, 140)
+10/08/2019 12:14:51 AM INFO Constructing product automaton with infinity DFA!
+10/08/2019 12:14:51 AM INFO Product automaton size is: (35, 140)
+10/08/2019 12:14:51 AM INFO Constructing product automaton with infinity DFA!
+10/08/2019 12:14:51 AM INFO Product automaton size is: (35, 140)
+10/08/2019 12:14:51 AM INFO Generated control policy is: T -> 1 -> S -> 1 -> Y -> 1 -> Base -> 1 -> f -> 1 -> f
+10/08/2019 12:14:51 AM INFO Max deadline: 0
+10/08/2019 12:14:51 AM INFO Generated output word is: [(), ('f',), ('f',)]
+10/08/2019 12:14:51 AM INFO Generated control policy is: Base -> 1 -> f -> 1 -> f
+10/08/2019 12:14:51 AM INFO Max deadline: 3
+10/08/2019 12:14:51 AM INFO Generated output word is: [(), (), (), (), ('Z',), ('Z',)]
+10/08/2019 12:14:51 AM INFO Generated control policy is: Base2 -> 1 -> h -> 1 -> b -> 1 -> a -> 1 -> Z -> 1 -> Z
+10/08/2019 12:14:51 AM INFO Max deadline: 5
+10/08/2019 12:14:51 AM INFO Generated output word is: [(), (), (), (), (), ('f',), ('f',)]
+10/08/2019 12:14:51 AM INFO Generated control policy is: Base3 -> 1 -> H -> 1 -> N -> 1 -> T -> 1 -> Z -> 1 -> f -> 1 -> f

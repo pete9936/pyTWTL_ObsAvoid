@@ -468,8 +468,7 @@ def compute_control_policy(pa, dfa, kind):
         optimal_ts_path = simple_control_policy(pa)
         optimal_tau = None
     elif kind == DFAType.Infinity:
-        # Find the policies given the initial state
-        policies = relaxed_control_policy(dfa.tree, dfa, pa) # This makes me think you don't need the initial
+        policies = relaxed_control_policy(dfa.tree, dfa, pa)
         if not policies:
             return None, None, None
         # keep only policies which start from the initial PA state
@@ -490,13 +489,24 @@ def compute_control_policy2(pa, dfa, init_loc):
     ''' Computes a control policy from product automaton pa. This takes into
     account the updated initial state where collision was detected. Will update
     this in the future for computational efficiency. *** '''
-    # Get the shortest simple path
-    optimal_pa_path = simple_control_policy2(pa, init_loc)
-    optimal_ts_path = [x for x, _ in optimal_pa_path]
+    policies = relaxed_control_policy(dfa.tree, dfa, pa)
+    if not policies:
+        return None, None, None
+    # keep only policies which start from the initial PA state
+    pa_init_key = []
+    pa_init_key.append(init_loc)
+    policies.paths = [p for p in policies if p.path[0] in pa_init_key]
+    # choose optimal policy with respect to temporal robustness
+    optimal_pa_path = min(policies, key=attrgetter('tau'))
+    optimal_ts_path = [x for x, _ in optimal_pa_path.path]
+    optimal_tau = optimal_pa_path.tau
+        # Get the shortest simple path
+        # optimal_pa_path = simple_control_policy2(pa, init_loc)
+        # optimal_ts_path = [x for x, _ in optimal_pa_path]
     if optimal_ts_path is None:
         return None, None
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
-    return optimal_ts_path, optimal_pa_path
+    return optimal_ts_path, optimal_pa_path.path, optimal_tau
 
 def compute_multiagent_policy(pa):
     ''' This calculates the shortest path on a combined product automaton
@@ -506,14 +516,6 @@ def compute_multiagent_policy(pa):
     if optimal_pa_path is None:
         return None
     return optimal_pa_path
-
-def compute_control_relaxation(pa_control_policy, ts_control_policy, dfa):
-    ''' Used to find the relaxation of the final trajectory due to the updated
-        path for dynamic obstacle avoidance. '''
-
-    optimal_tau = None # Change this ***
-    output_word = policy_output_word(ts_control_policy, set(dfa.props.keys()))
-    return output_word, optimal_tau
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal

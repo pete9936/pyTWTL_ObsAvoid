@@ -93,9 +93,7 @@ def ts_times_fsa(ts, fsa):
 
 
 def pa_times_pa(pa_tuple, team_ts):
-
 	# Initial state label is the tuple of initial states' labels
-	# NOTE: We assume deterministic TS (that's why we pick [0])
 	assert all(map(lambda pa: True if len(pa.init) == 1 else False, pa_tuple))
 	init_state = tuple(map(lambda pa: pa.init.keys()[0], pa_tuple))
 	final_state = tuple(map(lambda pa: list(pa.final)[0], pa_tuple))
@@ -103,50 +101,36 @@ def pa_times_pa(pa_tuple, team_ts):
 	product_pa.init[init_state] = 1
 	product_pa.final = set(final_state)
 
-	# Finally, add the state
+	# Finally, add the states
 	control = None
 	weight = 1
 	product_pa.g.add_node(init_state)
 	product_pa.g.add_node(final_state)
 	product_pa.g.add_edge(init_state, init_state, attr_dict = {'weight':weight, 'control':control})
-	product_pa.g.add_edge(init_state, init_state, attr_dict = {'weight':weight, 'control':control})
+	product_pa.g.add_edge(final_state, final_state, attr_dict = {'weight':weight, 'control':control})
 	# Generate nodes for the two agent case and add self-loop edge
 	for top_state in pa_tuple[0].g.nodes():
 		for add_state in pa_tuple[1].g.nodes():
 			new_state = (top_state, add_state)
-			#if(new_state not in product_pa.g):
 			product_pa.g.add_node(new_state)
 			# Add transition w/ weight (for self-loops)
 			product_pa.g.add_edge(new_state, new_state, attr_dict = {'weight':weight, 'control':control})
-	for top_state in pa_tuple[1].g.nodes():
-		for add_state in pa_tuple[0].g.nodes():
-			new_state = (add_state, top_state)
-			#if(new_state not in product_pa.g):
-			product_pa.g.add_node(new_state)
-			# Add transition w/ weight (for self-loops)
-			product_pa.g.add_edge(new_state, new_state, attr_dict = {'weight':weight, 'control':control})
-	# Perform pruning on the set of nodes
+	# Perform pruning on the set of nodes (delete nodes if matching TS loc)
 	for states in product_pa.g.nodes():
 		if states[0][0] == states[1][0]:
 			product_pa.g.remove_node(states)
-	# Add final states
-	# for states in product_pa.g.nodes():
-	#	if (states[0][1] and states[1][1]) in product_pa.final:
-	#		print 10
-
 	# Add edges between eligible states
 	for node in product_pa.g.nodes():
 		# Find next_state and prev_state
 		node1_temp = node[0]
 		node2_temp = node[1]
-		# if node1_temp in pa_tuple[0].g.nodes() and node2_temp in pa_tuple[1].g.nodes(): # maybe omit
 		for tups1 in pa_tuple[0].g.neighbors(node1_temp):
 			for tups2 in pa_tuple[1].g.neighbors(node2_temp):
 				for nodeset in product_pa.g.nodes():
-					if tups1 in nodeset and tups2 in nodeset:
+					if tups1 == nodeset[0] and tups2 == nodeset[1]:
 						product_pa.g.add_edge(node, nodeset, attr_dict = {'weight':weight, 'control':control})
 						product_pa.g.add_edge(nodeset, node, attr_dict = {'weight':weight, 'control':control})
-	# pdb.set_trace()
+						break
 	# Return pa_1 x pa_2
 	return product_pa
 

@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import twtl
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_control_relaxation
+                      verify, compute_control_policy2
 from learning import learn_deadlines
 from lomap import Ts
 
@@ -27,11 +27,6 @@ def case1_synthesis(formulas, ts_files):
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
 
-        # logging.debug('alphabet: {}'.format(dfa_inf.props))
-        # for u, v, d in dfa_inf.g.edges_iter(data=True):
-        #    logging.debug('({}, {}): {}'.format(u, v, d))
-        # dfa_inf.visualize(draw='matplotlib')
-        # plt.show()
         logging.debug('\nEnd of translate\n\n')
         logging.info('The bound of formula "%s" is (%d, %d)!', f, *bdd)
         logging.info('Translated formula "%s" to infinity DFA of size (%d, %d)!',
@@ -110,6 +105,7 @@ def case1_synthesis(formulas, ts_files):
     traj_length = 0
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
+    tau_dict = tau_dict_nom
     key_list = []
     for key in ts_policy:
         key_list.append(key)
@@ -187,7 +183,7 @@ def case1_synthesis(formulas, ts_files):
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
                 # Get control policy from current location
-                ts_policy[key], pa_policy[key] = \
+                ts_policy[key], pa_policy[key], tau_dict[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
                 # Write updates to file
                 # write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
@@ -254,6 +250,17 @@ def case1_synthesis(formulas, ts_files):
                 output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], key)
 
+def local_neighborhood():
+    ''' Creates a local neighborhood of nodes which the agent can communicate
+    to for a more localized communication protocol '''
+    radius = 0.2
+    node_set = nx.get_node_attributes(ts.g,"position")
+    # distance = []
+    blocked_nodes = []
+    for key, (u, v) in node_set.items():
+        temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
+        if temp <= radius:
+            blocked_nodes.append(key)
 
 def obstacle_update():
     ''' This is a simple obstacle model, currently always stays at D. Will want
