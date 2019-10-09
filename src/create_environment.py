@@ -128,7 +128,9 @@ def create_input_file(adj_mat, path, bases, disc):
             for j in range(n):
                 x = (j-1)*disc
                 y = -(i-1)*disc
-                if T.states(i,j) == Base:
+                if T.obs(i,j) == 3
+                    continue;
+                elseif T.states(i,j) == Base:
                     fprintf(fid,'Base {''prop'': set(), ''position'': (%1.1f, %1.1f)}\n', x, y);
                 elseif T.states(i,j) == Base2
                     fprintf(fid,'Base2 {''prop'':{''Base2''}, ''position'': (%1.1f, %1.1f)}\n', x, y);
@@ -154,7 +156,7 @@ def create_input_file(adj_mat, path, bases, disc):
     for i=1:length(nodeset1):
         if nodeset1(i) == Base:
         # Need to make this more functional ***
-        
+
             fprintf(fid,'Base %d {''duration'': %d}\n', Nodeset2(i), Weight(i));
         elseif Nodeset2(i) == Base
             fprintf(fid,'%d Base {''duration'': %d}\n', Nodeset1(i), Weight(i));
