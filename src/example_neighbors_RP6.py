@@ -126,15 +126,16 @@ def case1_synthesis(formulas, ts_files):
                 if ind < 1:
                     append_flag = True
                 else:
-                    prev_nodes = policy_match[0][0:ind]
-                    if node in prev_nodes:
+                    # Get local neighborhood (two-hop) of nodes to search for a conflict
+                    local_set = get_neighborhood(node, ts_dict[ind+1])
+                    if node in local_set:
                         policy_flag[key_list[ind]-1] = 0
                         append_flag = False
                         break
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
-            temp = prev_nodes
+            temp = local_set
             weighted_nodes = temp
             # Update weights if transitioning between same two nodes
             ts_prev_states = []
@@ -232,7 +233,6 @@ def case1_synthesis(formulas, ts_files):
 
                 # Use the energy function to perform a local search ***
                 # might want to change energy function to attribute of the graph for easy searching
-                pdb.set_trace()
                 energy_low = float('inf')
                 for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
                     for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
@@ -321,7 +321,25 @@ def case1_synthesis(formulas, ts_files):
                 output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
 
-def local_neighborhood():
+def get_neighborhood(node, ts):
+    ''' function to get the two-hop neighborhood of nodes to compare for
+    collision avoidance '''
+    local_set = ts.g.neighbors(node)
+    two_hop_set = []
+    for local_node in local_set:
+        two_hop_temp = ts.g.neighbors(local_node)
+        for two_hop_node in two_hop_temp:
+            if two_hop_node not in two_hop_set:
+                two_hop_set.append(two_hop_node)
+    # Merge one hop and two hop sets
+    for i in two_hop_set:
+        if i not in local_set:
+            local_set.append(i)
+    # Get rid of current node from local_set
+    local_set.remove(node)
+    return local_set
+
+def local_neighborhood(ts):
     ''' Creates a local neighborhood of nodes which the agent can communicate
     to for a more localized communication protocol, this considers actual
     distance as opposed to number of edge hops. '''
@@ -333,6 +351,7 @@ def local_neighborhood():
         temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
         if temp <= radius:
             blocked_nodes.append(key)
+    return blocked_nodes
 
 def obstacle_update():
     ''' This is a simple obstacle model, currently always stays at D. Will want
@@ -421,7 +440,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP4.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_RP6.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)

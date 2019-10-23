@@ -84,7 +84,7 @@ def case1_synthesis(formulas, ts_files):
         energy_dict[key] = compute_energy(pa_nom_dict[key], dfa_dict[key])
     stopEnergy = timeit.default_timer()
     print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
-    
+
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
     pa_control_policy_dict = {}
@@ -243,6 +243,22 @@ def case1_synthesis(formulas, ts_files):
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key], tau_dict[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
+
+                # Use the energy function to perform a local search ***
+                # might want to change energy function to attribute of the graph for easy searching
+                energy_low = float('inf')
+                for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
+                    for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
+                        if neighbor == node and node[0] not in weighted_nodes:
+                            pdb.set_trace()
+                            if energy_dict[key][ind] < energy_low:
+                                energy_low = energy_dict[key][ind]
+                                next_node = node
+                                break
+                if energy_low == float('inf'):
+                    next_node = init_loc
+                    print 'No feasible location to move, therefore stay in current position'
+                    
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
                 # Get rid of the duplicate node
