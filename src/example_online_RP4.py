@@ -362,18 +362,20 @@ def write_to_csv(ts, ts_policy, id):
     ''' Writes the control policy to an output file in CSV format to be used
     as waypoints for a trajectory run by our Crazyflies. '''
     altitude = 1.0 # meters
-    time = 1.0 # seconds to go from one waypoint to the next
+    time = 1.5 # seconds to go from one waypoint to the next
     node_set = nx.get_node_attributes(ts.g,"position")
-    if os.path.isfile('../output/waypoint_test2.csv'):
-        with open('../output/waypoint_test2.csv', 'a') as f:
+    if os.path.isfile('../output/waypoints_test2.csv'):
+        with open('../output/waypoints_test2.csv', 'a') as f:
             writer = csv.writer(f)
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
                         writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time*ind])
                         break
+            # this is for landing
+            writer.writerow([id, node_set[node][0], node_set[node][1], 0.2, time*(ind+1)])
     else:
-        with open('../output/waypoint_test2.csv', 'w') as f:
+        with open('../output/waypoints_test2.csv', 'w') as f:
             writer = csv.writer(f)
             header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
             writer.writerow(header)
@@ -382,6 +384,8 @@ def write_to_csv(ts, ts_policy, id):
                     if elem == node:
                         writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time*ind])
                         break
+            # this is for landing
+            writer.writerow([id, node_set[node][0], node_set[node][1], 0.2, time*(ind+1)])
     f.close()
 
 
