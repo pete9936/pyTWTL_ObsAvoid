@@ -22,3 +22,45 @@ Control Policy for agent 2 at step 1:  b -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N
 
 Control Policy for agent 2 at step 2:  N -> 1 -> H -> 1 -> I -> 1 -> J -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
 
+Control Policy for agent 2 at step 1:  b -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N -> 1 -> N -> 1 -> N -> 1 -> O -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+
+Control Policy for agent 2 at step 1:  b -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N -> 1 -> N -> 1 -> N -> 1 -> O -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+
+Control Policy for agent 2 at step 2:  N -> 1 -> H -> 1 -> I -> 1 -> J -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+
+Control Policy for agent 2 at step 1:  b -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N -> 1 -> N -> 1 -> N -> 1 -> O -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+
+Control Policy for agent 2 at step 2:  N -> 1 -> H -> 1 -> I -> 1 -> J -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 1:  r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r14 -> 1 -> r13 -> 1 -> r13 -> 1 -> r13 -> 1 -> r14 -> 1 -> r15 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 2:  r13 -> 1 -> r19 -> 1 -> r25 -> 1 -> r26 -> 1 -> r27 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+

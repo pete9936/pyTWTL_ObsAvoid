@@ -10,6 +10,7 @@ import logging, sys
 import StringIO
 import pdb, os, copy, math
 import timeit
+import csv
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -250,7 +251,6 @@ def case1_synthesis(formulas, ts_files):
                 for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
                     for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
                         if neighbor == node and node[0] not in weighted_nodes:
-                            pdb.set_trace()
                             if energy_dict[key][ind] < energy_low:
                                 energy_low = energy_dict[key][ind]
                                 next_node = node
@@ -258,7 +258,7 @@ def case1_synthesis(formulas, ts_files):
                 if energy_low == float('inf'):
                     next_node = init_loc
                     print 'No feasible location to move, therefore stay in current position'
-                    
+
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
                 # Get rid of the duplicate node
@@ -336,8 +336,11 @@ def case1_synthesis(formulas, ts_files):
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
-                output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
+                output_dict_nom[key], tau_dict_nom[key], dfa_dict[key], ts_dict[key], ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
+    # Write the CSV files for experiments
+    for key in pa_nom_dict:
+        write_to_csv(ts_dict[key], ts_control_policy_dict[key], key)
 
 def update_weight(pa, s_token):
     ''' Update edge weights of PA when a collision between nodes is detected.
@@ -354,6 +357,33 @@ def update_weight(pa, s_token):
                     pa_prime.g.add_weighted_edges_from([tuple(temp)])
                     break
     return pa_prime
+
+def write_to_csv(ts, ts_policy, id):
+    ''' Writes the control policy to an output file in CSV format to be used
+    as waypoints for a trajectory run by our Crazyflies. '''
+    altitude = 1.0 # meters
+    time = 1.0 # seconds to go from one waypoint to the next
+    node_set = nx.get_node_attributes(ts.g,"position")
+    if os.path.isfile('../output/waypoint_test2.csv'):
+        with open('../output/waypoint_test2.csv', 'a') as f:
+            writer = csv.writer(f)
+            for ind, elem in enumerate(ts_policy):
+                for node in ts_policy:
+                    if elem == node:
+                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time*ind])
+                        break
+    else:
+        with open('../output/waypoint_test2.csv', 'w') as f:
+            writer = csv.writer(f)
+            header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
+            writer.writerow(header)
+            for ind, elem in enumerate(ts_policy):
+                for node in ts_policy:
+                    if elem == node:
+                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time*ind])
+                        break
+    f.close()
+
 
 def write_to_iter_file(policy, ts, ets, key, iter_step):
     ''' Writes each iteration of the control policy to an output file
@@ -431,16 +461,19 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    phi1 = '[H^2 r21]^[0, 7] * [H^2 r12]^[0, 7]'
     # phi1 = '[H^1 f]^[0, 2]'
     # Add another agent with a separate TWTL to coordinate
-    phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    phi2 = '[H^2 r13]^[0, 8] * [H^2 r23]^[0, 7]'
     # phi2 = '[H^1 Z]^[0, 2]'
     # Add a third agent ***
-    phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    phi3 = '[H^2 r31]^[0, 8] * [H^3 r11]^[0, 10]'
     # phi3 = '[H^1 f]^[0, 2]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']
-    ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
+    ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
+    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
     case1_synthesis(phi, ts_files)

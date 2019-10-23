@@ -116,24 +116,28 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, iter):
         # Print file header and initial position
         f1.write('name Simple DTS\n')
         if iter == 0:
-            f1.write('init {''Base'':1}\n')
+            f1.write('init {\'Base\':1}\n')
         else:
-            f1.write('init {''Base%d'':1}\n' % iter)
+            base_ind = iter+1
+            f1.write('init {\'Base%d\':1}\n' % base_ind)
         f1.write(';\n')
 
         # Publish the sets of nodes
         for i in range(m):
             for j in range(n):
-                x = j*disc
-                y = -i*disc
+                x = disc*m/2 - disc/2 - i*disc
+                y = disc*n/2 - disc/2 - j*disc
                 if obs_mat[i][j] == 3:
                     continue
                 elif state_mat[i][j] in bases:
                     for key in bases:
                         if key == state_mat[i][j]:
-                            f1.write('%s {''prop'': set(), ''position'': (%1.2f, %1.2f)}\n' % (bases[key], x, y))
+                            if bases[key] == 'Base':
+                                f1.write('%s {\'prop\': set(), \'position\': (%1.2f, %1.2f)}\n' % (bases[key], x, y))
+                            else:
+                                f1.write('%s {\'prop\':{\'%s\'}, \'position\': (%1.2f, %1.2f)}\n' % (bases[key], bases[key], x, y))
                 else:
-                    f1.write('r%d {''prop'':{''r%d''}, ''position'': (%1.2f, %1.2f)}\n'\
+                    f1.write('r%d {\'prop\':{\'r%d\'}, \'position\': (%1.2f, %1.2f)}\n'\
                                             % (state_mat[i][j], state_mat[i][j], x, y))
         f1.write(';\n')
 
@@ -145,18 +149,18 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, iter):
                         if nodeset1[i] == key1:
                             for key2 in bases:
                                 if nodeset2[i] == key2:
-                                    f1.write('%s %s {''duration'': %d}\n'\
+                                    f1.write('%s %s {\'duration\': %d}\n'\
                                             % (bases[key1], bases[key2], weight[i]))
                 else:
                     for key1 in bases:
                         if nodeset1[i] == key1:
-                            f1.write('%s r%d {''duration'': %d}\n' % (bases[key1], nodeset2[i], weight[i]))
+                            f1.write('%s r%d {\'duration\': %d}\n' % (bases[key1], nodeset2[i], weight[i]))
             elif nodeset2[i] in bases:
                 for key2 in bases:
                     if nodeset2[i] == key2:
-                        f1.write('r%d %s {''duration'': %d}\n' % (nodeset1[i], bases[key2], weight[i]))
+                        f1.write('r%d %s {\'duration\': %d}\n' % (nodeset1[i], bases[key2], weight[i]))
             else:
-                f1.write('r%d r%d {''duration'': %d}\n' % (nodeset1[i], nodeset2[i], weight[i]))
+                f1.write('r%d r%d {\'duration\': %d}\n' % (nodeset1[i], nodeset2[i], weight[i]))
     # finished writing to file
     f1.close()
 
@@ -166,14 +170,14 @@ if __name__ == '__main__':
     n = 6
     TS, obs_mat, state_mat = create_ts(m,n)
     # try out the init state and obstacles functions
-    init_state = 31
-    obstacles = [(5,3),(4,3),(2,3),(2,4)]
-    obs_mat = update_obs_mat(obs_mat, state_mat, obstacles, init_state)
-    # Update the adjacency matrix
-    TS = update_adj_mat(m, n, TS, obs_mat)
+    init_state = [30, 34, 1]
+    obstacles = [(3,2),(2,5)]
     paths = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
-    bases = {31: 'Base', 35: 'Base2', 8: 'Base3'}
+    bases = {30: 'Base', 34: 'Base2', 1: 'Base3'}
     disc = 0.5
-    # Now create the proper output .txt files
-    for i in range(len(paths)):
+    for i in range(len(init_state)):
+        obs_mat = update_obs_mat(obs_mat, state_mat, obstacles, init_state[i])
+        # Update the adjacency matrix
+        TS = update_adj_mat(m, n, TS, obs_mat)
+        # Now create the proper output .txt files
         create_input_file(TS, state_mat, obs_mat, paths[i], bases, disc, i)

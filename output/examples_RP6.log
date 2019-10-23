@@ -158,3 +158,163 @@ Start policy computation
 10/23/2019 12:10:30 PM INFO Max deadline: -1
 10/23/2019 12:10:30 PM INFO Generated output word is: [(), (), (), (), (), ('f',), ('f',), ('f',), (), (), (), (), (), (), ('K',), ('K',), ('K',), ('K',)]
 10/23/2019 12:10:30 PM INFO Generated control policy is: Base3 -> 1 -> H -> 1 -> N -> 1 -> T -> 1 -> Z -> 1 -> f -> 1 -> f -> 1 -> f -> 1 -> g -> 1 -> a -> 1 -> b -> 1 -> V -> 1 -> W -> 1 -> Q -> 1 -> K -> 1 -> K -> 1 -> K -> 1 -> K
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: V Duration: 2 Negation: False Props: set(['M', 'V'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 V )
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: M Duration: 2 Negation: False Props: set(['M', 'V'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 M )
+10/23/2019 03:03:14 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 V ) 0 7 ) DFA2: (Eventually (Hold 2 M ) 0 7 )
+10/23/2019 03:03:14 PM DEBUG [spec] spec: [H^2 V]^[0, 7] * [H^2 M]^[0, 7]
+10/23/2019 03:03:14 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 2 V ) 0 7 ) (Eventually (Hold 2 M ) 0 7 ) )
+Directed: True
+Multi: False
+Props: {'M': 1, 'V': 2}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([6])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
+Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'V', 'weight': 0, 'label': u'V'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'V', 'weight': 0, 'label': u'V'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'V', 'weight': 0, 'label': u'V'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'M', 'weight': 0, 'label': u'M'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'M', 'weight': 0, 'label': u'M'}), (5, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3]), 'guard': u'M', 'weight': 0, 'label': u'M'})]
+		
+10/23/2019 03:03:14 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([6])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([3])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([3])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([3])
+   Final: set([6])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([3])
+     Final: set([6])
+
+10/23/2019 03:03:14 PM DEBUG [spec] No of nodes: 7
+10/23/2019 03:03:14 PM DEBUG [spec] No of edges: 12
+10/23/2019 03:03:14 PM DEBUG 
+End of translate
+
+
+10/23/2019 03:03:14 PM INFO The bound of formula "[H^2 V]^[0, 7] * [H^2 M]^[0, 7]" is (5, 15)!
+10/23/2019 03:03:14 PM INFO Translated formula "[H^2 V]^[0, 7] * [H^2 M]^[0, 7]" to infinity DFA of size (7, 12)!
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: N Duration: 2 Negation: False Props: set(['X', 'N'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 N )
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: X Duration: 2 Negation: False Props: set(['X', 'N'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 X )
+10/23/2019 03:03:14 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 N ) 0 8 ) DFA2: (Eventually (Hold 2 X ) 0 7 )
+10/23/2019 03:03:14 PM DEBUG [spec] spec: [H^2 N]^[0, 8] * [H^2 X]^[0, 7]
+10/23/2019 03:03:14 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 2 N ) 0 8 ) (Eventually (Hold 2 X ) 0 7 ) )
+Directed: True
+Multi: False
+Props: {'X': 1, 'N': 2}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([6])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
+Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'N', 'weight': 0, 'label': u'N'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'N', 'weight': 0, 'label': u'N'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'N', 'weight': 0, 'label': u'N'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'X', 'weight': 0, 'label': u'X'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'X', 'weight': 0, 'label': u'X'}), (5, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3]), 'guard': u'X', 'weight': 0, 'label': u'X'})]
+		
+10/23/2019 03:03:14 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([6])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([3])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([3])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([3])
+   Final: set([6])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([3])
+     Final: set([6])
+
+10/23/2019 03:03:14 PM DEBUG [spec] No of nodes: 7
+10/23/2019 03:03:14 PM DEBUG [spec] No of edges: 12
+10/23/2019 03:03:14 PM DEBUG 
+End of translate
+
+
+10/23/2019 03:03:14 PM INFO The bound of formula "[H^2 N]^[0, 8] * [H^2 X]^[0, 7]" is (5, 16)!
+10/23/2019 03:03:14 PM INFO Translated formula "[H^2 N]^[0, 8] * [H^2 X]^[0, 7]" to infinity DFA of size (7, 12)!
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: f Duration: 2 Negation: False Props: set(['K', 'f'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 f )
+10/23/2019 03:03:14 PM DEBUG [hold] Prop: K Duration: 3 Negation: False Props: set(['K', 'f'])
+10/23/2019 03:03:14 PM DEBUG [eventually] Low: 0 High: 10 DFA: (Hold 3 K )
+10/23/2019 03:03:14 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 f ) 0 8 ) DFA2: (Eventually (Hold 3 K ) 0 10 )
+10/23/2019 03:03:14 PM DEBUG [spec] spec: [H^2 f]^[0, 8] * [H^3 K]^[0, 10]
+10/23/2019 03:03:14 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 2 f ) 0 8 ) (Eventually (Hold 3 K ) 0 10 ) )
+Directed: True
+Multi: False
+Props: {'K': 1, 'f': 2}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {})]
+Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'f', 'weight': 0, 'label': u'f'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'f', 'weight': 0, 'label': u'f'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'f', 'weight': 0, 'label': u'f'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'K', 'weight': 0, 'label': u'K'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'K', 'weight': 0, 'label': u'K'}), (5, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3]), 'guard': u'K', 'weight': 0, 'label': u'K'}), (6, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (6, 7, {'input': set([1, 3]), 'guard': u'K', 'weight': 0, 'label': u'K'})]
+		
+10/23/2019 03:03:14 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([3])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([3])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([3])
+   Final: set([7])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([3])
+     Final: set([7])
+
+10/23/2019 03:03:14 PM DEBUG [spec] No of nodes: 8
+10/23/2019 03:03:14 PM DEBUG [spec] No of edges: 14
+10/23/2019 03:03:14 PM DEBUG 
+End of translate
+
+
+10/23/2019 03:03:14 PM INFO The bound of formula "[H^2 f]^[0, 8] * [H^3 K]^[0, 10]" is (6, 19)!
+10/23/2019 03:03:14 PM INFO Translated formula "[H^2 f]^[0, 8] * [H^3 K]^[0, 10]" to infinity DFA of size (8, 14)!
+10/23/2019 03:03:14 PM DEBUG 
+
+Start policy computation
+
+10/23/2019 03:03:14 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/23/2019 03:03:14 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/23/2019 03:03:14 PM DEBUG [extend_ts] TS: (34, 140) ETS:(34, 140)
+10/23/2019 03:03:14 PM INFO Constructing product automaton with infinity DFA!
+10/23/2019 03:03:14 PM INFO Product automaton size is: (71, 288)
+10/23/2019 03:03:14 PM INFO Constructing product automaton with infinity DFA!
+10/23/2019 03:03:14 PM INFO Product automaton size is: (71, 288)
+10/23/2019 03:03:14 PM INFO Constructing product automaton with infinity DFA!
+10/23/2019 03:03:14 PM INFO Product automaton size is: (72, 294)
+10/23/2019 03:03:14 PM INFO Max deadline: 0
+10/23/2019 03:03:14 PM INFO Generated output word is: [(), (), (), (), (), ('V',), ('V',), ('V',), (), (), (), ('M',), ('M',), ('M',)]
+10/23/2019 03:03:14 PM INFO Generated control policy is: Base -> 1 -> Y -> 1 -> Z -> 1 -> a -> 1 -> b -> 1 -> V -> 1 -> V -> 1 -> V -> 1 -> P -> 1 -> O -> 1 -> N -> 1 -> M -> 1 -> M -> 1 -> M
+10/23/2019 03:03:14 PM INFO Max deadline: 0
+10/23/2019 03:03:14 PM INFO Generated output word is: [(), (), (), (), (), (), ('N',), ('N',), ('N',), (), (), (), (), ('X',), ('X',), ('X',)]
+10/23/2019 03:03:14 PM INFO Generated control policy is: Base2 -> 1 -> h -> 1 -> b -> 1 -> a -> 1 -> Z -> 1 -> T -> 1 -> N -> 1 -> N -> 1 -> N -> 1 -> O -> 1 -> P -> 1 -> V -> 1 -> W -> 1 -> X -> 1 -> X -> 1 -> X
+10/23/2019 03:03:14 PM INFO Max deadline: -1
+10/23/2019 03:03:14 PM INFO Generated output word is: [(), (), (), (), (), ('f',), ('f',), ('f',), (), (), (), (), (), (), ('K',), ('K',), ('K',), ('K',)]
+10/23/2019 03:03:14 PM INFO Generated control policy is: Base3 -> 1 -> H -> 1 -> N -> 1 -> T -> 1 -> Z -> 1 -> f -> 1 -> f -> 1 -> f -> 1 -> g -> 1 -> a -> 1 -> b -> 1 -> V -> 1 -> W -> 1 -> Q -> 1 -> K -> 1 -> K -> 1 -> K -> 1 -> K
