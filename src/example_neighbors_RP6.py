@@ -200,7 +200,7 @@ def case1_synthesis(formulas, ts_files):
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
 
-                # Check if pa_prime.final is in the set of weigghted nodes
+                # Check if pa_prime.final is in the set of weighted nodes
                 final_state_count = 0
                 for p in pa_nom_dict[key].final:
                     for node in weighted_nodes:
@@ -229,6 +229,23 @@ def case1_synthesis(formulas, ts_files):
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key], tau_dict[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
+
+                # Use the energy function to perform a local search ***
+                # might want to change energy function to attribute of the graph for easy searching
+                pdb.set_trace()
+                energy_low = float('inf')
+                for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
+                    for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
+                        if neighbor == node and node[0] not in weighted_nodes:
+                            pdb.set_trace()
+                            if energy_dict[key][ind] < energy_low:
+                                energy_low = energy_dict[key][ind]
+                                next_node = node
+                                break
+                if energy_low == float('inf'):
+                    next_node = init_loc
+                    print 'No feasible location to move, therefore stay in current position'
+
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
                 # Get rid of the duplicate node
@@ -306,7 +323,8 @@ def case1_synthesis(formulas, ts_files):
 
 def local_neighborhood():
     ''' Creates a local neighborhood of nodes which the agent can communicate
-    to for a more localized communication protocol '''
+    to for a more localized communication protocol, this considers actual
+    distance as opposed to number of edge hops. '''
     radius = 0.2
     node_set = nx.get_node_attributes(ts.g,"position")
     # distance = []
@@ -347,13 +365,13 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
         print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
-    if os.path.isfile('../output/control_policy_updates_RP4.txt'):
-        with open('../output/control_policy_updates_RP4.txt', 'a+') as f1:
+    if os.path.isfile('../output/control_policy_updates_RP6.txt'):
+        with open('../output/control_policy_updates_RP6.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
     else:
-        with open('../output/control_policy_updates_RP4.txt', 'w+') as f1:
+        with open('../output/control_policy_updates_RP6.txt', 'w+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -372,8 +390,8 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
             print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
-        if os.path.isfile('../output/control_policy_RP4.txt'):
-            with open('../output/control_policy_RP4.txt', 'a+') as f2:
+        if os.path.isfile('../output/control_policy_RP6.txt'):
+            with open('../output/control_policy_RP6.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -385,7 +403,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
-            with open('../output/control_policy_RP4.txt', 'w+') as f2:
+            with open('../output/control_policy_RP6.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
