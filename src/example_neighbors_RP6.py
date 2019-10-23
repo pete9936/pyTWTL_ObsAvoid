@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import twtl
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2
+                      verify, compute_control_policy2, compute_energy
 from learning import learn_deadlines
 from lomap import Ts
 
@@ -41,6 +41,8 @@ def case1_synthesis(formulas, ts_files):
         ts_dict[ind+1] = Ts(directed=True, multi=False)
         ts_dict[ind+1].read_from_file(ts_f)
         ets_dict[ind+1] = expand_duration_ts(ts_dict[ind+1])
+    for ind in ts_dict:
+        print 'Size of TS:', ets_dict[ind].size()
     # Get the nominal PA for each agent
     pa_nom_dict = {}
     for key in dfa_dict:
@@ -49,10 +51,11 @@ def case1_synthesis(formulas, ts_files):
         # Give initial weight attribute to all edges in pa
         nx.set_edge_attributes(pa.g,"weight",1)
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
-        # for u in pa.g.nodes_iter():
-        #     logging.debug('{} -> {}'.format(u, pa.g.neighbors(u)))
         # Make a copy of the nominal PA to change
         pa_nom_dict[key] = copy.deepcopy(pa)
+
+    for key in pa_nom_dict:
+        print 'Size of TS:', pa_nom_dict[key].size()
 
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
@@ -67,10 +70,14 @@ def case1_synthesis(formulas, ts_files):
         if ts_policy_dict_nom[key] is None:
             logging.info('No control policy found!')
 
+    # Compute the energy for each agent's PA at every node to use in offline instance
+    energy_dict = {}
+    for key in ts_policy_dict_nom:
+        energy_dict[key] = compute_energy(pa_nom_dict[key], dfa_dict[key])
+
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
     pa_control_policy_dict = {}
-
     # Set a Boolean vector to indicate if a path needs to be recomputed
     policy_flag = [1]*len(ts_files)
 
@@ -101,6 +108,8 @@ def case1_synthesis(formulas, ts_files):
     # Initialize vars, give nominal policies
     iter_step = 0
     append_flag = True
+    final_flag = False
+    final_count = 0
     running = True
     traj_length = 0
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
@@ -109,8 +118,8 @@ def case1_synthesis(formulas, ts_files):
     key_list = []
     for key in ts_policy:
         key_list.append(key)
+
     # Iterate through all policies sequentially
-    # Using ts_policy as check ensures that all policies are appended
     while running:
         while policy_match:
             for ind, node in enumerate(policy_match[0]):
@@ -125,7 +134,8 @@ def case1_synthesis(formulas, ts_files):
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
-            weighted_nodes = prev_nodes
+            temp = prev_nodes
+            weighted_nodes = temp
             # Update weights if transitioning between same two nodes
             ts_prev_states = []
             ts_index = []
@@ -159,9 +169,16 @@ def case1_synthesis(formulas, ts_files):
                     break
             else:
                 append_flag = True
-            # pdb.set_trace()
+            if len(ts_policy) == 1 and final_flag == True:
+                weighted_nodes = []
+                append_flag = False
+            if final_flag == True:
+                final_count += 1
+                policy_flag[key_list[ind]-1] = 0
+            if final_count > 2:
+                final_count = 0
             # Append trajectories
-            if append_flag:
+            if append_flag and final_count <= 1:
                 for key in ts_policy:
                     ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                     pa_policy_temp = list(pa_policy[key])
@@ -179,18 +196,49 @@ def case1_synthesis(formulas, ts_files):
                     if pflag == 0:
                         break
                 key = key+1
-                pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
+
+                # Check if pa_prime.final is in the set of weigghted nodes
+                final_state_count = 0
+                for p in pa_nom_dict[key].final:
+                    for node in weighted_nodes:
+                        if node in p:
+                            final_state_count += 1
+                            break
+                # if all final nodes occupied, update final_set to be all nodes
+                # This should really be refined later ***
+                if final_state_count == len(pa_nom_dict[key].final):
+                    final_flag = True
+                else:
+                    final_flag = False
+                if final_flag:
+                    for prev in ts_prev_states:
+                        if prev not in weighted_nodes:  # Revise this later ***
+                            weighted_nodes.append(prev)
+                    for weight in weighted_nodes:
+                        if init_loc[0] == weight:
+                            weighted_nodes.remove(weight)
+                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+                    for node in pa_prime.g.nodes():
+                        if node != init_loc:
+                            pa_prime.final.add(node)
+                else:
+                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key], tau_dict[key] = \
-                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc)
+                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
                 # Write updates to file
-                # write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
+                write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
                 # Get rid of the duplicate node
                 ts_policy[key].pop(0)
                 pa_policy_temp = list(pa_policy[key])
                 pa_policy_temp.pop(0)
+                # account for final state issue
+                if final_flag == True:
+                    ts_policy[key].append(ts_policy[key][0])
+                    pa_policy_temp.append(pa_policy_temp[0])
                 pa_policy[key] = tuple(pa_policy_temp)
                 # Determine if last policy
                 if len(ts_policy) == 1:
@@ -217,12 +265,15 @@ def case1_synthesis(formulas, ts_files):
                 policy_match = temp_match
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
-            for key in ts_policy:
-                if len(ts_policy[key]) == 0:
-                    ts_policy.pop(key)
-                    pa_policy.pop(key)
-                    break
-            match_shortest = float('inf')
+            # Remove keys from policies that have terminated
+            for key, val in ts_policy.items():
+                if len(val) == 0:
+                    del ts_policy[key]
+                    del pa_policy[key]
+            if not ts_policy:
+                running = False
+                break
+            ts_shortest = float('inf')
             for match_key in ts_policy:
                 if len(ts_policy[match_key]) < ts_shortest:
                     ts_shortest = len(ts_policy[match_key])
@@ -244,11 +295,14 @@ def case1_synthesis(formulas, ts_files):
         else:
             running = False
 
+    # Possibly just set the relaxation to the nominal + additional nodes added *** FIX
+    for key in pa_nom_dict:
+        tau_dict[key] = tau_dict_nom[key] + len(ts_control_policy_dict[key])-len(ts_policy_dict_nom[key])
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
                 output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
-                ts_control_policy_dict[key], pa_control_policy_dict[key], key)
+                ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
 
 def local_neighborhood():
     ''' Creates a local neighborhood of nodes which the agent can communicate
@@ -306,7 +360,7 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
     f1.close()
     out.close()
 
-def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa, ts, ets, ts_policy, pa_policy, key):
+def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa, ts, ets, ts_policy, pa_policy, tau_new, key):
     ''' This writes the nominal and final control policy for each agent to
     an output file. '''
     logging.info('Max deadline: %s', tau)
@@ -321,16 +375,19 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
         if os.path.isfile('../output/control_policy_RP4.txt'):
             with open('../output/control_policy_RP4.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
+                f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
                 f2.write(') -> ('.join('%s %s' % x for x in pa_nom_policy))
                 f2.write(') \nGenerated TS control policy is: %s \n\n' % ts_nom_policy)
                 f2.write('Final Control policy for agent %s.\n' % key)
+                f2.write('Optimal relaxation is: %s \n' % tau_new)
                 f2.write('Generated PA control policy is: (')
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
             with open('../output/control_policy_RP4.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
+                f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
                 f2.write(') -> ('.join('%s %s' % x for x in pa_nom_policy))
                 f2.write(') \nGenerated control policy is: %s \n\n' % ts_nom_policy)
@@ -360,7 +417,7 @@ if __name__ == '__main__':
     phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
     # Add another agent with a separate TWTL to coordinate
     phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
-    # Add a third agent ***
+    # Add a third agent
     phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]

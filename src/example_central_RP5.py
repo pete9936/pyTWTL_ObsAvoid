@@ -17,8 +17,7 @@ import matplotlib.pyplot as plt
 import twtl
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_control_relaxation, \
-                      compute_multiagent_policy
+                      verify, compute_control_policy2, compute_multiagent_policy
 from learning import learn_deadlines
 from lomap import Ts
 from product import ts_times_ts, pa_times_pa

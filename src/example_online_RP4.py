@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 import twtl
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2
+                      verify, compute_control_policy2, compute_energy
 from learning import learn_deadlines
 from lomap import Ts
 
@@ -77,6 +77,14 @@ def case1_synthesis(formulas, ts_files):
         if ts_policy_dict_nom[key] is None:
             logging.info('No control policy found!')
 
+    # Compute the energy for each agent's PA at every node to use in offline instance
+    startEnergy = timeit.default_timer()
+    energy_dict = {}
+    for key in ts_policy_dict_nom:
+        energy_dict[key] = compute_energy(pa_nom_dict[key], dfa_dict[key])
+    stopEnergy = timeit.default_timer()
+    print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
+    
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
     pa_control_policy_dict = {}
@@ -407,14 +415,14 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
-    phi1 = '[H^1 f]^[0, 2]'
+    phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    # phi1 = '[H^1 f]^[0, 2]'
     # Add another agent with a separate TWTL to coordinate
-    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
-    phi2 = '[H^1 Z]^[0, 2]'
+    phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    # phi2 = '[H^1 Z]^[0, 2]'
     # Add a third agent ***
-    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
-    phi3 = '[H^1 f]^[0, 2]'
+    phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    # phi3 = '[H^1 f]^[0, 2]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
     # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']

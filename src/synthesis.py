@@ -487,26 +487,27 @@ def compute_control_policy(pa, dfa, kind):
 
 def compute_control_policy2(pa, dfa, init_loc):
     ''' Computes a control policy from product automaton pa. This takes into
-    account the updated initial state where collision was detected. Will update
-    this in the future for computational efficiency. *** '''
-    policies = relaxed_control_policy(dfa.tree, dfa, pa)
-    if not policies:
-        return None, None, None
-    # keep only policies which start from the initial PA state
-    pa_init_key = []
-    pa_init_key.append(init_loc)
-    policies.paths = [p for p in policies if p.path[0] in pa_init_key]
-    # choose optimal policy with respect to temporal robustness
-    optimal_pa_path = min(policies, key=attrgetter('tau'))
-    optimal_ts_path = [x for x, _ in optimal_pa_path.path]
-    optimal_tau = optimal_pa_path.tau
-        # Get the shortest simple path
-        # optimal_pa_path = simple_control_policy2(pa, init_loc)
-        # optimal_ts_path = [x for x, _ in optimal_pa_path]
+    account the updated initial state where collision was detected. '''
+    # policies = relaxed_control_policy(dfa.tree, dfa, pa)
+    # if not policies:
+    #     return None, None, None
+    # # keep only policies which start from the initial PA state
+    # pa_init_key = []
+    # pa_init_key.append(init_loc)
+    # policies.paths = [p for p in policies if p.path[0] in pa_init_key]
+    # # choose optimal policy with respect to temporal robustness
+    # pdb.set_trace()
+    # optimal_pa_path = min(policies, key=attrgetter('tau'))
+    # optimal_ts_path = [x for x, _ in optimal_pa_path.path]
+    # optimal_tau = optimal_pa_path.tau
+    # Get the shortest simple path
+    optimal_pa_path = simple_control_policy2(pa, init_loc)
+    optimal_ts_path = [x for x, _ in optimal_pa_path]
+    optimal_tau = 0 # temporary *** (10/22)
     if optimal_ts_path is None:
-        return None, None
+        return None, None, None
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
-    return optimal_ts_path, optimal_pa_path.path, optimal_tau
+    return optimal_ts_path, optimal_pa_path, optimal_tau
 
 def compute_multiagent_policy(pa):
     ''' This calculates the shortest path on a combined product automaton
@@ -516,6 +517,36 @@ def compute_multiagent_policy(pa):
     if optimal_pa_path is None:
         return None
     return optimal_pa_path
+
+def compute_energy(pa, dfa):
+    ''' Calculates the energy for each node in the nominal product automaton in
+    order to use this in a local gradient descent scheme for online execution to
+    avoid computing full path and use local communication protocol '''
+    energy_mat = []
+    # Get the shortest simple path for each node
+    for node in pa.g.nodes():
+        optimal_pa_path = simple_control_policy2(pa, node)
+        energy_mat.append(len(optimal_pa_path))
+    # This is how it should be done, issues with indexing *** (10/22)
+    # policies = relaxed_control_policy(dfa.tree, dfa, pa)
+    # if not policies:
+    #     return None
+    # for node in pa.g.nodes():
+    #     for path in policies.paths:
+    #         if node == path[0]:
+    #             energy_mat.append(len(path))
+    #             flag = 0
+    #             break
+    #         else:
+    #             flag = 1
+    #     if flag == 1:
+    #         energy_mat.append(-1)
+    # for ind, val in enumerate(energy_mat):
+    #     if val < 0:
+    #         optimal_pa_path = simple_control_policy2(pa, pa.g.nodes()[ind])
+    #         energy_mat[ind] = len(optimal_pa_path)
+    return energy_mat
+
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal
