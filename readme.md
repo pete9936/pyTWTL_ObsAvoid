@@ -37,7 +37,10 @@ The package is written for python 2.7. The following python packages are require
     <li>ANTLRv3 python runtime</li>
 </ul>
 You can install the packages using:
-<code>pip install networkx, numpy, matplotlib, pp, antlr-python-runtime, setuptools</code>
+<code>pip install networkx==1.11, numpy, matplotlib, pp, antlr-python-runtime, setuptools</code>
+
+Common error installing antlr-python-runtime this may have to be done manually with:
+    <code>pip install http://www.antlr3.org/download/Python/antlr_python_runtime-3.1.3.tar.gz</code>
 
 <h3>How to Use</h3>
 See <code>examples_tcs.py</code> for examples of the algorithms and the PyTWTL API.
