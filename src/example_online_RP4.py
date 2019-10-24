@@ -474,7 +474,7 @@ if __name__ == '__main__':
     # phi2 = '[H^1 Z]^[0, 2]'
     # Add a third agent ***
     # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
-    phi3 = '[H^2 r31]^[0, 8] * [H^3 r11]^[0, 10]'
+    phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # phi3 = '[H^1 f]^[0, 2]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
