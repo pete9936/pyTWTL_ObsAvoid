@@ -527,25 +527,9 @@ def compute_energy(pa, dfa):
     for node in pa.g.nodes():
         optimal_pa_path = simple_control_policy2(pa, node)
         energy_mat.append(len(optimal_pa_path))
-    # This is how it should be done, issues with indexing *** (10/22)
-    # policies = relaxed_control_policy(dfa.tree, dfa, pa)
-    # if not policies:
-    #     return None
-    # for node in pa.g.nodes():
-    #     for path in policies.paths:
-    #         if node == path[0]:
-    #             energy_mat.append(len(path))
-    #             flag = 0
-    #             break
-    #         else:
-    #             flag = 1
-    #     if flag == 1:
-    #         energy_mat.append(-1)
-    # for ind, val in enumerate(energy_mat):
-    #     if val < 0:
-    #         optimal_pa_path = simple_control_policy2(pa, pa.g.nodes()[ind])
-    #         energy_mat[ind] = len(optimal_pa_path)
-    return energy_mat
+    # Update the PA graph with the energy attribute found
+    for ind, node in enumerate(pa.g.nodes()):
+        nx.set_node_attributes(pa.g,'energy', energy_mat[ind])
 
 
 def verify(ts, dfa):

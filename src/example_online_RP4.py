@@ -48,7 +48,7 @@ def case1_synthesis(formulas, ts_files):
     stopTS = timeit.default_timer()
     for ind in ts_dict:
         print 'Size of TS:', ets_dict[ind].size()
-        print 'Run Time (s) to get all three TS: ', stopTS - startTS
+    print 'Run Time (s) to get all three TS: ', stopTS - startTS
     # Get the nominal PA for each agent
     pa_nom_dict = {}
     startPA = timeit.default_timer()
@@ -62,8 +62,8 @@ def case1_synthesis(formulas, ts_files):
         pa_nom_dict[key] = copy.deepcopy(pa)
     stopPA = timeit.default_timer()
     for key in pa_nom_dict:
-        print 'Size of TS:', pa_nom_dict[key].size()
-    print 'Run Time (s) to get all three TS: ', stopPA - startPA
+        print 'Size of PA:', pa_nom_dict[key].size()
+    print 'Run Time (s) to get all three PA: ', stopPA - startPA
 
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
@@ -215,7 +215,7 @@ def case1_synthesis(formulas, ts_files):
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
 
-                # Check if pa_prime.final is in the set of weigghted nodes
+                # Check if pa_prime.final is in the set of weighted nodes
                 final_state_count = 0
                 for p in pa_nom_dict[key].final:
                     for node in weighted_nodes:
@@ -224,19 +224,20 @@ def case1_synthesis(formulas, ts_files):
                             break
                 # if all final nodes occupied, update final_set to be all nodes
                 # This should really be refined later...
+                pdb.set_trace()
                 if final_state_count == len(pa_nom_dict[key].final):
                     final_flag = True
                 else:
                     final_flag = False
                 if final_flag:
                     for prev in ts_prev_states:
-                        if prev not in weighted_nodes:  # Revise this later ****
+                        if prev not in weighted_nodes:
                             weighted_nodes.append(prev)
                     for weight in weighted_nodes:
                         if init_loc[0] == weight:
                             weighted_nodes.remove(weight)
                     pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-                    for node in pa_prime.g.nodes():
+                    for node in pa_prime.g.nodes(): # need to reconsider this, make use of the energy function here 
                         if node != init_loc:
                             pa_prime.final.add(node)
                 else:

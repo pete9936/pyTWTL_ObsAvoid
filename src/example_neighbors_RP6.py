@@ -73,7 +73,7 @@ def case1_synthesis(formulas, ts_files):
     # Compute the energy for each agent's PA at every node to use in offline instance
     energy_dict = {}
     for key in ts_policy_dict_nom:
-        energy_dict[key] = compute_energy(pa_nom_dict[key], dfa_dict[key])
+        compute_energy(pa_nom_dict[key], dfa_dict[key])
 
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
@@ -128,14 +128,18 @@ def case1_synthesis(formulas, ts_files):
                 else:
                     # Get local neighborhood (two-hop) of nodes to search for a conflict
                     local_set = get_neighborhood(node, ts_dict[ind+1])
-                    if node in local_set:
+                    prev_nodes = []
+                    for prev_node in policy_match[0][0:ind]:
+                        if prev_node in local_set:
+                            prev_nodes.append(prev_node)
+                    if node in prev_nodes:
                         policy_flag[key_list[ind]-1] = 0
                         append_flag = False
                         break
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
-            temp = local_set
+            temp = prev_nodes
             weighted_nodes = temp
             # Update weights if transitioning between same two nodes
             ts_prev_states = []
@@ -189,9 +193,8 @@ def case1_synthesis(formulas, ts_files):
                 traj_length += 1
                 break
             else:
-                # Update weights and new policies to match
+                # Update PA with new weights and policies to match
                 iter_step += 1
-                # Update PA with new weights
                 # This for loop simply finds index of the 0
                 for key, pflag in enumerate(policy_flag):
                     if pflag == 0:
@@ -201,6 +204,37 @@ def case1_synthesis(formulas, ts_files):
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
 
+                # Create local set and remove current node
+                local_set = pa_nom_dict[key].g.neighbors(init_loc)
+                local_set.remove(init_loc)
+
+
+                # Create method to use local energy update instead of computing full path ***
+                # Possibly make this dependent on overall trajectory length
+                # Get a finite horizon based on lowest energy (gradient descent) that is non-violating
+                # if local energy is below some threshold (e.g. 10) then compute full path based
+                # on Dijkstra's
+                # Need a flag that says we can not terminate but now need to compute receding horizon
+                # path
+                # if init_loc[1]['energy'] > 10:
+                #   use local horizon
+                #   add flag that says updates are now required for receding horizon
+                # else:
+                #   update weights and find Dijkstra's shortest path
+
+                # Use the energy function to perform a local search
+                energy_low = float('inf')
+                for neighbor in local_set:
+                    for node in pa_nom_dict[key].g.nodes(data='true'):
+                        if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                            if node[1]['energy'] < energy_low:
+                                energy_low = node[1]['energy']
+                                next_node = node[0]
+                                break
+                if energy_low == float('inf'):
+                    next_node = init_loc
+                    print 'No feasible location to move, therefore stay in current position'
+
                 # Check if pa_prime.final is in the set of weighted nodes
                 final_state_count = 0
                 for p in pa_nom_dict[key].final:
@@ -208,43 +242,38 @@ def case1_synthesis(formulas, ts_files):
                         if node in p:
                             final_state_count += 1
                             break
-                # if all final nodes occupied, update final_set to be all nodes
-                # This should really be refined later ***
+                # If all final nodes occupied, update final_set to be lowest energy feasible node(s)
                 if final_state_count == len(pa_nom_dict[key].final):
                     final_flag = True
                 else:
                     final_flag = False
                 if final_flag:
                     for prev in ts_prev_states:
-                        if prev not in weighted_nodes:  # Revise this later ***
+                        if prev not in weighted_nodes:
                             weighted_nodes.append(prev)
-                    for weight in weighted_nodes:
-                        if init_loc[0] == weight:
-                            weighted_nodes.remove(weight)
+                    for node in weighted_nodes:
+                        if init_loc[0] == node:
+                            weighted_nodes.remove(node)
                     pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-                    for node in pa_prime.g.nodes():
-                        if node != init_loc:
-                            pa_prime.final.add(node)
+                    # use energy function to get ideal final state to move to
+                    energy_fin = float('inf')
+                    for node in local_set:
+                        if node not in weighted_nodes:
+                            for i in pa_nom_dict[key].g.nodes(data='true'):
+                                if i[0] == node:
+                                    temp_energy = i[1]['energy']
+                                    break
+                            if temp_energy < energy_fin:
+                                energy_fin = temp_energy
+                                temp_node = node
+                    pa_prime.final.add(temp_node)
                 else:
                     pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+
                 # Get control policy from current location
                 ts_policy[key], pa_policy[key], tau_dict[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
 
-                # Use the energy function to perform a local search ***
-                # might want to change energy function to attribute of the graph for easy searching
-                energy_low = float('inf')
-                for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
-                    for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
-                        if neighbor == node and node[0] not in weighted_nodes:
-                            pdb.set_trace()
-                            if energy_dict[key][ind] < energy_low:
-                                energy_low = energy_dict[key][ind]
-                                next_node = node
-                                break
-                if energy_low == float('inf'):
-                    next_node = init_loc
-                    print 'No feasible location to move, therefore stay in current position'
 
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
@@ -336,7 +365,7 @@ def get_neighborhood(node, ts):
         if i not in local_set:
             local_set.append(i)
     # Get rid of current node from local_set
-    local_set.remove(node)
+    # local_set.remove(node)
     return local_set
 
 def local_neighborhood(ts):
@@ -451,13 +480,16 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
-    # Add another agent with a separate TWTL to coordinate
-    phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
+    phi1 = '[H^2 r21]^[0, 7] * [H^2 r12]^[0, 7]'
+    # Add a second agent
+    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
+    phi2 = '[H^2 r13]^[0, 8] * [H^2 r23]^[0, 7]'
     # Add a third agent
-    phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
+    phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    # ts_files = ['../data/ts_synthesis_RP2_1.txt', '../data/ts_synthesis_RP2_2.txt', '../data/ts_synthesis_RP2_3.txt']
-    ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
+    ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
+    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
     case1_synthesis(phi, ts_files)
