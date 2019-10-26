@@ -208,12 +208,13 @@ def case1_synthesis(formulas, ts_files):
                 local_set = pa_nom_dict[key].g.neighbors(init_loc)
                 local_set.remove(init_loc)
 
+                # Make a local bridge for the next couple of time steps, using local energy update.
+                # Place a window/local neighborhood criteria on when we want to revert/drive back
+                # to the nominal path and use that already saved trajectory againself.
+                # Still use the energy conditional for this (e.g. if local energy is below some
+                # threshold (e.g. 10) then compute full path based on Dijkstra's)
 
-                # Create method to use local energy update instead of computing full path ***
-                # Possibly make this dependent on overall trajectory length
                 # Get a finite horizon based on lowest energy (gradient descent) that is non-violating
-                # if local energy is below some threshold (e.g. 10) then compute full path based
-                # on Dijkstra's
                 # Need a flag that says we can not terminate but now need to compute receding horizon
                 # path
                 # if init_loc[1]['energy'] > 10:
