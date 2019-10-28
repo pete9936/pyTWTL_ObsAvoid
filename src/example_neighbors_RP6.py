@@ -115,9 +115,11 @@ def case1_synthesis(formulas, ts_files):
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
     tau_dict = tau_dict_nom
+    local_flag = {}
     key_list = []
     for key in ts_policy:
         key_list.append(key)
+        local_flag[key] = False
 
     # Iterate through all policies sequentially
     while running:
@@ -132,6 +134,10 @@ def case1_synthesis(formulas, ts_files):
                     for prev_node in policy_match[0][0:ind]:
                         if prev_node in local_set:
                             prev_nodes.append(prev_node)
+                    if prev_nodes:
+                        local_flag[key_list[ind]] = True
+                    else:
+                        local_flag[key_list[ind]] = False
                     if node in prev_nodes:
                         policy_flag[key_list[ind]-1] = 0
                         append_flag = False
@@ -182,8 +188,24 @@ def case1_synthesis(formulas, ts_files):
                 policy_flag[key_list[ind]-1] = 0
             if final_count > 2:
                 final_count = 0
+
+            if len(ts_policy) == 1:
+                for key in key_list:
+                    if local_flag[key] == True and append_flag == True:
+                        # update local trajectory and move on
+                    elif local_flag[key] == True and append_flag == False:
+                        # update local trajectory if not in conflict (index not 0)
+                        # compute_local = True
+                        # break
+                    elif local_flag[key] == False: # and append_flag == False 
+                        # update full shortest trajectory w/Dijkstra's
+                        # compute_local = False
+                        # break
+                    else:
+                        continue
+
             # Append trajectories
-            if append_flag and final_count <= 1:
+            if append_flag and final_count <= 1: # and not local_flag
                 for key in ts_policy:
                     ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                     pa_policy_temp = list(pa_policy[key])
@@ -204,93 +226,57 @@ def case1_synthesis(formulas, ts_files):
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
 
-                # Create local set and remove current node
-                local_set = pa_nom_dict[key].g.neighbors(init_loc)
-                local_set.remove(init_loc)
-
-                # Make a local bridge for the next couple of time steps, using local energy update.
-                # Place a window/local neighborhood criteria on when we want to revert/drive back
-                # to the nominal path and use that already saved trajectory againself.
-                # Still use the energy conditional for this (e.g. if local energy is below some
-                # threshold (e.g. 10) then compute full path based on Dijkstra's)
-
-                # Get a finite horizon based on lowest energy (gradient descent) that is non-violating
-                # Need a flag that says we can not terminate but now need to compute receding horizon
-                # path
-                # if init_loc[1]['energy'] > 10:
-                #   use local horizon
-                #   add flag that says updates are now required for receding horizon
-                # else:
-                #   update weights and find Dijkstra's shortest path
-
-                # Use the energy function to perform a local search
-                energy_low = float('inf')
-                for neighbor in local_set:
-                    for node in pa_nom_dict[key].g.nodes(data='true'):
-                        if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                            if node[1]['energy'] < energy_low:
-                                energy_low = node[1]['energy']
-                                next_node = node[0]
+                # Either compute receding horizon or dijkstra's shortest path
+                compute_local = True
+                if compute_local:
+                    ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, init_loc)
+                    local_flag[key] = True
+                else:
+                    # Check if pa_prime.final is in the set of weighted nodes
+                    final_state_count = 0
+                    for p in pa_nom_dict[key].final:
+                        for node in weighted_nodes:
+                            if node in p:
+                                final_state_count += 1
                                 break
-                if energy_low == float('inf'):
-                    next_node = init_loc
-                    print 'No feasible location to move, therefore stay in current position'
+                    # If all final nodes occupied, update final_set to be lowest energy feasible node(s)
+                    if final_state_count == len(pa_nom_dict[key].final):
+                        final_flag = True
+                    else:
+                        final_flag = False
+                    if final_flag:
+                        for prev in ts_prev_states:
+                            if prev not in weighted_nodes:
+                                weighted_nodes.append(prev)
+                        for node in weighted_nodes:
+                            if init_loc[0] == node:
+                                weighted_nodes.remove(node)
+                        pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
+                        # update final accepting state(s)
+                        update_final_state(pa_nom_dict[key], pa_prime, weighted_nodes, init_loc)
+                    else:
+                        pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
 
-                # Check if pa_prime.final is in the set of weighted nodes
-                final_state_count = 0
-                for p in pa_nom_dict[key].final:
-                    for node in weighted_nodes:
-                        if node in p:
-                            final_state_count += 1
-                            break
-                # If all final nodes occupied, update final_set to be lowest energy feasible node(s)
-                if final_state_count == len(pa_nom_dict[key].final):
-                    final_flag = True
-                else:
-                    final_flag = False
-                if final_flag:
-                    for prev in ts_prev_states:
-                        if prev not in weighted_nodes:
-                            weighted_nodes.append(prev)
-                    for node in weighted_nodes:
-                        if init_loc[0] == node:
-                            weighted_nodes.remove(node)
-                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-                    # use energy function to get ideal final state to move to
-                    energy_fin = float('inf')
-                    for node in local_set:
-                        if node not in weighted_nodes:
-                            for i in pa_nom_dict[key].g.nodes(data='true'):
-                                if i[0] == node:
-                                    temp_energy = i[1]['energy']
-                                    break
-                            if temp_energy < energy_fin:
-                                energy_fin = temp_energy
-                                temp_node = node
-                    pa_prime.final.add(temp_node)
-                else:
-                    pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-
-                # Get control policy from current location
-                ts_policy[key], pa_policy[key], tau_dict[key] = \
-                        compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
-
+                    # Get control policy from current location
+                    ts_policy[key], pa_policy[key], tau_dict[key] = \
+                            compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
+                    # Get rid of the duplicate node
+                    ts_policy[key].pop(0)
+                    pa_policy_temp = list(pa_policy[key])
+                    pa_policy_temp.pop(0)
+                    # account for final state issue
+                    if final_flag == True:
+                        ts_policy[key].append(ts_policy[key][0])
+                        pa_policy_temp.append(pa_policy_temp[0])
+                    pa_policy[key] = tuple(pa_policy_temp)
+                    # Determine if last policy
+                    if len(ts_policy) == 1:
+                        break
 
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
-                # Get rid of the duplicate node
-                ts_policy[key].pop(0)
-                pa_policy_temp = list(pa_policy[key])
-                pa_policy_temp.pop(0)
-                # account for final state issue
-                if final_flag == True:
-                    ts_policy[key].append(ts_policy[key][0])
-                    pa_policy_temp.append(pa_policy_temp[0])
-                pa_policy[key] = tuple(pa_policy_temp)
-                # Determine if last policy
-                if len(ts_policy) == 1:
-                    break
-                # Must update policy match
+
+                # Update policy match
                 match_shortest = float('inf')
                 for match_key in ts_policy:
                     if len(ts_policy[match_key]) < ts_shortest:
@@ -310,6 +296,7 @@ def case1_synthesis(formulas, ts_files):
                             temp_match[ind].append(item)
                 # Set policy_match
                 policy_match = temp_match
+
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
             # Remove keys from policies that have terminated
@@ -342,14 +329,77 @@ def case1_synthesis(formulas, ts_files):
         else:
             running = False
 
-    # Possibly just set the relaxation to the nominal + additional nodes added *** FIX
+    # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
         tau_dict[key] = tau_dict_nom[key] + len(ts_control_policy_dict[key])-len(ts_policy_dict_nom[key])
+
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
                 output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
+
+
+def two_hop_horizon(pa, weighted_nodes, init_loc):
+    ''' Compute the two hop local horizon when imminenet collision detected
+    or still within the local neighborhood. '''
+    ts_policy = []
+    pa_policy = []
+    # Create local one-hop set and remove current node
+    local_set = pa.g.neighbors(init_loc)
+    local_set.remove(init_loc)
+    # Use the energy function to get the first hop
+    energy_low = float('inf')
+    for neighbor in local_set:
+        for node in pa.g.nodes(data='true'):
+            if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                if node[1]['energy'] < energy_low:
+                    energy_low = node[1]['energy']
+                    one_hop_node = node[0]
+                    break
+    if energy_low == float('inf'):
+        one_hop_node = init_loc
+        print 'No feasible location to move, therefore stay in current position'
+
+    ts_policy.append(one_hop_node[0])
+    pa_policy.append(one_hop_node)
+    # Create local second-hop set and remove current node
+    two_hop_temp = pa.g.neighbors(one_hop_node)
+    two_hop_temp.remove(one_hop_node)
+    # Use the energy function to get the second hop
+    energy_low = float('inf')
+    for neighbor in two_hop_temp:
+        for node in pa.g.nodes(data='true'):
+            if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                if node[1]['energy'] < energy_low:
+                    energy_low = node[1]['energy']
+                    two_hop_node = node[0]
+                    break
+    if energy_low == float('inf'):
+        two_hop_node = one_hop_node
+        print 'No feasible location to move, therefore stay in current position'
+
+    ts_policy.append(two_hop_node[0])
+    pa_policy.append(two_hop_node)
+    return ts_policy, pa_policy
+
+def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
+    ''' Use of the energy function to get ideal final state to move to in
+    the case where all final accpeting states are occupied. '''
+    # Create local one-hop set and remove current node
+    local_set = pa.g.neighbors(init_loc)
+    local_set.remove(init_loc)
+    energy_fin = float('inf')
+    for node in local_set:
+        if node not in weighted_nodes:
+            for i in pa.g.nodes(data='true'):
+                if i[0] == node:
+                    temp_energy = i[1]['energy']
+                    break
+            if temp_energy < energy_fin:
+                energy_fin = temp_energy
+                temp_node = node
+    pa_prime.final.add(temp_node)
 
 def get_neighborhood(node, ts):
     ''' function to get the two-hop neighborhood of nodes to compare for
@@ -365,30 +415,7 @@ def get_neighborhood(node, ts):
     for i in two_hop_set:
         if i not in local_set:
             local_set.append(i)
-    # Get rid of current node from local_set
-    # local_set.remove(node)
     return local_set
-
-def local_neighborhood(ts):
-    ''' Creates a local neighborhood of nodes which the agent can communicate
-    to for a more localized communication protocol, this considers actual
-    distance as opposed to number of edge hops. '''
-    radius = 0.2
-    node_set = nx.get_node_attributes(ts.g,"position")
-    # distance = []
-    blocked_nodes = []
-    for key, (u, v) in node_set.items():
-        temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
-        if temp <= radius:
-            blocked_nodes.append(key)
-    return blocked_nodes
-
-def obstacle_update():
-    ''' This is a simple obstacle model, currently always stays at D. Will want
-        to expand this to more realistic model in the future. Single integrator
-        dynamics to start. '''
-    obs_location = (1,0) # this corresponds to node D
-    return obs_location
 
 def update_weight(pa_prime, s_token):
     ''' Update edge weights of PA when a collision between nodes is detected.

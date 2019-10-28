@@ -188,3 +188,17 @@ def compute_control_policy2(pa, dfa, init_loc=None):
         return None, None, None, None
     output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path, output_word, optimal_tau
+
+def local_neighborhood(ts):
+    ''' Creates a local neighborhood of nodes which the agent can communicate
+    to for a more localized communication protocol, this considers actual
+    distance as opposed to number of edge hops. '''
+    radius = 0.2
+    node_set = nx.get_node_attributes(ts.g,"position")
+    # distance = []
+    blocked_nodes = []
+    for key, (u, v) in node_set.items():
+        temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
+        if temp <= radius:
+            blocked_nodes.append(key)
+    return blocked_nodes

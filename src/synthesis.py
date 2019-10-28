@@ -522,14 +522,13 @@ def compute_energy(pa, dfa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
     avoid computing full path and use local communication protocol '''
-    energy_mat = []
+    energy_dict = {}
     # Get the shortest simple path for each node
-    for node in pa.g.nodes():
-        optimal_pa_path = simple_control_policy2(pa, node)
-        energy_mat.append(len(optimal_pa_path))
-    # Update the PA graph with the energy attribute found
     for ind, node in enumerate(pa.g.nodes()):
-        nx.set_node_attributes(pa.g,'energy', energy_mat[ind])
+        optimal_pa_path = simple_control_policy2(pa, node)
+        energy_dict[node] = len(optimal_pa_path)
+    # Update the PA graph with the energy attribute found
+    nx.set_node_attributes(pa.g,'energy', energy_dict)
 
 
 def verify(ts, dfa):
