@@ -80,9 +80,10 @@ def case1_synthesis(formulas, ts_files):
 
     # Compute the energy for each agent's PA at every node to use in offline instance
     startEnergy = timeit.default_timer()
+    # Compute the energy for each agent's PA at every node to use in offline instance
     energy_dict = {}
     for key in ts_policy_dict_nom:
-        energy_dict[key] = compute_energy(pa_nom_dict[key], dfa_dict[key])
+        compute_energy(pa_nom_dict[key], dfa_dict[key])
     stopEnergy = timeit.default_timer()
     print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
 
@@ -98,23 +99,7 @@ def case1_synthesis(formulas, ts_files):
         pa_control_policy_dict[key] = []
 
     # Concatenate nominal policies for searching
-    ts_shortest = float('inf')
-    for init_key in ts_policy_dict_nom:
-        if len(ts_policy_dict_nom[init_key]) < ts_shortest:
-            ts_shortest = len(ts_policy_dict_nom[init_key])
-    temp_match = [[] for i in range(ts_shortest)]
-
-    # match up all policies into a list of lists
-    policy_match_index = []
-    for init_key in ts_policy_dict_nom:
-        policy_match_index.append(init_key)
-        for ind, item in enumerate(ts_policy_dict_nom[init_key]):
-            if ind >= ts_shortest:
-                break
-            else:
-                temp_match[ind].append(item)
-    # Create the policy match list of tuples
-    policy_match = temp_match
+    policy_match, key_list, policy_match_index = update_policy_match(ts_policy_dict_nom)
 
     # Initialize vars, give nominal policies
     iter_step = 0
@@ -126,9 +111,6 @@ def case1_synthesis(formulas, ts_files):
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
     tau_dict = tau_dict_nom
-    key_list = []
-    for key in ts_policy:
-        key_list.append(key)
 
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
@@ -184,7 +166,7 @@ def case1_synthesis(formulas, ts_files):
                     break
             else:
                 append_flag = True
-            if len(ts_policy) == 1 and final_flag == True:
+            if len(policy_match) == 1 and final_flag == True: # ts_policy 
                 weighted_nodes = []
                 append_flag = False
             if final_flag == True:
@@ -224,7 +206,6 @@ def case1_synthesis(formulas, ts_files):
                             break
                 # if all final nodes occupied, update final_set to be all nodes
                 # This should really be refined later...
-                pdb.set_trace()
                 if final_state_count == len(pa_nom_dict[key].final):
                     final_flag = True
                 else:
@@ -237,7 +218,7 @@ def case1_synthesis(formulas, ts_files):
                         if init_loc[0] == weight:
                             weighted_nodes.remove(weight)
                     pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-                    for node in pa_prime.g.nodes(): # need to reconsider this, make use of the energy function here 
+                    for node in pa_prime.g.nodes(): # need to reconsider this, make use of the energy function here
                         if node != init_loc:
                             pa_prime.final.add(node)
                 else:
@@ -246,15 +227,17 @@ def case1_synthesis(formulas, ts_files):
                 ts_policy[key], pa_policy[key], tau_dict[key] = \
                         compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
 
-                # Use the energy function to perform a local search ***
-                # might want to change energy function to attribute of the graph for easy searching
+                # Create local one-hop set and remove current node
+                local_set = pa_nom_dict[key].g.neighbors(init_loc)
+                local_set.remove(init_loc)
+                # Use the energy function to perform a local search
                 energy_low = float('inf')
-                for neighbor in pa_nom_dict[key].g.neighbors(init_loc):
-                    for ind, node in enumerate(pa_nom_dict[key].g.nodes()):
-                        if neighbor == node and node[0] not in weighted_nodes:
-                            if energy_dict[key][ind] < energy_low:
-                                energy_low = energy_dict[key][ind]
-                                next_node = node
+                for neighbor in local_set:
+                    for node in pa_nom_dict[key].g.nodes(data='true'):
+                        if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                            if node[1]['energy'] < energy_low:
+                                energy_low = node[1]['energy']
+                                next_node = node[0]
                                 break
                 if energy_low == float('inf'):
                     next_node = init_loc
@@ -275,25 +258,8 @@ def case1_synthesis(formulas, ts_files):
                 if len(ts_policy) == 1:
                     break
                 # Must update policy match
-                match_shortest = float('inf')
-                for match_key in ts_policy:
-                    if len(ts_policy[match_key]) < ts_shortest:
-                        ts_shortest = len(ts_policy[match_key])
-                temp_match = [[] for i in range(ts_shortest)]
-                # Add all previous control policies to temp_match
-                # Need a way to account for what sets policy_match is taking from
-                key_list = []
-                policy_match_index = []
-                for match_key in ts_policy:
-                    key_list.append(match_key)
-                    policy_match_index.append(match_key)
-                    for ind, item in enumerate(ts_policy[match_key]):
-                        if ind >= ts_shortest:
-                            break
-                        else:
-                            temp_match[ind].append(item)
-                # Set policy_match
-                policy_match = temp_match
+                policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
             # Remove keys from policies that have terminated
@@ -304,26 +270,8 @@ def case1_synthesis(formulas, ts_files):
             if not ts_policy:
                 running = False
                 break
-
-            ts_shortest = float('inf')
-            for match_key in ts_policy:
-                if len(ts_policy[match_key]) < ts_shortest:
-                    ts_shortest = len(ts_policy[match_key])
-            temp_match = [[] for i in range(ts_shortest)]
-            # Add all previous control policies to temp_match
-            # Need a way to account for what sets policy_match is taking from
-            key_list = []
-            policy_match_index = []
-            for match_key in ts_policy:
-                key_list.append(match_key)
-                policy_match_index.append(match_key)
-                for ind, item in enumerate(ts_policy[match_key]):
-                    if ind >= ts_shortest:
-                        break
-                    else:
-                        temp_match[ind].append(item)
-            # Set policy_match
-            policy_match = temp_match
+            # Update policy match
+            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
         else:
             running = False
 
@@ -358,6 +306,29 @@ def update_weight(pa, s_token):
                     pa_prime.g.add_weighted_edges_from([tuple(temp)])
                     break
     return pa_prime
+
+def update_policy_match(ts_policy):
+    ''' This takes care of updating the policies which are compared
+    throughout the run. '''
+    ts_shortest = float('inf')
+    for match_key in ts_policy:
+        if len(ts_policy[match_key]) < ts_shortest:
+            ts_shortest = len(ts_policy[match_key])
+    temp_match = [[] for i in range(ts_shortest)]
+    # Add all previous control policies to temp_match
+    # Need a way to account for what sets policy_match is taking from
+    key_list = []
+    policy_match_index = []
+    for match_key in ts_policy:
+        key_list.append(match_key)
+        policy_match_index.append(match_key)
+        for ind, item in enumerate(ts_policy[match_key]):
+            if ind >= ts_shortest:
+                break
+            else:
+                temp_match[ind].append(item)
+    # Set policy_match
+    return temp_match, policy_match_index, key_list
 
 def write_to_csv(ts, ts_policy, id):
     ''' Writes the control policy to an output file in CSV format to be used

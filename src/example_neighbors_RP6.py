@@ -87,23 +87,7 @@ def case1_synthesis(formulas, ts_files):
         pa_control_policy_dict[key] = []
 
     # Concatenate nominal policies for searching
-    ts_shortest = float('inf')
-    for init_key in ts_policy_dict_nom:
-        if len(ts_policy_dict_nom[init_key]) < ts_shortest:
-            ts_shortest = len(ts_policy_dict_nom[init_key])
-    temp_match = [[] for i in range(ts_shortest)]
-
-    # match up all policies into a list of lists
-    policy_match_index = []
-    for init_key in ts_policy_dict_nom:
-        policy_match_index.append(init_key)
-        for ind, item in enumerate(ts_policy_dict_nom[init_key]):
-            if ind >= ts_shortest:
-                break
-            else:
-                temp_match[ind].append(item)
-    # Create the policy match list of tuples
-    policy_match = temp_match
+    policy_match, key_list, policy_match_index = update_policy_match(ts_policy_dict_nom)
 
     # Initialize vars, give nominal policies
     iter_step = 0
@@ -116,9 +100,8 @@ def case1_synthesis(formulas, ts_files):
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
     tau_dict = tau_dict_nom
     local_flag = {}
-    key_list = []
+    compute_local = False
     for key in ts_policy:
-        key_list.append(key)
         local_flag[key] = False
 
     # Iterate through all policies sequentially
@@ -180,7 +163,8 @@ def case1_synthesis(formulas, ts_files):
                     break
             else:
                 append_flag = True
-            if len(ts_policy) == 1 and final_flag == True:
+            # Account for final_state exception issues
+            if len(policy_match) == 1 and final_flag == True: # ts_policy
                 weighted_nodes = []
                 append_flag = False
             if final_flag == True:
@@ -188,24 +172,25 @@ def case1_synthesis(formulas, ts_files):
                 policy_flag[key_list[ind]-1] = 0
             if final_count > 2:
                 final_count = 0
-
-            if len(ts_policy) == 1:
+            # Account for receding horizon trajectories
+            if len(policy_match) == 1: # ts_policy
+                # pdb.set_trace()
                 for key in key_list:
-                    if local_flag[key] == True and append_flag == True:
-                        # update local trajectory and move on
-                    elif local_flag[key] == True and append_flag == False:
-                        # update local trajectory if not in conflict (index not 0)
-                        # compute_local = True
-                        # break
-                    elif local_flag[key] == False: # and append_flag == False 
-                        # update full shortest trajectory w/Dijkstra's
-                        # compute_local = False
-                        # break
+                    if local_flag[key] == True and append_flag == True: # update local trajectory and move on
+                        init_loc = pa_control_policy_dict[key][-1]
+                        ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, init_loc)
+                        policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+                        break
+                    elif local_flag[key] == True and append_flag == False: # update local trajectory later
+                        compute_local = True
+                        break
+                    elif local_flag[key] == False and append_flag == False: # update trajectory w/ Dijkstra's later
+                        compute_local = False
+                        break
                     else:
                         continue
-
             # Append trajectories
-            if append_flag and final_count <= 1: # and not local_flag
+            if append_flag and final_count <= 1:
                 for key in ts_policy:
                     ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                     pa_policy_temp = list(pa_policy[key])
@@ -222,12 +207,9 @@ def case1_synthesis(formulas, ts_files):
                     if pflag == 0:
                         break
                 key = key+1
-
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
-
                 # Either compute receding horizon or dijkstra's shortest path
-                compute_local = True
                 if compute_local:
                     ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, init_loc)
                     local_flag[key] = True
@@ -275,27 +257,8 @@ def case1_synthesis(formulas, ts_files):
 
                 # Write updates to file
                 write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
-
                 # Update policy match
-                match_shortest = float('inf')
-                for match_key in ts_policy:
-                    if len(ts_policy[match_key]) < ts_shortest:
-                        ts_shortest = len(ts_policy[match_key])
-                temp_match = [[] for i in range(ts_shortest)]
-                # Add all previous control policies to temp_match
-                # Need a way to account for what sets policy_match is taking from
-                key_list = []
-                policy_match_index = []
-                for match_key in ts_policy:
-                    key_list.append(match_key)
-                    policy_match_index.append(match_key)
-                    for ind, item in enumerate(ts_policy[match_key]):
-                        if ind >= ts_shortest:
-                            break
-                        else:
-                            temp_match[ind].append(item)
-                # Set policy_match
-                policy_match = temp_match
+                policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
 
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
@@ -307,25 +270,8 @@ def case1_synthesis(formulas, ts_files):
             if not ts_policy:
                 running = False
                 break
-            ts_shortest = float('inf')
-            for match_key in ts_policy:
-                if len(ts_policy[match_key]) < ts_shortest:
-                    ts_shortest = len(ts_policy[match_key])
-            temp_match = [[] for i in range(ts_shortest)]
-            # Add all previous control policies to temp_match
-            # Need a way to account for what sets policy_match is taking from
-            key_list = []
-            policy_match_index = []
-            for match_key in ts_policy:
-                key_list.append(match_key)
-                policy_match_index.append(match_key)
-                for ind, item in enumerate(ts_policy[match_key]):
-                    if ind >= ts_shortest:
-                        break
-                    else:
-                        temp_match[ind].append(item)
-            # Set policy_match
-            policy_match = temp_match
+            # Update policy match
+            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
         else:
             running = False
 
@@ -365,7 +311,8 @@ def two_hop_horizon(pa, weighted_nodes, init_loc):
     pa_policy.append(one_hop_node)
     # Create local second-hop set and remove current node
     two_hop_temp = pa.g.neighbors(one_hop_node)
-    two_hop_temp.remove(one_hop_node)
+    if one_hop_node in two_hop_temp:
+        two_hop_temp.remove(one_hop_node)
     # Use the energy function to get the second hop
     energy_low = float('inf')
     for neighbor in two_hop_temp:
@@ -378,10 +325,11 @@ def two_hop_horizon(pa, weighted_nodes, init_loc):
     if energy_low == float('inf'):
         two_hop_node = one_hop_node
         print 'No feasible location to move, therefore stay in current position'
-
+    # Append policies returned
     ts_policy.append(two_hop_node[0])
     pa_policy.append(two_hop_node)
     return ts_policy, pa_policy
+
 
 def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     ''' Use of the energy function to get ideal final state to move to in
@@ -416,6 +364,29 @@ def get_neighborhood(node, ts):
         if i not in local_set:
             local_set.append(i)
     return local_set
+
+def update_policy_match(ts_policy):
+    ''' This takes care of updating the policies which are compared
+    throughout the run. '''
+    ts_shortest = float('inf')
+    for match_key in ts_policy:
+        if len(ts_policy[match_key]) < ts_shortest:
+            ts_shortest = len(ts_policy[match_key])
+    temp_match = [[] for i in range(ts_shortest)]
+    # Add all previous control policies to temp_match
+    # Need a way to account for what sets policy_match is taking from
+    key_list = []
+    policy_match_index = []
+    for match_key in ts_policy:
+        key_list.append(match_key)
+        policy_match_index.append(match_key)
+        for ind, item in enumerate(ts_policy[match_key]):
+            if ind >= ts_shortest:
+                break
+            else:
+                temp_match[ind].append(item)
+    # Set policy_match
+    return temp_match, policy_match_index, key_list
 
 def update_weight(pa_prime, s_token):
     ''' Update edge weights of PA when a collision between nodes is detected.
