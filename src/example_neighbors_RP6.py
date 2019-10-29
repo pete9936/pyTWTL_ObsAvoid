@@ -101,6 +101,7 @@ def case1_synthesis(formulas, ts_files):
     tau_dict = tau_dict_nom
     local_flag = {}
     compute_local = False
+    switch_flag = False
     for key in ts_policy:
         local_flag[key] = False
 
@@ -117,13 +118,20 @@ def case1_synthesis(formulas, ts_files):
                     for prev_node in policy_match[0][0:ind]:
                         if prev_node in local_set:
                             prev_nodes.append(prev_node)
+                    # check if local flags should be set or if one is switching off
                     if prev_nodes:
                         local_flag[key_list[ind]] = True
+                    elif local_flag[key_list[ind]] == True and not prev_nodes and len(ts_policy[key_list[ind]])==1:
+                        local_flag[key_list[ind]] = False
+                        switch_flag = True
+                        policy_flag[key_list[ind]-1] = 0
+                        break
                     else:
                         local_flag[key_list[ind]] = False
                     if node in prev_nodes:
                         policy_flag[key_list[ind]-1] = 0
                         append_flag = False
+                        compute_local = True
                         break
                     else:
                         policy_flag[key_list[ind]-1] = 1
@@ -173,8 +181,11 @@ def case1_synthesis(formulas, ts_files):
             if final_count > 2:
                 final_count = 0
             # Account for receding horizon trajectories
-            if len(policy_match) == 1: # ts_policy
-                # pdb.set_trace()
+            if switch_flag:
+                compute_local = False
+                append_flag = False
+                switch_flag = False
+            elif len(policy_match) == 1: # ts_policy
                 for key in key_list:
                     if local_flag[key] == True and append_flag == True: # update local trajectory and move on
                         init_loc = pa_control_policy_dict[key][-1]
@@ -209,6 +220,7 @@ def case1_synthesis(formulas, ts_files):
                 key = key+1
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
+
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, init_loc)
