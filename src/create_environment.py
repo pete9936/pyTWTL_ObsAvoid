@@ -100,6 +100,248 @@ def update_adj_mat(m, n, adj_mat, obs_mat):
                     adj_mat[down_ind][diag_ind] = 0
     return adj_mat
 
+def update_adj_mat_diag(m, n, adj_mat, obs_mat):
+    ''' Update the adjacency matrix given an obserrvation matrix '''
+    for i in range(m):
+        for j in range(n):
+            if obs_mat[i][j] != 3:
+                diag_ind = n*i + j
+                adj_mat[diag_ind][diag_ind] = 1
+                if j < n-1:
+                    right_ind = n*i + j + 1
+                    if obs_mat[i][j+1] != 3:
+                        adj_mat[diag_ind][right_ind] = 1
+                        adj_mat[right_ind][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][right_ind] = 0
+                        adj_mat[right_ind][diag_ind] = 0
+                if j > 0:
+                    left_ind = n*i + j - 1
+                    if obs_mat[i][j-1] != 3:
+                        adj_mat[diag_ind][left_ind] = 1
+                        adj_mat[left_ind][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][left_ind] = 0
+                        adj_mat[left_ind][diag_ind] = 0
+                if i > 0:
+                    up_ind = n*(i-1) + j
+                    if obs_mat[i-1][j] != 3:
+                        adj_mat[diag_ind][up_ind] = 1
+                        adj_mat[up_ind][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][up_ind] = 0
+                        adj_mat[up_ind][diag_ind] = 0
+                if i < m-1:
+                    down_ind = n*(i+1) + j
+                    if obs_mat[i+1][j] != 3:
+                        adj_mat[diag_ind][down_ind] = 1
+                        adj_mat[down_ind][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][down_ind] = 0
+                        adj_mat[down_ind][diag_ind] = 0
+                # Now perform the diagonal indexing
+                if i == 0 and j == 0: # upper left
+                    SE_index = n*(i+1) + j + 1
+                    if obs_mat[i+1][j+1] != 3:
+                        adj_mat[diag_ind][SE_index] = 1
+                        adj_mat[SE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SE_index] = 0
+                        adj_mat[SE_index][diag_ind] = 0
+                if i > 0 and i < m-1 and j == 0: # left column (not corner)
+                    NE_index = n*(i-1) + j + 1
+                    SE_index = n*(i+1) + j + 1
+                    if obs_mat[i-1][j+1] != 3:
+                        adj_mat[diag_ind][NE_index] = 1
+                        adj_mat[NE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NE_index] = 0
+                        adj_mat[NE_index][diag_ind] = 0
+                    if obs_mat[i+1][j+1] != 3:
+                        adj_mat[diag_ind][SE_index] = 1
+                        adj_mat[SE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SE_index] = 0
+                        adj_mat[SE_index][diag_ind] = 0
+                if i == m-1 and n == 0:  # lower left
+                    NE_index = n*(i-1) + j + 1
+                    if obs_mat[i-1][j+1] != 3:
+                        adj_mat[diag_ind][NE_index] = 1
+                        adj_mat[NE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NE_index] = 0
+                        adj_mat[NE_index][diag_ind] = 0
+                if i == 0 and j < n-1 and j > 0:  # upper row (not corner)
+                    SW_index = n*(i+1) + j - 1
+                    SE_index = n*(i+1) + j + 1
+                    if obs_mat[i+1][j-1] != 3:
+                        adj_mat[diag_ind][SW_index] = 1
+                        adj_mat[SW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SW_index] = 0
+                        adj_mat[SW_index][diag_ind] = 0
+                    if obs_mat[i+1][j+1] != 3:
+                        adj_mat[diag_ind][SE_index] = 1
+                        adj_mat[SE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SE_index] = 0
+                        adj_mat[SE_index][diag_ind] = 0
+                if i == 0 and j == n-1: # upper right
+                    SW_index = n*(i+1) + j - 1
+                    if obs_mat[i+1][j-1] != 3:
+                        adj_mat[diag_ind][SW_index] = 1
+                        adj_mat[SW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SW_index] = 0
+                        adj_mat[SW_index][diag_ind] = 0
+                if i > 0 and j == n-1 and i < m-1:  # right column (not corner)
+                    NW_index = n*(i-1) + j - 1
+                    SW_index = n*(i+1) + j - 1
+                    if obs_mat[i-1][j-1] != 3:
+                        adj_mat[diag_ind][NW_index] = 1
+                        adj_mat[NW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NW_index] = 0
+                        adj_mat[NW_index][diag_ind] = 0
+                    if obs_mat[i+1][j-1] != 3:
+                        adj_mat[diag_ind][SW_index] = 1
+                        adj_mat[SW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SW_index] = 0
+                        adj_mat[SW_index][diag_ind] = 0
+                if i == m-1 and j == n-1:  # bottom right
+                    NW_index = n*(i-1) + j - 1
+                    if obs_mat[i-1][j-1] != 3:
+                        adj_mat[diag_ind][NW_index] = 1
+                        adj_mat[NW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NW_index] = 0
+                        adj_mat[NW_index][diag_ind] = 0
+                if i == m-1 and j > 0 and j < n-1:  # bottom row (not corner)
+                    NW_index = n*(i-1) + j - 1
+                    NE_index = n*(i-1) + j + 1
+                    if obs_mat[i-1][j-1] != 3:
+                        adj_mat[diag_ind][NW_index] = 1
+                        adj_mat[NW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NW_index] = 0
+                        adj_mat[NW_index][diag_ind] = 0
+                    if obs_mat[i-1][j+1] != 3:
+                        adj_mat[diag_ind][NE_index] = 1
+                        adj_mat[NE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NE_index] = 0
+                        adj_mat[NE_index][diag_ind] = 0
+                if i > 0 and i < m-1 and j > 0 and j < n-1: # all middle nodes
+                    NW_index = n*(i-1) + j - 1
+                    NE_index = n*(i-1) + j + 1
+                    SW_index = n*(i+1) + j - 1
+                    SE_index = n*(i+1) + j + 1
+                    if obs_mat[i-1][j-1] != 3:
+                        adj_mat[diag_ind][NW_index] = 1
+                        adj_mat[NW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NW_index] = 0
+                        adj_mat[NW_index][diag_ind] = 0
+                    if obs_mat[i-1][j+1] != 3:
+                        adj_mat[diag_ind][NE_index] = 1
+                        adj_mat[NE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][NE_index] = 0
+                        adj_mat[NE_index][diag_ind] = 0
+                    if obs_mat[i+1][j-1] != 3:
+                        adj_mat[diag_ind][SW_index] = 1
+                        adj_mat[SW_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SW_index] = 0
+                        adj_mat[SW_index][diag_ind] = 0
+                    if obs_mat[i+1][j+1] != 3:
+                        adj_mat[diag_ind][SE_index] = 1
+                        adj_mat[SE_index][diag_ind] = 1
+                    else:
+                        adj_mat[diag_ind][SE_index] = 0
+                        adj_mat[SE_index][diag_ind] = 0
+            else:
+                # this indicates the region is an obstacle
+                diag_ind = n*i + j
+                adj_mat[diag_ind][diag_ind] = 0
+                if j < n-1:
+                    right_ind = n*i + j + 1
+                    adj_mat[diag_ind][right_ind] = 0
+                    adj_mat[right_ind][diag_ind] = 0
+                if j > 0:
+                    left_ind = n*i + j - 1
+                    adj_mat[diag_ind][left_ind] = 0
+                    adj_mat[left_ind][diag_ind] = 0
+                if i > 0:
+                    up_ind = n*(i-1) + j
+                    adj_mat[diag_ind][up_ind] = 0
+                    adj_mat[up_ind][diag_ind] = 0
+                if i < m-1:
+                    down_ind = n*(i+1) + j
+                    adj_mat[diag_ind][down_ind] = 0
+                    adj_mat[down_ind][diag_ind] = 0
+
+                if i == 0 and j == 0: # upper left
+                    SE_index = n*(i+1) + j + 1
+                    adj_mat[diag_ind][SE_index] = 0
+                    adj_mat[SE_index][diag_ind] = 0
+                if i > 0 and i < m-1 and j == 0: # left column (not corner)
+                    NE_index = n*(i-1) + j + 1
+                    SE_index = n*(i+1) + j + 1
+                    adj_mat[diag_ind][NE_index] = 0
+                    adj_mat[NE_index][diag_ind] = 0
+                    adj_mat[diag_ind][SE_index] = 0
+                    adj_mat[SE_index][diag_ind] = 0
+                if i == m-1 and n == 0:  # lower left
+                    NE_index = n*(i-1) + j + 1
+                    adj_mat[diag_ind][NE_index] = 0
+                    adj_mat[NE_index][diag_ind] = 0
+                if i == 0 and j < n-1 and j > 0:  # upper row (not corner)
+                    SW_index = n*(i+1) + j - 1
+                    SE_index = n*(i+1) + j + 1
+                    adj_mat[diag_ind][SW_index] = 0
+                    adj_mat[SW_index][diag_ind] = 0
+                    adj_mat[diag_ind][SE_index] = 0
+                    adj_mat[SE_index][diag_ind] = 0
+                if i == 0 and j == n-1: # upper right
+                    SW_index = n*(i+1) + j - 1
+                    adj_mat[diag_ind][SW_index] = 0
+                    adj_mat[SW_index][diag_ind] = 0
+                if i > 0 and j == n-1 and i < m-1:  # right column (not corner)
+                    NW_index = n*(i-1) + j - 1
+                    SW_index = n*(i+1) + j - 1
+                    adj_mat[diag_ind][NW_index] = 0
+                    adj_mat[NW_index][diag_ind] = 0
+                    adj_mat[diag_ind][SW_index] = 0
+                    adj_mat[SW_index][diag_ind] = 0
+                if i == m-1 and j == n-1:  # bottom right
+                    NW_index = n*(i-1) + j - 1
+                    adj_mat[diag_ind][NW_index] = 0
+                    adj_mat[NW_index][diag_ind] = 0
+                if i == m-1 and j > 0 and j < n-1:  # bottom row (not corner)
+                    NW_index = n*(i-1) + j - 1
+                    NE_index = n*(i-1) + j + 1
+                    adj_mat[diag_ind][NW_index] = 0
+                    adj_mat[NW_index][diag_ind] = 0
+                    adj_mat[diag_ind][NE_index] = 0
+                    adj_mat[NE_index][diag_ind] = 0
+                if i > 0 and i < m-1 and j > 0 and j < n-1: # all middle nodes
+                    NW_index = n*(i-1) + j - 1
+                    NE_index = n*(i-1) + j + 1
+                    SW_index = n*(i+1) + j - 1
+                    SE_index = n*(i+1) + j + 1
+                    adj_mat[diag_ind][NW_index] = 0
+                    adj_mat[NW_index][diag_ind] = 0
+                    adj_mat[diag_ind][NE_index] = 0
+                    adj_mat[NE_index][diag_ind] = 0
+                    adj_mat[diag_ind][SW_index] = 0
+                    adj_mat[SW_index][diag_ind] = 0
+                    adj_mat[diag_ind][SE_index] = 0
+                    adj_mat[SE_index][diag_ind] = 0
+    return adj_mat
+
+
 def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, iter):
     ''' Given the adjacency matrix this creates the proper text file for the
         execution. '''
