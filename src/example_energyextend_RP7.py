@@ -118,6 +118,20 @@ def case1_synthesis(formulas, ts_files):
                     for prev_node in policy_match[0][0:ind]:
                         if prev_node in local_set:
                             prev_nodes.append(prev_node)
+                    # Get extra nodes from sharing extended trajectory (2-hops for now)
+                    soft_nodes = []
+                    num_hops = 1 # parameter for trade study, delete later ***
+                    for key in key_list[0:ind]:
+                        ts_length = len(ts_policy[key])
+                        if ts_length > num_hops:
+                            for i in range(num_hops):
+                                if ts_policy[key][i+1] in local_set:
+                                    soft_nodes.append(ts_policy[key][i+1])
+                        else:
+                            for i in range(ts_length-1):
+                                if ts_policy[key][i+1] in local_set:
+                                    soft_nodes.append(ts_policy[key][i+1])
+
                     # check if local flags should be set or if one is switching off
                     if prev_nodes:
                         local_flag[key_list[ind]] = True
@@ -136,8 +150,8 @@ def case1_synthesis(formulas, ts_files):
                     else:
                         policy_flag[key_list[ind]-1] = 1
                         append_flag = True
-            temp = prev_nodes
-            weighted_nodes = temp
+            weighted_nodes = prev_nodes
+            weighted_soft_nodes = soft_nodes
             # Update weights if transitioning between same two nodes
             ts_prev_states = []
             ts_index = []
@@ -181,7 +195,7 @@ def case1_synthesis(formulas, ts_files):
                         init_loc = pa_control_policy_dict[key][-1]
                         ts_temp = ts_policy[key]
                         pa_temp = pa_policy[key]
-                        ts_policy[key], pa_policy[key], ignore = extend_horizon(pa_nom_dict[key], weighted_nodes, pa_policy[key][0])
+                        ts_policy[key], pa_policy[key], ignore = extend_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, pa_policy[key][0])
                         if ignore:
                             # This accounts for termination criteria
                             ts_policy[key] = ts_temp
@@ -219,11 +233,11 @@ def case1_synthesis(formulas, ts_files):
                 key = key+1
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
-                pdb.set_trace()
+                # pdb.set_trace()
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     local_flag[key] = True
-                    ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, init_loc)
+                    ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, init_loc)
                 else:
                     # local_flag[key] = False
                     # Check if pa_prime.final is in the set of weighted nodes
@@ -297,7 +311,7 @@ def case1_synthesis(formulas, ts_files):
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
 
 
-def two_hop_horizon(pa, weighted_nodes, init_loc):
+def two_hop_horizon(pa, weighted_nodes, soft_nodes, init_loc):
     ''' Compute the two hop local horizon when imminenet collision detected
     or still within the local neighborhood. '''
     ts_policy = []
@@ -309,8 +323,12 @@ def two_hop_horizon(pa, weighted_nodes, init_loc):
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[1]['energy'] < energy_low:
-                    energy_low = node[1]['energy']
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
                     one_hop_node = node[0]
                     break
     if energy_low == float('inf'):
@@ -326,8 +344,12 @@ def two_hop_horizon(pa, weighted_nodes, init_loc):
     for neighbor in two_hop_temp:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[1]['energy'] < energy_low:
-                    energy_low = node[1]['energy']
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
                     two_hop_node = node[0]
                     break
     if energy_low == float('inf'):
@@ -338,7 +360,7 @@ def two_hop_horizon(pa, weighted_nodes, init_loc):
     pa_policy.append(two_hop_node)
     return ts_policy, pa_policy
 
-def extend_horizon(pa, weighted_nodes, pa_node):
+def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
     ''' This extends the receding horizon trajectory when immediate conflict
     not seen but still in the local neighborhood of another agent. '''
     ignore_flag = False
@@ -352,8 +374,12 @@ def extend_horizon(pa, weighted_nodes, pa_node):
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[1]['energy'] < energy_low:
-                    energy_low = node[1]['energy']
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
                     next_node = node[0]
                     break
     if energy_low == float('inf'):
@@ -447,13 +473,13 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
         print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
-    if os.path.isfile('../output/control_policy_updates_RP6.txt'):
-        with open('../output/control_policy_updates_RP6.txt', 'a+') as f1:
+    if os.path.isfile('../output/control_policy_updates_RP7.txt'):
+        with open('../output/control_policy_updates_RP7.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
     else:
-        with open('../output/control_policy_updates_RP6.txt', 'w+') as f1:
+        with open('../output/control_policy_updates_RP7.txt', 'w+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -472,8 +498,8 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
             print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
-        if os.path.isfile('../output/control_policy_RP6.txt'):
-            with open('../output/control_policy_RP6.txt', 'a+') as f2:
+        if os.path.isfile('../output/control_policy_RP7.txt'):
+            with open('../output/control_policy_RP7.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -485,7 +511,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
-            with open('../output/control_policy_RP6.txt', 'w+') as f2:
+            with open('../output/control_policy_RP7.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -503,7 +529,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP6.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_RP7.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
