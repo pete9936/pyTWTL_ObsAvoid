@@ -10,6 +10,7 @@ import logging, sys
 import StringIO
 import pdb, os, copy, math
 import timeit
+import operator
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -104,23 +105,31 @@ def case1_synthesis(formulas, ts_files):
     switch_flag = False
     for key in ts_policy:
         local_flag[key] = False
+    # Get agent priority based on lowest energy
+    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list)
 
     # Iterate through all policies sequentially
     while running:
         while policy_match:
             for ind, node in enumerate(policy_match[0]):
-                if ind < 1:
+                if priority[ind] == 1:
                     append_flag = True
                 else:
                     # Get local neighborhood (two-hop) of nodes to search for a conflict
                     local_set = get_neighborhood(node, ts_dict[ind+1])
                     prev_nodes = []
-                    for prev_node in policy_match[0][0:ind]:
-                        if prev_node in local_set:
-                            prev_nodes.append(prev_node)
+                    for i in priority:
+                        if i < priority[ind]:
+                            prev_node = policy_match[0][key_list[i]-1]
+                            if prev_node in local_set:
+                                prev_nodes.append(prev_node)
+                    pdb.set_trace() # start from here for corrections ***
+                    # for prev_node in policy_match[0][0:ind]:
+                    #    if prev_node in local_set:
+                    #        prev_nodes.append(prev_node)
                     # Get extra nodes from sharing extended trajectory
                     soft_nodes = []
-                    num_hops = 1 # parameter for trade study, maybe delete later ***
+                    num_hops = 1
                     for key in key_list[0:ind]:
                         ts_length = len(ts_policy[key])
                         if ts_length > num_hops:
@@ -311,6 +320,18 @@ def case1_synthesis(formulas, ts_files):
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
 
 
+def get_priority(pa_nom_dict, pa_policy, key_list):
+    ''' Computes the agent priority based on lowest energy. '''
+    priority = []
+    temp_energy = {}
+    for key in key_list:
+        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
+    # Sort the energy values found for all agents
+    sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
+    for key, energy_val in sorted_energy:
+        priority.append(key)
+    return priority
+
 def two_hop_horizon(pa, weighted_nodes, soft_nodes, init_loc):
     ''' Compute the two hop local horizon when imminenet collision detected
     or still within the local neighborhood. '''
@@ -435,12 +456,10 @@ def update_policy_match(ts_policy):
             ts_shortest = len(ts_policy[match_key])
     temp_match = [[] for i in range(ts_shortest)]
     # Add all previous control policies to temp_match
-    # Need a way to account for what sets policy_match is taking from
-    key_list = []
-    policy_match_index = []
+    # Gives a way to account for what sets policy_match is taking from
+    key_list = ts_policy.keys()
+    policy_match_index = ts_policy.keys()
     for match_key in ts_policy:
-        key_list.append(match_key)
-        policy_match_index.append(match_key)
         for ind, item in enumerate(ts_policy[match_key]):
             if ind >= ts_shortest:
                 break
@@ -473,13 +492,13 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
         print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
-    if os.path.isfile('../output/control_policy_updates_RP7.txt'):
-        with open('../output/control_policy_updates_RP7.txt', 'a+') as f1:
+    if os.path.isfile('../output/control_policy_updates_RP8.txt'):
+        with open('../output/control_policy_updates_RP8.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
     else:
-        with open('../output/control_policy_updates_RP7.txt', 'w+') as f1:
+        with open('../output/control_policy_updates_RP8.txt', 'w+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -498,8 +517,8 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
             print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
-        if os.path.isfile('../output/control_policy_RP7.txt'):
-            with open('../output/control_policy_RP7.txt', 'a+') as f2:
+        if os.path.isfile('../output/control_policy_RP8.txt'):
+            with open('../output/control_policy_RP8.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -511,7 +530,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
-            with open('../output/control_policy_RP7.txt', 'w+') as f2:
+            with open('../output/control_policy_RP8.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -529,7 +548,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa,
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP7.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_RP8.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
