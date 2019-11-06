@@ -202,15 +202,14 @@ def case1_synthesis(formulas, ts_files):
                             # This accounts for termination criteria
                             ts_policy[key] = ts_temp
                             pa_policy[key] = pa_temp
-                            break
                         else:
                             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-                            break
                     elif local_flag[key] == True and append_flag == False: # update local trajectory later
                         compute_local = True
                         break
                     elif local_flag[key] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
+                        break
                     else:
                         continue
             # Append trajectories
@@ -386,7 +385,7 @@ def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
         ignore_flag = True
         next_node = pa_node
         print 'No feasible location to move, therefore stay in current position'
-    if energy_low < 3:
+    if energy_low < 1:
         ignore_flag = True
     ts_policy.append(next_node[0])
     pa_policy.append(next_node)
@@ -550,6 +549,6 @@ if __name__ == '__main__':
     phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
+    ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
     case1_synthesis(phi, ts_files)

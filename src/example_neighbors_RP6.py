@@ -186,19 +186,16 @@ def case1_synthesis(formulas, ts_files):
                             # This accounts for termination criteria
                             ts_policy[key] = ts_temp
                             pa_policy[key] = pa_temp
-                            break
                         else:
                             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-                            break
                     elif local_flag[key] == True and append_flag == False: # update local trajectory later
                         compute_local = True
                         break
                     elif local_flag[key] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
+                        break
                     else:
                         continue
-            # if traj_length > 4:
-            #    pdb.set_trace()
             # Append trajectories
             if append_flag and final_count <= 1:
                 for key in ts_policy:
@@ -219,7 +216,6 @@ def case1_synthesis(formulas, ts_files):
                 key = key+1
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
-                pdb.set_trace()
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     local_flag[key] = True
@@ -360,7 +356,7 @@ def extend_horizon(pa, weighted_nodes, pa_node):
         ignore_flag = True
         next_node = pa_node
         print 'No feasible location to move, therefore stay in current position'
-    if energy_low < 3:
+    if energy_low < 1:
         ignore_flag = True
     ts_policy.append(next_node[0])
     pa_policy.append(next_node)

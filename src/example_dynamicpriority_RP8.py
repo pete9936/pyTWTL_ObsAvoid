@@ -226,15 +226,14 @@ def case1_synthesis(formulas, ts_files):
                             # This accounts for termination criteria
                             ts_policy[p] = ts_temp
                             pa_policy[p] = pa_temp
-                            break
                         else:
                             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-                            break
                     elif local_flag[p] == True and append_flag == False: # update local trajectory later
                         compute_local = True
                         break
                     elif local_flag[p] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
+                        break
                     else:
                         continue
             # Append trajectories
