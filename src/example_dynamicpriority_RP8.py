@@ -111,53 +111,58 @@ def case1_synthesis(formulas, ts_files):
     # Iterate through all policies sequentially
     while running:
         while policy_match:
-            for ind, node in enumerate(policy_match[0]):
-                if priority[ind] == 1:
+            for p_ind, p_val in enumerate(priority):
+                if p_ind < 1:
                     append_flag = True
                 else:
                     # Get local neighborhood (two-hop) of nodes to search for a conflict
-                    local_set = get_neighborhood(node, ts_dict[ind+1])
+                    for k, key in enumerate(key_list):
+                        if p_val == key:
+                            node = policy_match[0][k]
+                            break
+                    local_set = get_neighborhood(node, ts_dict[p_val])
                     prev_nodes = []
-                    for i in priority:
-                        if i < priority[ind]:
-                            prev_node = policy_match[0][key_list[i]-1]
-                            if prev_node in local_set:
-                                prev_nodes.append(prev_node)
-                    pdb.set_trace() # start from here for corrections ***
-                    # for prev_node in policy_match[0][0:ind]:
-                    #    if prev_node in local_set:
-                    #        prev_nodes.append(prev_node)
+                    for p in priority[0:p_ind]:
+                        for k, key in enumerate(key_list):
+                            if p == key:
+                                prev_node = policy_match[0][k]
+                                if prev_node in local_set:
+                                    prev_nodes.append(prev_node)
+                                break
                     # Get extra nodes from sharing extended trajectory
                     soft_nodes = []
                     num_hops = 1
-                    for key in key_list[0:ind]:
-                        ts_length = len(ts_policy[key])
-                        if ts_length > num_hops:
-                            for i in range(num_hops):
-                                if ts_policy[key][i+1] in local_set and ts_policy[key][i+1] not in soft_nodes:
-                                    soft_nodes.append(ts_policy[key][i+1])
-                        else:
-                            for i in range(ts_length-1):
-                                if ts_policy[key][i+1] in local_set and ts_policy[key][i+1] not in soft_nodes:
-                                    soft_nodes.append(ts_policy[key][i+1])
+                    for p in priority[0:p_ind]:
+                        for k, key in enumerate(key_list):
+                            if p == key:
+                                ts_length = len(ts_policy[key])
+                                if ts_length > num_hops:
+                                    for j in range(num_hops):
+                                        if ts_policy[key][j+1] in local_set and ts_policy[key][j+1] not in soft_nodes:
+                                            soft_nodes.append(ts_policy[key][j+1])
+                                else:
+                                    for j in range(ts_length-1):
+                                        if ts_policy[key][j+1] in local_set and ts_policy[key][j+1] not in soft_nodes:
+                                            soft_nodes.append(ts_policy[key][j+1])
                     # check if local flags should be set or if one is switching off
                     if prev_nodes:
-                        local_flag[key_list[ind]] = True
-                    elif local_flag[key_list[ind]] == True and len(ts_policy[key_list[ind]])==1:
-                        local_flag[key_list[ind]] = False
+                        local_flag[p_val] = True
+                    elif local_flag[p_val] == True and len(ts_policy[p_val])==1:
+                        local_flag[p_val] = False
                         switch_flag = True
-                        policy_flag[key_list[ind]-1] = 0
+                        policy_flag[p_val-1] = 0
                         break
                     else:
-                        local_flag[key_list[ind]] = False
+                        local_flag[p_val] = False
                     if node in prev_nodes:
-                        policy_flag[key_list[ind]-1] = 0
+                        policy_flag[p_val-1] = 0
                         append_flag = False
                         compute_local = True
                         break
                     else:
-                        policy_flag[key_list[ind]-1] = 1
+                        policy_flag[p_val-1] = 1
                         append_flag = True
+
             if append_flag == False:
                 weighted_nodes = prev_nodes
                 weighted_soft_nodes = soft_nodes
@@ -172,15 +177,25 @@ def case1_synthesis(formulas, ts_files):
                     if len(ts_control_policy_dict[key]) == traj_length:
                         ts_prev_states.append(ts_control_policy_dict[key][-1])
             if ts_prev_states:
-                for ind_cur, node in enumerate(policy_match[0]):
-                    if ind_cur > 0:
-                        for i in range(ind_cur):
-                            if policy_match[0][i] == node:
-                                temp_node = ts_control_policy_dict[policy_match_index[i]][-1]
-                                if temp_node not in weighted_nodes:
-                                    weighted_nodes.append(temp_node)
-                                append_flag = False
+                for p_ind2, p_val2 in enumerate(priority):
+                # for ind_cur, node in enumerate(policy_match[0]):
+                    if p_ind2 > 0:
+                        for k, key in enumerate(key_list):
+                            if p_val2 == key:
+                                node = policy_match[0][k]
                                 break
+                        for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
+                            for k, key in enumerate(key_list):
+                                if p_val3 == key:
+                                    if policy_match[0][k] == node:
+                                        temp_node = ts_control_policy_dict[policy_match_index[k]][-1]
+                                        if temp_node not in weighted_nodes:
+                                            weighted_nodes.append(temp_node)
+                                        append_flag = False
+                                        break
+                            else:
+                                continue
+                            break
                         else:
                             continue
                         break
@@ -192,7 +207,7 @@ def case1_synthesis(formulas, ts_files):
                 append_flag = False
             if final_flag == True:
                 final_count += 1
-                policy_flag[key_list[ind]-1] = 0
+                policy_flag[p_val-1] = 0
             if final_count > 2:
                 final_count = 0
             # Account for receding horizon trajectories
@@ -201,24 +216,24 @@ def case1_synthesis(formulas, ts_files):
                 append_flag = False
                 switch_flag = False
             elif len(policy_match) == 1:
-                for key in key_list:
-                    if local_flag[key] == True and append_flag == True: # update local trajectory and move on
-                        init_loc = pa_control_policy_dict[key][-1]
-                        ts_temp = ts_policy[key]
-                        pa_temp = pa_policy[key]
-                        ts_policy[key], pa_policy[key], ignore = extend_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, pa_policy[key][0])
+                for p in priority:
+                    if local_flag[p] == True and append_flag == True: # update local trajectory and move on
+                        init_loc = pa_control_policy_dict[p][-1]
+                        ts_temp = ts_policy[p]
+                        pa_temp = pa_policy[p]
+                        ts_policy[p], pa_policy[p], ignore = extend_horizon(pa_nom_dict[p], weighted_nodes, weighted_soft_nodes, pa_policy[p][0])
                         if ignore:
                             # This accounts for termination criteria
-                            ts_policy[key] = ts_temp
-                            pa_policy[key] = pa_temp
+                            ts_policy[p] = ts_temp
+                            pa_policy[p] = pa_temp
                             break
                         else:
                             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
                             break
-                    elif local_flag[key] == True and append_flag == False: # update local trajectory later
+                    elif local_flag[p] == True and append_flag == False: # update local trajectory later
                         compute_local = True
                         break
-                    elif local_flag[key] == False and append_flag == False: # update trajectory w/ Dijkstra's later
+                    elif local_flag[p] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
                     else:
                         continue
@@ -242,13 +257,11 @@ def case1_synthesis(formulas, ts_files):
                 key = key+1
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
-                # pdb.set_trace()
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     local_flag[key] = True
                     ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, init_loc)
                 else:
-                    # local_flag[key] = False
                     # Check if pa_prime.final is in the set of weighted nodes
                     final_state_count = 0
                     for p in pa_nom_dict[key].final:
@@ -306,6 +319,8 @@ def case1_synthesis(formulas, ts_files):
                 break
             # Update policy match
             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+            # Get agent priority based on lowest energy
+            priority = get_priority(pa_nom_dict, pa_policy, key_list)
         else:
             running = False
 
@@ -407,7 +422,7 @@ def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
         ignore_flag = True
         next_node = pa_node
         print 'No feasible location to move, therefore stay in current position'
-    if energy_low < 3:
+    if energy_low < 1:
         ignore_flag = True
     ts_policy.append(next_node[0])
     pa_policy.append(next_node)
