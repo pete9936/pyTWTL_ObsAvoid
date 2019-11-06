@@ -414,12 +414,12 @@ if __name__ == '__main__':
     # try out the init state and obstacles functions
     init_state = [30, 34, 1]
     obstacles = [(3,2),(2,5)]
-    paths = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
+    paths = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     bases = {30: 'Base', 34: 'Base2', 1: 'Base3'}
     disc = 0.5
     for i in range(len(init_state)):
         obs_mat = update_obs_mat(obs_mat, state_mat, obstacles, init_state[i])
         # Update the adjacency matrix
-        TS = update_adj_mat(m, n, TS, obs_mat)
+        TS = update_adj_mat_diag(m, n, TS, obs_mat)
         # Now create the proper output .txt files
         create_input_file(TS, state_mat, obs_mat, paths[i], bases, disc, i)

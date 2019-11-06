@@ -584,6 +584,6 @@ if __name__ == '__main__':
     phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
-    # ts_files = ['../data/ts_synthesis_6x6_obs1.txt', '../data/ts_synthesis_6x6_obs2.txt', '../data/ts_synthesis_6x6_obs3.txt']
+    ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
+    # ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
     case1_synthesis(phi, ts_files)
