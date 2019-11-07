@@ -12,3 +12,17 @@ Control Policy for agent 2 at step 6:  r21 -> 1 -> r21 -> 1 -> r28 -> 1 -> r23 -
 
 Control Policy for agent 3 at step 7:  r19 -> 1 -> r14 -> 1 -> r9 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
 
+Control Policy for agent 2 at step 1:  r16 -> 1 -> r16
+
+Control Policy for agent 3 at step 2:  r19 -> 1 -> r24
+
+Control Policy for agent 3 at step 3:  r24 -> 1 -> r31 -> 1 -> r31 -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+
+Control Policy for agent 2 at step 4:  r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r28 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 2 at step 5:  r16 -> 1 -> r16
+
+Control Policy for agent 2 at step 6:  r21 -> 1 -> r21 -> 1 -> r28 -> 1 -> r23 -> 1 -> r23 -> 1 -> r23
+
+Control Policy for agent 3 at step 7:  r19 -> 1 -> r14 -> 1 -> r9 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+

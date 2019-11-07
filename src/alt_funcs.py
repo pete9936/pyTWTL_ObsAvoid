@@ -65,99 +65,6 @@ def update_weight(ts, pa_prime, obs_loc):
     #                   break
     return pa_prime
 
-def file_writer_stuff(policy, output, ts, ets):
-''' mostly just scrap info for file writing commands '''
-    for policy, output, ts, ets in [(control_policy_1, output_1, ts_1, ets_1),\
-                                    (control_policy_2, output_2, ts_2, ets_2)]:
-            logging.info('Generated output word is: %s', [tuple(o) for o in output])
-            policy = [x for x in policy if x not in ets.state_map]
-            out = StringIO.StringIO()
-            for u, v in zip(policy[:-1], policy[1:]):
-                print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
-            print>>out, policy[-1],
-            logging.info('Generated control policy is: %s', out.getvalue())
-            # Print control policy to a file
-            if os.path.isfile('../output/control_policy_updates_RP2.txt'):
-                with open('../output/control_policy_updates_RP2.txt', 'a+') as f1:
-                    f1.write('Control Policy at step %s:' % count)
-                    f1.write('  %s \n\n' % out.getvalue())
-            else:
-                with open('../output/control_policy_updates_RP2.txt', 'w+') as f1:
-                    f1.write('Control Policy at step %s:' % count)
-                    f1.write('  %s \n\n' % out.getvalue())
-            f1.close()
-            out.close()
-
-def relaxed_control_policy2(tree, dfa, pa, init_key=None, init_set=None, constraint=None):
-    '''Computes a control policy with minimum maximum temporal relaxation. It
-    also returns the value of the optimal relaxation. This accounts for starting
-    at a location other than the initial. Main issue to overcome is the tree.init
-    index which changes through the iteration. Maybe use a counter... *** 9/14
-    '''
-    assert tree.wdf
-
-    if init_set is None:
-        init_set = tree.init
-
-    if tree.unr: # primitive/unrelaxable formula
-        # Find out how to update the tree.init element
-        paths = partial_control_policies(pa, dfa, init_set, tree.final, constraint)
-        return ControlPathsSet([ControlPath(p) for p in paths])
-
-    if tree.wwf and tree.operation == Op.event: # leaf within operator
-        paths = partial_control_policies(pa, dfa, init_set, tree.final, constraint)
-        return ControlPathsSet([ControlPath(path, len(path) - tree.high - 1)
-                                    for path in paths])
-
-    if not tree.wwf and tree.operation == Op.event:
-        M_ch = relaxed_control_policy2(tree.left, dfa, pa, init_key, init_set, constraint)
-        if tree.low == 0:
-            for cpath in M_ch:
-                cpath.tau = max(len(cpath.path) - tree.high - 1, path.tau)
-            return M_ch
-
-        M = ControlPathsSet()
-        for cp in M_ch:
-            paths = nx.shortest_path(pa.g, source=init_key, target=cp.path[0], weight='weight')
-            sat_paths = [p[:-1]+cp.path for p_i, p in paths.iteritems()
-                                         if p_i in init_set]
-            tau = max(len(cp.path)+tree.low-tree.high, cp.tau) #TODO: should I subtract -1?
-            M.paths.extend([ControlPath(p, tau) for p in sat_paths])
-        return M
-
-    if tree.operation == Op.cat:
-        M_left = relaxed_control_policy2(tree.left, dfa, pa, init_key, init_set)
-        M_right = relaxed_control_policy2(tree.right, dfa, pa, init_key, init_set, constraint)
-        # concatenate paths from M_left with paths from M_rigth
-        M = M_left + M_right
-        return M
-
-    if tree.operation == Op.intersection:
-        M_left = relaxed_control_policy2(tree.left, dfa, pa, init_key, init_set, constraint)
-        M_right = relaxed_control_policy2(tree.right, dfa, pa, init_key, init_set, constraint)
-        # intersection of M_left and M_rigtht
-        M = M_left & M_right
-        return M
-
-    if tree.operation == Op.union:
-        if constraint is None:
-            c_left = {s: ch.both | ch.left for s, ch in tree.choices.iteritems()}
-            c_right = {s: ch.both | ch.right for s, ch in tree.choices.iteritems()}
-        else:
-            c_left = dict()
-            c_right = dict()
-            for s in tree.choices.viewkeys() & constraint.viewkeys():
-                c_left[s] = constraint[s] & (tree.choices[s].both | tree.choices[s].left)
-                c_right[s] = constraint[s] & (tree.choices[s].both | tree.choices[s].right)
-
-        M_left = relaxed_control_policy2(tree.left, dfa, pa, init_key, init_set, c_left)
-        M_right = relaxed_control_policy2(tree.right, dfa, pa, init_key, init_set, c_right)
-        # union of M_left and M_rigtht
-        M = M_left | M_right
-        return M
-
-    raise ValueError('Unknown operation: {}!'.format(tree.operation))
-
 
 def compute_control_policy2(pa, dfa, init_loc=None):
     ''' Computes a control policy from product automaton pa. This takes into
@@ -202,3 +109,88 @@ def local_neighborhood(ts):
         if temp <= radius:
             blocked_nodes.append(key)
     return blocked_nodes
+
+def two_hop_horizon(pa, weighted_nodes, soft_nodes, init_loc):
+    ''' Compute the two hop local horizon when imminenet collision detected
+    or still within the local neighborhood. This one uses my method for
+    energy update of +1'''
+    # if ts_policy[key][i+1] in local_set and ts_policy[key][i+1] not in soft_nodes:
+        # soft_nodes.append(ts_policy[key][i+1]) # for use when defining soft_nodes 
+    ts_policy = []
+    pa_policy = []
+    # Create local one-hop set and remove current node
+    local_set = pa.g.neighbors(init_loc)
+    # Use the energy function to get the first hop
+    energy_low = float('inf')
+    for neighbor in local_set:
+        for node in pa.g.nodes(data='true'):
+            if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
+                    one_hop_node = node[0]
+                    break
+    if energy_low == float('inf'):
+        one_hop_node = init_loc
+        print 'No feasible location to move, therefore stay in current position'
+
+    ts_policy.append(one_hop_node[0])
+    pa_policy.append(one_hop_node)
+    # Create local second-hop set and remove current node
+    two_hop_temp = pa.g.neighbors(one_hop_node)
+    # Use the energy function to get the second hop
+    energy_low = float('inf')
+    for neighbor in two_hop_temp:
+        for node in pa.g.nodes(data='true'):
+            if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
+                    two_hop_node = node[0]
+                    break
+    if energy_low == float('inf'):
+        two_hop_node = one_hop_node
+        print 'No feasible location to move, therefore stay in current position'
+    # Append policies returned
+    ts_policy.append(two_hop_node[0])
+    pa_policy.append(two_hop_node)
+    return ts_policy, pa_policy
+
+def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
+    ''' This extends the receding horizon trajectory when immediate conflict
+    not seen but still in the local neighborhood of another agent. This one uses
+    my method for energy update of +1'''
+    ignore_flag = False
+    ts_policy = []
+    pa_policy = []
+    ts_policy.append(pa_node[0])
+    pa_policy.append(pa_node)
+    # Get local neighborhood
+    local_set = pa.g.neighbors(pa_node)
+    energy_low = float('inf')
+    for neighbor in local_set:
+        for node in pa.g.nodes(data='true'):
+            if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                if node[0][0] in soft_nodes:
+                    energy_temp = node[1]['energy'] + 1
+                else:
+                    energy_temp = node[1]['energy']
+                if energy_temp < energy_low:
+                    energy_low = energy_temp
+                    next_node = node[0]
+                    break
+    if energy_low == float('inf'):
+        ignore_flag = True
+        next_node = pa_node
+        print 'No feasible location to move, therefore stay in current position'
+    if energy_low < 1:
+        ignore_flag = True
+    ts_policy.append(next_node[0])
+    pa_policy.append(next_node)
+    return ts_policy, pa_policy, ignore_flag
