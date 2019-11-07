@@ -9,8 +9,9 @@
 import logging, sys
 import StringIO
 import pdb, os, copy, math
-import timeit
+import time, timeit
 import operator
+import csv
 
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -23,7 +24,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files):
+def case1_synthesis(formulas, ts_files, time_wp):
     dfa_dict = {}
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
@@ -243,8 +244,12 @@ def case1_synthesis(formulas, ts_files):
                     pa_policy_temp = list(pa_policy[key])
                     pa_control_policy_dict[key].append(pa_policy_temp.pop(0))
                     pa_policy[key] = tuple(pa_policy_temp)
-                policy_match.pop(0)
+                ts_write = policy_match.pop(0)
                 traj_length += 1
+                # publish this waypoint to a csv file
+                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
+                # Pause while waypoint is being executed
+                # time.sleep(time_wp)
                 break
             else:
                 # Update PA with new weights and policies to match
@@ -332,6 +337,9 @@ def case1_synthesis(formulas, ts_files):
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
                 output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
+    # Write the CSV files for experiments
+    for key in pa_nom_dict:
+        write_to_csv(ts_dict[key], ts_control_policy_dict[key], key, time_wp)
 
 
 def get_priority(pa_nom_dict, pa_policy, key_list):
@@ -497,6 +505,45 @@ def update_weight(pa_prime, s_token):
                     break
     return pa_prime
 
+def write_to_csv_iter(ts, ts_write, ids, time_wp, traj_length):
+    ''' Writes the control policy to an output file in CSV format to be used
+    as waypoints for a trajectory run by our Crazyflies. '''
+    altitude = 1.0 # meters
+    with open('../output/waypoints_dynamic1.csv', 'w') as f:
+        writer = csv.writer(f)
+        header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
+        writer.writerow(header)
+        for i in range(len(ts_write)):
+            node_set = nx.get_node_attributes(ts[ids[i]].g,"position")
+            node = ts_write[i]
+            writer.writerow([ids[i], node_set[node][0], node_set[node][1], altitude, time_wp])
+    f.close()
+
+def write_to_csv(ts, ts_policy, id, time_wp):
+    ''' Writes the control policy to an output file in CSV format to be used
+    as waypoints for a trajectory run by our Crazyflies. '''
+    altitude = 1.0 # meters
+    node_set = nx.get_node_attributes(ts.g,"position")
+    if os.path.isfile('../output/waypoints_full1.csv'):
+        with open('../output/waypoints_full1.csv', 'a') as f:
+            writer = csv.writer(f)
+            for ind, elem in enumerate(ts_policy):
+                for node in ts_policy:
+                    if elem == node:
+                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time_wp*ind])
+                        break
+    else:
+        with open('../output/waypoints_full1.csv', 'w') as f:
+            writer = csv.writer(f)
+            header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
+            writer.writerow(header)
+            for ind, elem in enumerate(ts_policy):
+                for node in ts_policy:
+                    if elem == node:
+                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time_wp*ind])
+                        break
+    f.close()
+
 def write_to_iter_file(policy, ts, ets, key, iter_step):
     ''' Writes each iteration of the control policy to an output file
     to keep track of the changes and updates being made. '''
@@ -585,4 +632,6 @@ if __name__ == '__main__':
     phi = [phi1, phi2, phi3]
     ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
-    case1_synthesis(phi, ts_files)
+    # Set the time to go from one waypoint to the next (seconds)
+    time_wp = 1.5
+    case1_synthesis(phi, ts_files, time_wp)
