@@ -106,6 +106,7 @@ def case1_synthesis(formulas, ts_files, time_wp):
     switch_flag = False
     for key in ts_policy:
         local_flag[key] = False
+    num_hops = 1 # parameter for trade study
     # Get agent priority based on lowest energy
     priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list)
 
@@ -123,28 +124,33 @@ def case1_synthesis(formulas, ts_files, time_wp):
                             break
                     local_set = get_neighborhood(node, ts_dict[p_val])
                     prev_nodes = []
-                    for p in priority[0:p_ind]:
+                    for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
-                            if p == key:
+                            if pty == key:
                                 prev_node = policy_match[0][k]
                                 if prev_node in local_set:
                                     prev_nodes.append(prev_node)
                                 break
                     # Get extra nodes from sharing extended trajectory
-                    soft_nodes = []
-                    num_hops = 1
-                    for p in priority[0:p_ind]:
+                    soft_nodes = {}
+                    for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
-                            if p == key:
+                            if pty == key:
                                 ts_length = len(ts_policy[key])
                                 if ts_length > num_hops:
-                                    for j in range(num_hops):
-                                        if ts_policy[key][j+1] in local_set and ts_policy[key][j+1] not in soft_nodes:
-                                            soft_nodes.append(ts_policy[key][j+1])
+                                    for i in range(num_hops):
+                                        if ts_policy[key][i+1] in local_set:
+                                            try:
+                                                soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
+                                            except KeyError:
+                                                soft_nodes[i+1] = ts_policy[key][i+1]
                                 else:
-                                    for j in range(ts_length-1):
-                                        if ts_policy[key][j+1] in local_set and ts_policy[key][j+1] not in soft_nodes:
-                                            soft_nodes.append(ts_policy[key][j+1])
+                                    for i in range(ts_length-1):
+                                        if ts_policy[key][i+1] in local_set:
+                                            try:
+                                                soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
+                                            except KeyError:
+                                                soft_nodes[i+1] = ts_policy[key][i+1]
                     # check if local flags should be set or if one is switching off
                     if prev_nodes:
                         local_flag[p_val] = True
@@ -217,22 +223,22 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 append_flag = False
                 switch_flag = False
             elif len(policy_match) == 1:
-                for p in priority:
-                    if local_flag[p] == True and append_flag == True: # update local trajectory and move on
-                        init_loc = pa_control_policy_dict[p][-1]
-                        ts_temp = ts_policy[p]
-                        pa_temp = pa_policy[p]
-                        ts_policy[p], pa_policy[p], ignore = extend_horizon(pa_nom_dict[p], weighted_nodes, weighted_soft_nodes, pa_policy[p][0])
+                for pty in priority:
+                    if local_flag[pty] == True and append_flag == True: # update local trajectory and move on
+                        init_loc = pa_control_policy_dict[pty][-1]
+                        ts_temp = ts_policy[pty]
+                        pa_temp = pa_policy[pty]
+                        ts_policy[pty], pa_policy[pty], ignore = extend_horizon(pa_nom_dict[pty], pa_policy[pty][0])
                         if ignore:
                             # This accounts for termination criteria
-                            ts_policy[p] = ts_temp
-                            pa_policy[p] = pa_temp
+                            ts_policy[pty] = ts_temp
+                            pa_policy[pty] = pa_temp
                         else:
                             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-                    elif local_flag[p] == True and append_flag == False: # update local trajectory later
+                    elif local_flag[pty] == True and append_flag == False: # update local trajectory later
                         compute_local = True
                         break
-                    elif local_flag[p] == False and append_flag == False: # update trajectory w/ Dijkstra's later
+                    elif local_flag[pty] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
                         break
                     else:
@@ -247,7 +253,7 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 ts_write = policy_match.pop(0)
                 traj_length += 1
                 # publish this waypoint to a csv file
-                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
+                # write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
                 # Pause while waypoint is being executed
                 # time.sleep(time_wp)
                 break
@@ -264,7 +270,8 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     local_flag[key] = True
-                    ts_policy[key], pa_policy[key] = two_hop_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, init_loc)
+                    ts_policy[key], pa_policy[key] = \
+                            two_hop_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
                 else:
                     # Check if pa_prime.final is in the set of weighted nodes
                     final_state_count = 0
@@ -354,56 +361,112 @@ def get_priority(pa_nom_dict, pa_policy, key_list):
         priority.append(key)
     return priority
 
-def two_hop_horizon(pa, weighted_nodes, soft_nodes, init_loc):
+def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     ''' Compute the two hop local horizon when imminenet collision detected
     or still within the local neighborhood. '''
     ts_policy = []
     pa_policy = []
-    # Create local one-hop set and remove current node
+    # Create local one-hop set
     local_set = pa.g.neighbors(init_loc)
-    # Use the energy function to get the first hop
-    energy_low = float('inf')
+    keep_nodes = {}
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[0][0] in soft_nodes:
-                    energy_temp = node[1]['energy'] + 1
-                else:
-                    energy_temp = node[1]['energy']
-                if energy_temp < energy_low:
-                    energy_low = energy_temp
-                    one_hop_node = node[0]
-                    break
-    if energy_low == float('inf'):
-        one_hop_node = init_loc
+                keep_nodes[node[0]] = node[1]['energy']
+                break
+    if not keep_nodes:
+        ts_policy.append([init_loc[0],init_loc[0]])
+        pa_policy.append(init_loc, init_loc)
         print 'No feasible location to move, therefore stay in current position'
-
+        return ts_policy, pa_policy
+    # iterate through all hops
+    if num_hops < 1:
+        one_hop_node = min(keep_nodes, key=keep_nodes.get)
+    else:
+        for keep_node in keep_nodes:
+            temp_node = keep_node
+            energy_temp = keep_nodes[keep_node]
+            for i in range(num_hops):
+                local_set = pa.g.neighbors(temp_node)
+                energy_low = float('inf')
+                for neighbor in local_set:
+                    for node in pa.g.nodes(data='true'):
+                        try:
+                            soft_nodes[i+1]
+                        except KeyError:
+                            soft_nodes[i+1] = []
+                        if neighbor == node[0] and node[0][0] not in soft_nodes[i+1]:
+                            energy_temp = node[1]['energy']
+                            if energy_temp < energy_low:
+                                temp_node = node[0]
+                                energy_low = energy_temp
+                                break
+                if energy_low == float('inf'):
+                    ts_policy.append([keep_node[0],keep_node[0]])
+                    pa_policy.append(keep_node, keep_node)
+                    print 'No feasible location to move, therefore stay in current position'
+                    return ts_policy, pa_policy
+                energy_temp = energy_temp + energy_low
+            keep_nodes[keep_node] = energy_temp
+        one_hop_node = min(keep_nodes, key=keep_nodes.get)
+    # Append the policies
     ts_policy.append(one_hop_node[0])
     pa_policy.append(one_hop_node)
-    # Create local second-hop set and remove current node
-    two_hop_temp = pa.g.neighbors(one_hop_node)
     # Use the energy function to get the second hop
-    energy_low = float('inf')
-    for neighbor in two_hop_temp:
-        for node in pa.g.nodes(data='true'):
-            if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[0][0] in soft_nodes:
-                    energy_temp = node[1]['energy'] + 1
-                else:
-                    energy_temp = node[1]['energy']
-                if energy_temp < energy_low:
-                    energy_low = energy_temp
-                    two_hop_node = node[0]
+    local_set2 = pa.g.neighbors(one_hop_node)
+    keep_nodes2 = {}
+    if num_hops > 0:
+        for neighbor in local_set2:
+            for node in pa.g.nodes(data='true'):
+                if neighbor == node[0] and node[0][0] not in soft_nodes[1]:
+                    keep_nodes2[node[0]] = node[1]['energy']
                     break
-    if energy_low == float('inf'):
-        two_hop_node = one_hop_node
+    else:
+        for neighbor in local_set2:
+            for node in pa.g.nodes(data='true'):
+                if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                    keep_nodes2[node[0]] = node[1]['energy']
+                    break
+    if not keep_nodes2:
+        ts_policy.append(one_hop_node[0])
+        pa_policy.append(one_hop_node)
         print 'No feasible location to move, therefore stay in current position'
+        return ts_policy, pa_policy
+    if num_hops < 2:
+        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
+    else:
+        for keep_node2 in local_set2:
+            temp_node = keep_node2
+            energy_temp = keep_nodes[keep_node]
+            for i in range(num_hops-1):
+                local_set = pa.g.neighbors(temp_node)
+                energy_low = float('inf')
+                for neighbor in local_set2:
+                    for node in pa.g.nodes(data='true'):
+                        try:
+                            soft_nodes[i+2]
+                        except KeyError:
+                            soft_nodes[i+2] = []
+                        if neighbor == node[0] and node[0][0] not in soft_nodes[i+2]:
+                            energy_temp = node[1]['energy']
+                            if energy_temp < energy_low:
+                                temp_node = node[0]
+                                energy_low = energy_temp
+                                break
+                if energy_low == float('inf'):
+                    ts_policy.append([keep_node2[0],keep_node2[0]])
+                    pa_policy.append(keep_node2, keep_node2)
+                    print 'No feasible location to move, therefore stay in current position'
+                    return ts_policy, pa_policy
+                energy_temp = energy_temp + energy_low
+            keep_nodes2[keep_node2] = energy_temp
+        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
     # Append policies returned
     ts_policy.append(two_hop_node[0])
     pa_policy.append(two_hop_node)
     return ts_policy, pa_policy
 
-def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
+def extend_horizon(pa, pa_node):
     ''' This extends the receding horizon trajectory when immediate conflict
     not seen but still in the local neighborhood of another agent. '''
     ignore_flag = False
@@ -416,11 +479,8 @@ def extend_horizon(pa, weighted_nodes, soft_nodes, pa_node):
     energy_low = float('inf')
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
-            if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[0][0] in soft_nodes:
-                    energy_temp = node[1]['energy'] + 1
-                else:
-                    energy_temp = node[1]['energy']
+            if neighbor == node[0]:
+                energy_temp = node[1]['energy']
                 if energy_temp < energy_low:
                     energy_low = energy_temp
                     next_node = node[0]

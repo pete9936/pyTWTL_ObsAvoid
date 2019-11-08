@@ -203,8 +203,7 @@ def case1_synthesis(formulas, ts_files):
                         init_loc = pa_control_policy_dict[key][-1]
                         ts_temp = ts_policy[key]
                         pa_temp = pa_policy[key]
-                        ts_policy[key], pa_policy[key], ignore = \
-                                extend_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, num_hops, pa_policy[key][0])
+                        ts_policy[key], pa_policy[key], ignore = extend_horizon(pa_nom_dict[key], pa_policy[key][0])
                         if ignore:
                             # This accounts for termination criteria
                             ts_policy[key] = ts_temp
@@ -239,11 +238,9 @@ def case1_synthesis(formulas, ts_files):
                 key = key+1
                 # Now recompute the control policy with updated edge weights
                 init_loc = pa_control_policy_dict[key][-1]
-                # pdb.set_trace()
                 # Either compute receding horizon or dijkstra's shortest path
                 if compute_local:
                     local_flag[key] = True
-                    pdb.set_trace()
                     ts_policy[key], pa_policy[key] = \
                             two_hop_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
                 else:
@@ -324,7 +321,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     or still within the local neighborhood. '''
     ts_policy = []
     pa_policy = []
-    # Create local one-hop set and remove current node
+    # Create local one-hop set
     local_set = pa.g.neighbors(init_loc)
     keep_nodes = {}
     for neighbor in local_set:
@@ -341,7 +338,6 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     if num_hops < 1:
         one_hop_node = min(keep_nodes, key=keep_nodes.get)
     else:
-        temp_nodes = keep_nodes
         for keep_node in keep_nodes:
             temp_node = keep_node
             energy_temp = keep_nodes[keep_node]
@@ -350,6 +346,10 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                 energy_low = float('inf')
                 for neighbor in local_set:
                     for node in pa.g.nodes(data='true'):
+                        try:
+                            soft_nodes[i+1]
+                        except KeyError:
+                            soft_nodes[i+1] = []
                         if neighbor == node[0] and node[0][0] not in soft_nodes[i+1]:
                             energy_temp = node[1]['energy']
                             if energy_temp < energy_low:
@@ -368,28 +368,60 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     ts_policy.append(one_hop_node[0])
     pa_policy.append(one_hop_node)
     # Use the energy function to get the second hop
-    two_hop_temp = pa.g.neighbors(one_hop_node)
-    energy_low = float('inf')
-    for neighbor in two_hop_temp:
-        for node in pa.g.nodes(data='true'):
-            if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[0][0] in soft_nodes:
-                    energy_temp = node[1]['energy'] + 1
-                else:
-                    energy_temp = node[1]['energy']
-                if energy_temp < energy_low:
-                    energy_low = energy_temp
-                    two_hop_node = node[0]
+    local_set2 = pa.g.neighbors(one_hop_node)
+    keep_nodes2 = {}
+    if num_hops > 0:
+        for neighbor in local_set2:
+            for node in pa.g.nodes(data='true'):
+                if neighbor == node[0] and node[0][0] not in soft_nodes[1]:
+                    keep_nodes2[node[0]] = node[1]['energy']
                     break
-    if energy_low == float('inf'):
-        two_hop_node = one_hop_node
+    else:
+        for neighbor in local_set2:
+            for node in pa.g.nodes(data='true'):
+                if neighbor == node[0] and node[0][0] not in weighted_nodes:
+                    keep_nodes2[node[0]] = node[1]['energy']
+                    break
+    if not keep_nodes2:
+        ts_policy.append(one_hop_node[0])
+        pa_policy.append(one_hop_node)
         print 'No feasible location to move, therefore stay in current position'
+        return ts_policy, pa_policy
+    if num_hops < 2:
+        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
+    else:
+        for keep_node2 in local_set2:
+            temp_node = keep_node2
+            energy_temp = keep_nodes[keep_node]
+            for i in range(num_hops-1):
+                local_set = pa.g.neighbors(temp_node)
+                energy_low = float('inf')
+                for neighbor in local_set2:
+                    for node in pa.g.nodes(data='true'):
+                        try:
+                            soft_nodes[i+2]
+                        except KeyError:
+                            soft_nodes[i+2] = []
+                        if neighbor == node[0] and node[0][0] not in soft_nodes[i+2]:
+                            energy_temp = node[1]['energy']
+                            if energy_temp < energy_low:
+                                temp_node = node[0]
+                                energy_low = energy_temp
+                                break
+                if energy_low == float('inf'):
+                    ts_policy.append([keep_node2[0],keep_node2[0]])
+                    pa_policy.append(keep_node2, keep_node2)
+                    print 'No feasible location to move, therefore stay in current position'
+                    return ts_policy, pa_policy
+                energy_temp = energy_temp + energy_low
+            keep_nodes2[keep_node2] = energy_temp
+        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
     # Append policies returned
     ts_policy.append(two_hop_node[0])
     pa_policy.append(two_hop_node)
     return ts_policy, pa_policy
 
-def extend_horizon(pa, weighted_nodes, soft_nodes, num_hops, pa_node):
+def extend_horizon(pa, pa_node):
     ''' This extends the receding horizon trajectory when immediate conflict
     not seen but still in the local neighborhood of another agent. '''
     ignore_flag = False
@@ -402,11 +434,8 @@ def extend_horizon(pa, weighted_nodes, soft_nodes, num_hops, pa_node):
     energy_low = float('inf')
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
-            if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                if node[0][0] in soft_nodes:
-                    energy_temp = node[1]['energy'] + 1
-                else:
-                    energy_temp = node[1]['energy']
+            if neighbor == node[0]:
+                energy_temp = node[1]['energy']
                 if energy_temp < energy_low:
                     energy_low = energy_temp
                     next_node = node[0]
