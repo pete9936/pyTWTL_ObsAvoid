@@ -25,6 +25,8 @@ from lomap import Ts
 
 
 def case1_synthesis(formulas, ts_files, time_wp):
+    startFull = timeit.default_timer()
+    startOff = timeit.default_timer()
     dfa_dict = {}
     for ind, f in enumerate(formulas):
         _, dfa_inf, bdd = twtl.translate(f, kind=DFAType.Infinity, norm=True)
@@ -57,7 +59,7 @@ def case1_synthesis(formulas, ts_files, time_wp):
         pa_nom_dict[key] = copy.deepcopy(pa)
 
     for key in pa_nom_dict:
-        print 'Size of TS:', pa_nom_dict[key].size()
+        print 'Size of PA:', pa_nom_dict[key].size()
 
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
@@ -73,9 +75,12 @@ def case1_synthesis(formulas, ts_files, time_wp):
             logging.info('No control policy found!')
 
     # Compute the energy for each agent's PA at every node to use in offline instance
+    startEnergy = timeit.default_timer()
     energy_dict = {}
     for key in ts_policy_dict_nom:
         compute_energy(pa_nom_dict[key], dfa_dict[key])
+    stopEnergy = timeit.default_timer()
+    print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
 
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
@@ -109,6 +114,11 @@ def case1_synthesis(formulas, ts_files, time_wp):
     num_hops = 1 # parameter for trade study
     # Get agent priority based on lowest energy
     priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list)
+
+    # Print time statistics
+    stopOff = timeit.default_timer()
+    print 'Offline run time for all initial setup: ', stopOff - startOff
+    startOnline = timeit.default_timer()
 
     # Iterate through all policies sequentially
     while running:
@@ -334,6 +344,12 @@ def case1_synthesis(formulas, ts_files, time_wp):
             priority = get_priority(pa_nom_dict, pa_policy, key_list)
         else:
             running = False
+
+    # Print run time statistics
+    stopOnline = timeit.default_timer()
+    print 'Online run time for safe algorithm: ', stopOnline - startOnline
+    stopFull = timeit.default_timer()
+    print 'Full run time for safe algorithm: ', stopFull - startFull
 
     # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
@@ -590,7 +606,7 @@ def write_to_csv(ts, ts_policy, id, time_wp):
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind])
                         break
     else:
         with open('../output/waypoints_full1.csv', 'w') as f:
@@ -600,7 +616,7 @@ def write_to_csv(ts, ts_policy, id, time_wp):
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], altitude, time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind])
                         break
     f.close()
 
@@ -690,7 +706,7 @@ if __name__ == '__main__':
     phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
+    ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
     # ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
