@@ -120,6 +120,14 @@ def case1_synthesis(formulas, ts_files, time_wp):
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
 
+    # Execute takeoff caommand for all crazyflies in lab testing
+    # may want to use os.system("twtl_takeoff.py")
+    # alternatively may want to use the standard import method to call separate functions
+    # from one single file ***
+    pdb.set_trace()
+    execfile("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_takeoff.py")
+
+    pdb.set_trace()
     # Iterate through all policies sequentially
     while running:
         while policy_match:
@@ -263,9 +271,10 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 ts_write = policy_match.pop(0)
                 traj_length += 1
                 # publish this waypoint to a csv file
-                # write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
-                # Pause while waypoint is being executed
-                # time.sleep(time_wp)
+                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
+                # Execute waypoint in crazyswarm, possibly pause
+                execfile("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py")
+                time.sleep(time_wp)
                 break
             else:
                 # Update PA with new weights and policies to match
@@ -331,10 +340,15 @@ def case1_synthesis(formulas, ts_files, time_wp):
         # Update policy_match now that a trajectory has finalized and policy_match is empty
         if ts_policy:
             # Remove keys from policies that have terminated
+            land_keys = []
             for key, val in ts_policy.items():
                 if len(val) == 0:
+                    land_keys.append(key)
                     del ts_policy[key]
                     del pa_policy[key]
+            # publish to the land csv file for lab testing
+            if land_keys:
+                write_to_land_file(land_keys)
             if not ts_policy:
                 running = False
                 break
@@ -581,11 +595,19 @@ def update_weight(pa_prime, s_token):
                     break
     return pa_prime
 
+def write_to_land_file(land_keys):
+    ''' Write the agents that have finished to a land file.'''
+    with open('../output/agents_land.csv', 'w') as f:
+        writer = csv.writer(f)
+        for agent in land_keys:
+            writer.writerow([agent])
+    f.close()
+
 def write_to_csv_iter(ts, ts_write, ids, time_wp, traj_length):
     ''' Writes the control policy to an output file in CSV format to be used
     as waypoints for a trajectory run by our Crazyflies. '''
     altitude = 1.0 # meters
-    with open('../output/waypoints_dynamic1.csv', 'w') as f:
+    with open('../output/waypoints_dynamic.csv', 'w') as f:
         writer = csv.writer(f)
         header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
         writer.writerow(header)
