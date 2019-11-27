@@ -24,7 +24,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, time_wp):
+def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -121,13 +121,13 @@ def case1_synthesis(formulas, ts_files, time_wp):
     startOnline = timeit.default_timer()
 
     # Execute takeoff caommand for all crazyflies in lab testing
-    # alternatively may want to use the standard import method to call separate functions
-    # from one single file ***
-    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-    print 'Current working directory is:', os.getcwd()
-    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_takeoff.py") # make sure file is an executable
-    os.chdir("/home/ryan/Desktop/pyTWTL/src")
-    print 'Current working directory is:', os.getcwd()
+    if lab_testing:
+        startTakeoff = timeit.default_timer()
+        os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_takeoff.py") # make sure file is an executable
+        os.chdir("/home/ryan/Desktop/pyTWTL/src")
+        stopTakeoff = timeit.default_timer()
+        print 'Takeoff time, should be ~2.7sec: ', stopTakeoff - startTakeoff
 
     # Iterate through all policies sequentially
     while running:
@@ -272,12 +272,15 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 ts_write = policy_match.pop(0)
                 traj_length += 1
                 # publish this waypoint to a csv file
-                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
-                # Execute waypoint in crazyswarm, possibly pause ***
-                os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure file is an executable
-                os.chdir("/home/ryan/Desktop/pyTWTL/src")
-                # time.sleep(time_wp)
+                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
+                # Execute waypoint in crazyswarm lab testing
+                if lab_testing:
+                    startWaypoint = timeit.default_timer()
+                    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure executable
+                    os.chdir("/home/ryan/Desktop/pyTWTL/src")
+                    stopWaypoint = timeit.default_timer()
+                    print 'Waypoint time, should be ~2.0sec: ', stopWaypoint - startWaypoint
                 break
             else:
                 # Update PA with new weights and policies to match
@@ -351,10 +354,11 @@ def case1_synthesis(formulas, ts_files, time_wp):
                     del pa_policy[key]
             # publish to the land csv file for lab testing
             if land_keys:
-                write_to_land_file(land_keys)
-                os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure file is an executable
-                os.chdir("/home/ryan/Desktop/pyTWTL/src")
+                if lab_testing:
+                    write_to_land_file(land_keys)
+                    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure executable
+                    os.chdir("/home/ryan/Desktop/pyTWTL/src")
             if not ts_policy:
                 running = False
                 break
@@ -609,7 +613,7 @@ def write_to_land_file(land_keys):
             writer.writerow([agent])
     f.close()
 
-def write_to_csv_iter(ts, ts_write, ids, time_wp, traj_length):
+def write_to_csv_iter(ts, ts_write, ids, time_wp):
     ''' Writes the control policy to an output file in CSV format to be used
     as waypoints for a trajectory run by our Crazyflies. '''
     altitude = 1.0 # meters
@@ -628,23 +632,25 @@ def write_to_csv(ts, ts_policy, id, time_wp):
     as waypoints for a trajectory run by our Crazyflies. '''
     altitude = 1.0 # meters
     node_set = nx.get_node_attributes(ts.g,"position")
-    if os.path.isfile('../output/waypoints_full1.csv'):
-        with open('../output/waypoints_full1.csv', 'a') as f:
+    if os.path.isfile('../output/waypoints_full.csv'):
+        with open('../output/waypoints_full.csv', 'a') as f:
             writer = csv.writer(f)
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
+                        # writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
                         break
     else:
-        with open('../output/waypoints_full1.csv', 'w') as f:
+        with open('../output/waypoints_full.csv', 'w') as f:
             writer = csv.writer(f)
             header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
             writer.writerow(header)
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
+                        # writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
                         break
     f.close()
 
@@ -733,9 +739,10 @@ if __name__ == '__main__':
     # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
-    phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
-    # ts_files = ['../data/ts_synth_6x6_test1.txt', '../data/ts_synth_6x6_test2.txt', '../data/ts_synth_6x6_test3.txt']
+    phi = [phi1, phi2] #, phi3]
+    # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
+    ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt'] #, '../data/ts_synth_6x6_test3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
-    case1_synthesis(phi, ts_files, time_wp)
+    lab_testing = False
+    case1_synthesis(phi, ts_files, time_wp, lab_testing)

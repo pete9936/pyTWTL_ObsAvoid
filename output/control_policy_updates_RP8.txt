@@ -1,6 +1,4 @@
-Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
+Control Policy for agent 1 at step 1:  r32 -> 1 -> r26
 
-Control Policy for agent 1 at step 2:  r50 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r12
-
-Control Policy for agent 3 at step 3:  r51 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+Control Policy for agent 1 at step 2:  r14 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r12
 
