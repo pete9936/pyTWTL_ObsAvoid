@@ -121,13 +121,14 @@ def case1_synthesis(formulas, ts_files, time_wp):
     startOnline = timeit.default_timer()
 
     # Execute takeoff caommand for all crazyflies in lab testing
-    # may want to use os.system("twtl_takeoff.py")
     # alternatively may want to use the standard import method to call separate functions
     # from one single file ***
-    pdb.set_trace()
-    execfile("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_takeoff.py")
+    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+    print 'Current working directory is:', os.getcwd()
+    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_takeoff.py") # make sure file is an executable
+    os.chdir("/home/ryan/Desktop/pyTWTL/src")
+    print 'Current working directory is:', os.getcwd()
 
-    pdb.set_trace()
     # Iterate through all policies sequentially
     while running:
         while policy_match:
@@ -272,9 +273,11 @@ def case1_synthesis(formulas, ts_files, time_wp):
                 traj_length += 1
                 # publish this waypoint to a csv file
                 write_to_csv_iter(ts_dict, ts_write, key_list, time_wp, traj_length)
-                # Execute waypoint in crazyswarm, possibly pause
-                execfile("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py")
-                time.sleep(time_wp)
+                # Execute waypoint in crazyswarm, possibly pause ***
+                os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure file is an executable
+                os.chdir("/home/ryan/Desktop/pyTWTL/src")
+                # time.sleep(time_wp)
                 break
             else:
                 # Update PA with new weights and policies to match
@@ -349,6 +352,9 @@ def case1_synthesis(formulas, ts_files, time_wp):
             # publish to the land csv file for lab testing
             if land_keys:
                 write_to_land_file(land_keys)
+                os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure file is an executable
+                os.chdir("/home/ryan/Desktop/pyTWTL/src")
             if not ts_policy:
                 running = False
                 break
