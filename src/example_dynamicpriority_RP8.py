@@ -204,7 +204,6 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                         ts_prev_states.append(ts_control_policy_dict[key][-1])
             if ts_prev_states:
                 for p_ind2, p_val2 in enumerate(priority):
-                # for ind_cur, node in enumerate(policy_match[0]):
                     if p_ind2 > 0:
                         for k, key in enumerate(key_list):
                             if p_val2 == key:
@@ -213,10 +212,16 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                         for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
                             for k, key in enumerate(key_list):
                                 if p_val3 == key:
-                                    if policy_match[0][k] == node:
-                                        temp_node = ts_control_policy_dict[policy_match_index[k]][-1]
+                                    if ts_prev_states[k] == node:
+                                        weighted_nodes = prev_nodes
+                                        weighted_soft_nodes = soft_nodes
+                                        temp_node = policy_match[0][k]
                                         if temp_node not in weighted_nodes:
                                             weighted_nodes.append(temp_node)
+                                        if node not in weighted_nodes:
+                                            weighted_nodes.append(node)
+                                        policy_flag[p_val2-1] = 0
+                                        compute_local = True
                                         append_flag = False
                                         break
                             else:
@@ -739,9 +744,9 @@ if __name__ == '__main__':
     # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
     # Currently set to use the same transition system
-    phi = [phi1, phi2] #, phi3]
-    # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
-    ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt'] #, '../data/ts_synth_6x6_test3.txt']
+    phi = [phi1, phi2, phi3]
+    ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
+    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt'] #, '../data/ts_synth_6x6_test3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
     lab_testing = False
