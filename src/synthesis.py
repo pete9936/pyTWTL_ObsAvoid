@@ -530,6 +530,14 @@ def compute_energy(pa, dfa):
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy', energy_dict)
 
+def compute_distance(ts):
+    ''' Calculate the distance from a given node to its surrounding transitions
+    giving a true cost of transition. '''
+    node_set = nx.get_node_attributes(ts.g,"position")
+    distance = []
+    for key, (u, v) in node_set.items():
+        temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
+
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal

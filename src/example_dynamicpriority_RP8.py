@@ -542,7 +542,7 @@ def extend_horizon(pa, pa_node):
 
 def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     ''' Use of the energy function to get ideal final state to move to in
-    the case where all final accpeting states are occupied. '''
+    the case where all final accepting states are occupied. '''
     # Create local one-hop set and remove current node
     local_set = pa.g.neighbors(init_loc)
     local_set.remove(init_loc)
