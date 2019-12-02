@@ -205,25 +205,26 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
             if ts_prev_states:
                 for p_ind2, p_val2 in enumerate(priority):
                     if p_ind2 > 0:
-                        for k, key in enumerate(key_list):
+                        for k_c, key in enumerate(key_list):
                             if p_val2 == key:
-                                node = policy_match[0][k]
+                                node = policy_match[0][k_c]
                                 break
                         for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
                             for k, key in enumerate(key_list):
                                 if p_val3 == key:
                                     if ts_prev_states[k] == node:
-                                        weighted_nodes = prev_nodes
-                                        weighted_soft_nodes = soft_nodes
-                                        temp_node = policy_match[0][k]
-                                        if temp_node not in weighted_nodes:
-                                            weighted_nodes.append(temp_node)
-                                        if node not in weighted_nodes:
-                                            weighted_nodes.append(node)
-                                        policy_flag[p_val2-1] = 0
-                                        compute_local = True
-                                        append_flag = False
-                                        break
+                                        if policy_match[0][k] == ts_prev_states[k_c]:
+                                            weighted_nodes = prev_nodes
+                                            weighted_soft_nodes = soft_nodes
+                                            temp_node = policy_match[0][k]
+                                            if temp_node not in weighted_nodes:
+                                                weighted_nodes.append(temp_node)
+                                            if node not in weighted_nodes:
+                                                weighted_nodes.append(node)
+                                            policy_flag[p_val2-1] = 0
+                                            compute_local = True
+                                            append_flag = False
+                                            break
                             else:
                                 continue
                             break
@@ -264,7 +265,6 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                         break
                     elif local_flag[pty] == False and append_flag == False: # update trajectory w/ Dijkstra's later
                         compute_local = False
-                        break
                     else:
                         continue
             # Append trajectories
@@ -643,8 +643,8 @@ def write_to_csv(ts, ts_policy, id, time_wp):
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
-                        # writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
+                        # writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
                         break
     else:
         with open('../output/waypoints_full.csv', 'w') as f:
@@ -654,8 +654,8 @@ def write_to_csv(ts, ts_policy, id, time_wp):
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
                     if elem == node:
-                        writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
-                        # writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
+                        # writer.writerow([id, node_set[node][0], node_set[node][1], 1.0, time_wp*ind])
+                        writer.writerow([id, node_set[node][0], node_set[node][1], node_set[node][2], time_wp*ind]) # for 3D case
                         break
     f.close()
 
@@ -749,5 +749,5 @@ if __name__ == '__main__':
     # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
-    lab_testing = False
+    lab_testing = True
     case1_synthesis(phi, ts_files, time_wp, lab_testing)
