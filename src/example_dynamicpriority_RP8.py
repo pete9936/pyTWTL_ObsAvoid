@@ -746,7 +746,7 @@ if __name__ == '__main__':
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
     ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
-    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt'] #, '../data/ts_synth_6x6_test3.txt']
+    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
     lab_testing = False
