@@ -217,32 +217,59 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                             if p_val2 == key:
                                 node = policy_match[0][k_c]
                                 break
-                        # Check if the trajectories will cross each other in transition ***
+                        # Check if the trajectories will cross each other in transition
                         cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                                                             priority[0:p_ind2], key_list, disc, disc_z)
-                        # Check if agents using same transition
-                        for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
-                            for k, key in enumerate(key_list):
-                                if p_val3 == key:
-                                    if ts_prev_states[k] == node:
-                                        if policy_match[0][k] == ts_prev_states[k_c]:
-                                            weighted_nodes = prev_nodes
-                                            weighted_soft_nodes = soft_nodes
-                                            temp_node = policy_match[0][k]
-                                            if temp_node not in weighted_nodes:
-                                                weighted_nodes.append(temp_node)
-                                            if node not in weighted_nodes:
-                                                weighted_nodes.append(node)
-                                            policy_flag[p_val2-1] = 0
-                                            compute_local = True
-                                            append_flag = False
-                                            break
+                        if cross_weight:
+                            weighted_nodes = prev_nodes
+                            weighted_soft_nodes = soft_nodes
+                            for cross_node in cross_weight:
+                                if cross_node not in weighted_nodes:
+                                    weighted_nodes.append(cross_node)
+                            policy_flag[p_val2-1] = 0
+                            compute_local = True
+                            append_flag = False
+                            # Check if agents using same transition
+                            for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
+                                for k, key in enumerate(key_list):
+                                    if p_val3 == key:
+                                        if ts_prev_states[k] == node:
+                                            if policy_match[0][k] == ts_prev_states[k_c]:
+                                                if temp_node not in weighted_nodes:
+                                                    weighted_nodes.append(temp_node)
+                                                if node not in weighted_nodes:
+                                                    weighted_nodes.append(node)
+                                                break
+                                else:
+                                    continue
+                                break
                             else:
                                 continue
                             break
                         else:
-                            continue
-                        break
+                            # Check if agents using same transition
+                            for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
+                                for k, key in enumerate(key_list):
+                                    if p_val3 == key:
+                                        if ts_prev_states[k] == node:
+                                            if policy_match[0][k] == ts_prev_states[k_c]:
+                                                weighted_nodes = prev_nodes
+                                                weighted_soft_nodes = soft_nodes
+                                                temp_node = policy_match[0][k]
+                                                if temp_node not in weighted_nodes:
+                                                    weighted_nodes.append(temp_node)
+                                                if node not in weighted_nodes:
+                                                    weighted_nodes.append(node)
+                                                policy_flag[p_val2-1] = 0
+                                                compute_local = True
+                                                append_flag = False
+                                                break
+                                else:
+                                    continue
+                                break
+                            else:
+                                continue
+                            break
             else:
                 append_flag = True
 
