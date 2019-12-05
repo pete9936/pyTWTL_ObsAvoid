@@ -1,12 +1,32 @@
+Control Policy for agent 1 at step 1:  r32 -> 1 -> r26
+
+Control Policy for agent 3 at step 2:  r19 -> 1 -> r24
+
+Control Policy for agent 3 at step 3:  r15 -> 1 -> r10 -> 1 -> r10
+
 Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
 
 Control Policy for agent 1 at step 2:  r27 -> 1 -> r21
 
-Control Policy for agent 3 at step 3:  r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+Control Policy for agent 3 at step 3:  r10 -> 1 -> r10
 
 Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
 
 Control Policy for agent 1 at step 2:  r27 -> 1 -> r21
 
-Control Policy for agent 3 at step 3:  r10 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+Control Policy for agent 3 at step 3:  r10 -> 1 -> r10
+
+Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
+
+Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
+
+Control Policy for agent 1 at step 2:  r27 -> 1 -> r21
+
+Control Policy for agent 3 at step 3:  r10 -> 1 -> r10
+
+Control Policy for agent 1 at step 1:  r27 -> 1 -> r58
+
+Control Policy for agent 1 at step 2:  r27 -> 1 -> r21
+
+Control Policy for agent 3 at step 3:  r10 -> 1 -> r10
 

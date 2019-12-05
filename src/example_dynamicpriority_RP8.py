@@ -22,7 +22,7 @@ import write_files
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_control_policy2, compute_energy
-from geometric_funcs import get_discretization, check_cross
+from geometric_funcs import get_discretization, check_cross, check_intersect
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
 from learning import learn_deadlines
@@ -218,8 +218,10 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                                 node = policy_match[0][k_c]
                                 break
                         # Check if the trajectories will cross each other in transition
-                        cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                                                            priority[0:p_ind2], key_list, disc, disc_z)
+                        # cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
+                        #                                    priority[0:p_ind2], key_list, disc, disc_z)
+                        cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
+                                                            priority[0:p_ind2], key_list)
                         if cross_weight:
                             weighted_nodes = prev_nodes
                             weighted_soft_nodes = soft_nodes
@@ -665,17 +667,17 @@ if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
     # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
-    phi1 = '[H^2 r21]^[0, 7] * [H^2 r12]^[0, 7]'
+    phi1 = '[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]'
     # Add a second agent
     # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
-    phi2 = '[H^2 r21]^[0, 8] * [H^2 r23]^[0, 7]'
+    phi2 = '[H^2 r21]^[0, 8] * [H^1 r23]^[0, 7]'
     # Add a third agent
     # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
-    phi3 = '[H^2 r31]^[0, 8] * [H^3 r10]^[0, 10]'
+    phi3 = '[H^2 r31]^[0, 8] * [H^1 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
     ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
-    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt']#, '../data/ts_synth_6x6_diag3.txt']
+    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
     lab_testing = False

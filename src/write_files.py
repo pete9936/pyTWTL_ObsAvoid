@@ -26,7 +26,7 @@ def write_to_land_file(land_keys):
 def write_to_csv_iter(ts, ts_write, ids, time_wp):
     ''' Writes the control policy to an output file in CSV format to be used
     as waypoints for a trajectory run by our Crazyflies. '''
-    altitude = 1.0 # meters
+    # altitude = 1.0 # meters
     with open('../output/waypoints_dynamic.csv', 'w') as f:
         writer = csv.writer(f)
         header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
@@ -34,7 +34,11 @@ def write_to_csv_iter(ts, ts_write, ids, time_wp):
         for i in range(len(ts_write)):
             node_set = nx.get_node_attributes(ts[ids[i]].g,"position")
             node = ts_write[i]
-            writer.writerow([ids[i], node_set[node][0], node_set[node][1], altitude, time_wp])
+            try:
+                z = node_set[node][2]
+            except IndexError:
+                z = 1.0
+            writer.writerow([ids[i], node_set[node][0], node_set[node][1], z, time_wp])
     f.close()
 
 def write_to_csv(ts, ts_policy, id, time_wp):
