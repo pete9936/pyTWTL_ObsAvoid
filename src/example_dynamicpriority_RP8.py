@@ -29,7 +29,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
+def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -221,7 +221,7 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                         # cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                         #                                    priority[0:p_ind2], key_list, disc, disc_z)
                         cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                                                            priority[0:p_ind2], key_list)
+                                                            priority[0:p_ind2], key_list, radius)
                         if cross_weight:
                             weighted_nodes = prev_nodes
                             weighted_soft_nodes = soft_nodes
@@ -237,6 +237,7 @@ def case1_synthesis(formulas, ts_files, time_wp, lab_testing):
                                     if p_val3 == key:
                                         if ts_prev_states[k] == node:
                                             if policy_match[0][k] == ts_prev_states[k_c]:
+                                                temp_node = policy_match[0][k]
                                                 if temp_node not in weighted_nodes:
                                                     weighted_nodes.append(temp_node)
                                                 if node not in weighted_nodes:
@@ -666,13 +667,10 @@ def setup_logging():
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    # phi1 = '[H^2 V]^[0, 7] * [H^2 M]^[0, 7]'
     phi1 = '[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]'
     # Add a second agent
-    # phi2 = '[H^2 N]^[0, 8] * [H^2 X]^[0, 7]'
     phi2 = '[H^2 r21]^[0, 8] * [H^1 r23]^[0, 7]'
     # Add a third agent
-    # phi3 = '[H^2 f]^[0, 8] * [H^3 K]^[0, 10]'
     phi3 = '[H^2 r31]^[0, 8] * [H^1 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
@@ -680,6 +678,9 @@ if __name__ == '__main__':
     # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
     # Set the time to go from one waypoint to the next (seconds)
     time_wp = 1.5
+    # Define the radius of agents considering, this is for diagonal collision avoidance
+    radius = 0.1
+    # Set to True if running on Crazyflies in the lab
     lab_testing = False
     # consider more than one hop out, not here but just a note 12/5 ***
-    case1_synthesis(phi, ts_files, time_wp, lab_testing)
+    case1_synthesis(phi, ts_files, radius, time_wp, lab_testing)
