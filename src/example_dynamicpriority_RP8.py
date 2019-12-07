@@ -22,7 +22,7 @@ import write_files
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_control_policy2, compute_energy
-from geometric_funcs import get_discretization, check_cross, check_intersect
+from geometric_funcs import check_intersect
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
 from learning import learn_deadlines
@@ -100,9 +100,6 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
 
     # Concatenate nominal policies for searching
     policy_match, key_list, policy_match_index = update_policy_match(ts_policy_dict_nom)
-
-    # get the discretization(s) from the transition system
-    disc, disc_z = get_discretization(ets_dict[key])
 
     # Initialize vars, give nominal policies
     iter_step = 0
@@ -221,7 +218,7 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
                         # cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                         #                                    priority[0:p_ind2], key_list, disc, disc_z)
                         cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                                                            priority[0:p_ind2], key_list, radius)
+                                                            priority[0:p_ind2], key_list, radius, time_wp)
                         if cross_weight:
                             weighted_nodes = prev_nodes
                             weighted_soft_nodes = soft_nodes
@@ -676,7 +673,7 @@ if __name__ == '__main__':
     phi = [phi1, phi2, phi3]
     ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
     # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
-    # Set the time to go from one waypoint to the next (seconds)
+    # Set the time to go from one waypoint to the next (seconds), account for agent dynamics
     time_wp = 1.5
     # Define the radius of agents considering, this is for diagonal collision avoidance
     radius = 0.1
