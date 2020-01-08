@@ -102,205 +102,171 @@ def update_adj_mat(m, n, adj_mat, obs_mat):
     return adj_mat
 
 def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
-    ''' Update the adjacency matrix given an obserrvation matrix '''
+    ''' Update the adjacency matrix given an observation matrix '''
+    # Breakdown of weights which are approximately Euclidean with a small
+    # penalty given for change in altitude and preference for lower altitude
+    up_penalty = 0.2
+    down_penalty = 0.1
+    up_cost = 1 + up_penalty
+    up_card_cost = 1.414 + up_penalty
+    up_diag_cost = 1.55 + up_penalty
+    down_cost = 1 + down_penalty
+    down_card_cost = 1.414 + down_penalty
+    down_diag_cost = 1.55 + down_penalty
+    stay_cost = 0.5
+    card_cost = 1
+    diag_cost = 1.414
+
     for k in range(h):
         for i in range(m):
             for j in range(n):
                 if obs_mat[m*k+i][j] != 3:
                     diag_ind = n*m*k + n*i + j
-                    adj_mat[diag_ind][diag_ind] = 1
+                    adj_mat[diag_ind][diag_ind] = stay_cost
                     if h > 1:
                         if k == 0:
                             above_ind = n*m*(k+1) + n*i + j
                             if obs_mat[m*(k+1)+i][j] != 3:
-                                adj_mat[diag_ind][above_ind] = 1
-                                adj_mat[above_ind][diag_ind] = 1
+                                adj_mat[diag_ind][above_ind] = up_cost
                             else:
                                 adj_mat[diag_ind][above_ind] = 0
-                                adj_mat[above_ind][diag_ind] = 0
                         elif k == h-1:
                             below_ind = n*m*(k-1) + n*i + j
                             if obs_mat[m*(k-1)+i][j] != 3:
-                                adj_mat[diag_ind][below_ind] = 1
-                                adj_mat[below_ind][diag_ind] = 1
+                                adj_mat[diag_ind][below_ind] = down_cost
                             else:
                                 adj_mat[diag_ind][below_ind] = 0
-                                adj_mat[below_ind][diag_ind] = 0
                         else:
                             above_ind = n*m*(k+1) + n*i + j
                             below_ind = n*m*(k-1) + n*i + j
                             if obs_mat[m*(k+1)+i][j] != 3:
-                                adj_mat[diag_ind][above_ind] = 1
-                                adj_mat[above_ind][diag_ind] = 1
+                                adj_mat[diag_ind][above_ind] = up_cost
                             else:
                                 adj_mat[diag_ind][above_ind] = 0
-                                adj_mat[above_ind][diag_ind] = 0
                             if obs_mat[m*(k-1)+i][j] != 3:
-                                adj_mat[diag_ind][below_ind] = 1
-                                adj_mat[below_ind][diag_ind] = 1
+                                adj_mat[diag_ind][below_ind] = down_cost
                             else:
                                 adj_mat[diag_ind][below_ind] = 0
-                                adj_mat[below_ind][diag_ind] = 0
                     if j < n-1:
                         right_ind = n*m*k + n*i + j + 1
                         if h > 1:
                             if k == 0:
                                 right_above_ind = n*m*(k+1) + n*i + j + 1
                                 if obs_mat[m*(k+1)+i][j+1] != 3:
-                                    adj_mat[diag_ind][right_above_ind] = 1
-                                    adj_mat[right_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][right_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][right_above_ind] = 0
-                                    adj_mat[right_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 right_below_ind = n*m*(k-1) + n*i + j + 1
                                 if obs_mat[m*(k-1)+i][j+1] != 3:
-                                    adj_mat[diag_ind][right_below_ind] = 1
-                                    adj_mat[right_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][right_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][right_below_ind] = 0
-                                    adj_mat[right_below_ind][diag_ind] = 0
                             else:
                                 right_above_ind = n*m*(k+1) + n*i + j + 1
                                 right_below_ind = n*m*(k-1) + n*i + j + 1
                                 if obs_mat[m*(k+1)+i][j+1] != 3:
-                                    adj_mat[diag_ind][right_above_ind] = 1
-                                    adj_mat[right_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][right_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][right_above_ind] = 0
-                                    adj_mat[right_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i][j+1] != 3:
-                                    adj_mat[diag_ind][right_below_ind] = 1
-                                    adj_mat[right_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][right_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][right_below_ind] = 0
-                                    adj_mat[right_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i][j+1] != 3:
-                            adj_mat[diag_ind][right_ind] = 1
-                            adj_mat[right_ind][diag_ind] = 1
+                            adj_mat[diag_ind][right_ind] = card_cost
                         else:
                             adj_mat[diag_ind][right_ind] = 0
-                            adj_mat[right_ind][diag_ind] = 0
                     if j > 0:
                         left_ind = n*m*k + n*i + j - 1
                         if h > 1:
                             if k == 0:
                                 left_above_ind = n*m*(k+1) + n*i + j - 1
                                 if obs_mat[m*(k+1)+i][j-1] != 3:
-                                    adj_mat[diag_ind][left_above_ind] = 1
-                                    adj_mat[left_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][left_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][left_above_ind] = 0
-                                    adj_mat[left_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 left_below_ind = n*m*(k-1) + n*i + j - 1
                                 if obs_mat[m*(k-1)+i][j-1] != 3:
-                                    adj_mat[diag_ind][left_below_ind] = 1
-                                    adj_mat[left_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][left_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][left_below_ind] = 0
-                                    adj_mat[left_below_ind][diag_ind] = 0
                             else:
                                 left_above_ind = n*m*(k+1) + n*i + j - 1
                                 left_below_ind = n*m*(k-1) + n*i + j - 1
                                 if obs_mat[m*(k+1)+i][j-1] != 3:
-                                    adj_mat[diag_ind][left_above_ind] = 1
-                                    adj_mat[left_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][left_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][left_above_ind] = 0
-                                    adj_mat[left_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i][j-1] != 3:
-                                    adj_mat[diag_ind][left_below_ind] = 1
-                                    adj_mat[left_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][left_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][left_below_ind] = 0
-                                    adj_mat[left_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i][j-1] != 3:
-                            adj_mat[diag_ind][left_ind] = 1
-                            adj_mat[left_ind][diag_ind] = 1
+                            adj_mat[diag_ind][left_ind] = card_cost
                         else:
                             adj_mat[diag_ind][left_ind] = 0
-                            adj_mat[left_ind][diag_ind] = 0
                     if i > 0:
                         up_ind = n*m*k + n*(i-1) + j
                         if h > 1:
                             if k == 0:
                                 up_above_ind = n*m*(k+1) + n*(i-1) + j
                                 if obs_mat[m*(k+1)+i-1][j] != 3:
-                                    adj_mat[diag_ind][up_above_ind] = 1
-                                    adj_mat[up_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][up_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][up_above_ind] = 0
-                                    adj_mat[up_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 up_below_ind = n*m*(k-1) + n*(i-1) + j
                                 if obs_mat[m*(k-1)+i-1][j] != 3:
-                                    adj_mat[diag_ind][up_below_ind] = 1
-                                    adj_mat[up_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][up_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][up_below_ind] = 0
-                                    adj_mat[up_below_ind][diag_ind] = 0
                             else:
                                 up_above_ind = n*m*(k+1) + n*(i-1) + j
                                 up_below_ind = n*m*(k-1) + n*(i-1) + j
                                 if obs_mat[m*(k+1)+i-1][j] != 3:
-                                    adj_mat[diag_ind][up_above_ind] = 1
-                                    adj_mat[up_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][up_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][up_above_ind] = 0
-                                    adj_mat[up_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j] != 3:
-                                    adj_mat[diag_ind][up_below_ind] = 1
-                                    adj_mat[up_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][up_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][up_below_ind] = 0
-                                    adj_mat[up_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j] != 3:
-                            adj_mat[diag_ind][up_ind] = 1
-                            adj_mat[up_ind][diag_ind] = 1
+                            adj_mat[diag_ind][up_ind] = card_cost
                         else:
                             adj_mat[diag_ind][up_ind] = 0
-                            adj_mat[up_ind][diag_ind] = 0
                     if i < m-1:
                         down_ind = n*m*k + n*(i+1) + j
                         if h > 1:
                             if k == 0:
                                 down_above_ind = n*m*(k+1) + n*(i+1) + j
                                 if obs_mat[m*(k+1)+i+1][j] != 3:
-                                    adj_mat[diag_ind][down_above_ind] = 1
-                                    adj_mat[down_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][down_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][down_above_ind] = 0
-                                    adj_mat[down_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 down_below_ind = n*m*(k-1) + n*(i+1) + j
                                 if obs_mat[m*(k-1)+i+1][j] != 3:
-                                    adj_mat[diag_ind][down_below_ind] = 1
-                                    adj_mat[down_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][down_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][down_below_ind] = 0
-                                    adj_mat[down_below_ind][diag_ind] = 0
                             else:
                                 down_above_ind = n*m*(k+1) + n*(i+1) + j
                                 down_below_ind = n*m*(k-1) + n*(i+1) + j
                                 if obs_mat[m*(k+1)+i+1][j] != 3:
-                                    adj_mat[diag_ind][down_above_ind] = 1
-                                    adj_mat[down_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][down_above_ind] = up_card_cost
                                 else:
                                     adj_mat[diag_ind][down_above_ind] = 0
-                                    adj_mat[down_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j] != 3:
-                                    adj_mat[diag_ind][down_below_ind] = 1
-                                    adj_mat[down_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][down_below_ind] = down_card_cost
                                 else:
                                     adj_mat[diag_ind][down_below_ind] = 0
-                                    adj_mat[down_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i+1][j] != 3:
-                            adj_mat[diag_ind][down_ind] = 1
-                            adj_mat[down_ind][diag_ind] = 1
+                            adj_mat[diag_ind][down_ind] = card_cost
                         else:
                             adj_mat[diag_ind][down_ind] = 0
-                            adj_mat[down_ind][diag_ind] = 0
                     # Now perform the diagonal indexing
                     if i == 0 and j == 0: # upper left
                         SE_index = n*m*k + n*(i+1) + j + 1
@@ -308,40 +274,30 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                             if k == 0:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                             else:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i+1][j+1] != 3:
-                            adj_mat[diag_ind][SE_index] = 1
-                            adj_mat[SE_index][diag_ind] = 1
+                            adj_mat[diag_ind][SE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SE_index] = 0
-                            adj_mat[SE_index][diag_ind] = 0
                     if i > 0 and i < m-1 and j == 0: # left column (not corner)
                         NE_index = n*m*k + n*(i-1) + j + 1
                         SE_index = n*m*k + n*(i+1) + j + 1
@@ -350,113 +306,83 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j+1] != 3:
-                            adj_mat[diag_ind][NE_index] = 1
-                            adj_mat[NE_index][diag_ind] = 1
+                            adj_mat[diag_ind][NE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NE_index] = 0
-                            adj_mat[NE_index][diag_ind] = 0
                         if obs_mat[m*k+i+1][j+1] != 3:
-                            adj_mat[diag_ind][SE_index] = 1
-                            adj_mat[SE_index][diag_ind] = 1
+                            adj_mat[diag_ind][SE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SE_index] = 0
-                            adj_mat[SE_index][diag_ind] = 0
-                    if i == m-1 and n == 0:  # lower left
+                    if i == m-1 and j == 0:  # lower left
                         NE_index = n*m*k + n*(i-1) + j + 1
                         if h > 1:
                             if k == 0:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j+1] != 3:
-                            adj_mat[diag_ind][NE_index] = 1
-                            adj_mat[NE_index][diag_ind] = 1
+                            adj_mat[diag_ind][NE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NE_index] = 0
-                            adj_mat[NE_index][diag_ind] = 0
                     if i == 0 and j < n-1 and j > 0:  # upper row (not corner)
                         SW_index = n*m*k + n*(i+1) + j - 1
                         SE_index = n*m*k + n*(i+1) + j + 1
@@ -465,113 +391,83 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i+1][j-1] != 3:
-                            adj_mat[diag_ind][SW_index] = 1
-                            adj_mat[SW_index][diag_ind] = 1
+                            adj_mat[diag_ind][SW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SW_index] = 0
-                            adj_mat[SW_index][diag_ind] = 0
                         if obs_mat[m*k+i+1][j+1] != 3:
-                            adj_mat[diag_ind][SE_index] = 1
-                            adj_mat[SE_index][diag_ind] = 1
+                            adj_mat[diag_ind][SE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SE_index] = 0
-                            adj_mat[SE_index][diag_ind] = 0
                     if i == 0 and j == n-1: # upper right
                         SW_index = n*m*k + n*(i+1) + j - 1
                         if h > 1:
                             if k == 0:
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i+1][j-1] != 3:
-                            adj_mat[diag_ind][SW_index] = 1
-                            adj_mat[SW_index][diag_ind] = 1
+                            adj_mat[diag_ind][SW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SW_index] = 0
-                            adj_mat[SW_index][diag_ind] = 0
                     if i > 0 and j == n-1 and i < m-1:  # right column (not corner)
                         NW_index = n*m*k + n*(i-1) + j - 1
                         SW_index = n*m*k + n*(i+1) + j - 1
@@ -580,113 +476,83 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j-1] != 3:
-                            adj_mat[diag_ind][NW_index] = 1
-                            adj_mat[NW_index][diag_ind] = 1
+                            adj_mat[diag_ind][NW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NW_index] = 0
-                            adj_mat[NW_index][diag_ind] = 0
                         if obs_mat[m*k+i+1][j-1] != 3:
-                            adj_mat[diag_ind][SW_index] = 1
-                            adj_mat[SW_index][diag_ind] = 1
+                            adj_mat[diag_ind][SW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SW_index] = 0
-                            adj_mat[SW_index][diag_ind] = 0
                     if i == m-1 and j == n-1:  # bottom right
                         NW_index = n*m*k + n*(i-1) + j - 1
                         if h > 1:
                             if k == 0:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                             else:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j-1] != 3:
-                            adj_mat[diag_ind][NW_index] = 1
-                            adj_mat[NW_index][diag_ind] = 1
+                            adj_mat[diag_ind][NW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NW_index] = 0
-                            adj_mat[NW_index][diag_ind] = 0
                     if i == m-1 and j > 0 and j < n-1:  # bottom row (not corner)
                         NW_index = n*m*k + n*(i-1) + j - 1
                         NE_index = n*m*k + n*(i-1) + j + 1
@@ -695,73 +561,53 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j-1] != 3:
-                            adj_mat[diag_ind][NW_index] = 1
-                            adj_mat[NW_index][diag_ind] = 1
+                            adj_mat[diag_ind][NW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NW_index] = 0
-                            adj_mat[NW_index][diag_ind] = 0
                         if obs_mat[m*k+i-1][j+1] != 3:
-                            adj_mat[diag_ind][NE_index] = 1
-                            adj_mat[NE_index][diag_ind] = 1
+                            adj_mat[diag_ind][NE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NE_index] = 0
-                            adj_mat[NE_index][diag_ind] = 0
                     if i > 0 and i < m-1 and j > 0 and j < n-1: # all middle nodes
                         NW_index = n*m*k + n*(i-1) + j - 1
                         NE_index = n*m*k + n*(i-1) + j + 1
@@ -774,58 +620,42 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
@@ -836,77 +666,53 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 if obs_mat[m*(k+1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_above_ind] = 1
-                                    adj_mat[NE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NE_above_ind] = 0
-                                    adj_mat[NE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_above_ind] = 1
-                                    adj_mat[NW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][NW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][NW_above_ind] = 0
-                                    adj_mat[NW_above_ind][diag_ind] = 0
-                                if obs_mat[m*(k-1)+i-1][j+1] != 3:
-                                    adj_mat[diag_ind][NE_below_ind] = 1
-                                    adj_mat[NE_below_ind][diag_ind] = 1
-                                else:
-                                    adj_mat[diag_ind][NE_below_ind] = 0
-                                    adj_mat[NE_below_ind][diag_ind] = 0
-                                if obs_mat[m*(k-1)+i-1][j-1] != 3:
-                                    adj_mat[diag_ind][NW_below_ind] = 1
-                                    adj_mat[NW_below_ind][diag_ind] = 1
-                                else:
-                                    adj_mat[diag_ind][NW_below_ind] = 0
-                                    adj_mat[NW_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_above_ind] = 1
-                                    adj_mat[SE_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_above_ind] = 0
-                                    adj_mat[SE_above_ind][diag_ind] = 0
                                 if obs_mat[m*(k+1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_above_ind] = 1
-                                    adj_mat[SW_above_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_above_ind] = up_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_above_ind] = 0
-                                    adj_mat[SW_above_ind][diag_ind] = 0
+                                if obs_mat[m*(k-1)+i-1][j+1] != 3:
+                                    adj_mat[diag_ind][NE_below_ind] = down_diag_cost
+                                else:
+                                    adj_mat[diag_ind][NE_below_ind] = 0
+                                if obs_mat[m*(k-1)+i-1][j-1] != 3:
+                                    adj_mat[diag_ind][NW_below_ind] = down_diag_cost
+                                else:
+                                    adj_mat[diag_ind][NW_below_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j+1] != 3:
-                                    adj_mat[diag_ind][SE_below_ind] = 1
-                                    adj_mat[SE_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SE_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SE_below_ind] = 0
-                                    adj_mat[SE_below_ind][diag_ind] = 0
                                 if obs_mat[m*(k-1)+i+1][j-1] != 3:
-                                    adj_mat[diag_ind][SW_below_ind] = 1
-                                    adj_mat[SW_below_ind][diag_ind] = 1
+                                    adj_mat[diag_ind][SW_below_ind] = down_diag_cost
                                 else:
                                     adj_mat[diag_ind][SW_below_ind] = 0
-                                    adj_mat[SW_below_ind][diag_ind] = 0
                         if obs_mat[m*k+i-1][j-1] != 3:
-                            adj_mat[diag_ind][NW_index] = 1
-                            adj_mat[NW_index][diag_ind] = 1
+                            adj_mat[diag_ind][NW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NW_index] = 0
-                            adj_mat[NW_index][diag_ind] = 0
                         if obs_mat[m*k+i-1][j+1] != 3:
-                            adj_mat[diag_ind][NE_index] = 1
-                            adj_mat[NE_index][diag_ind] = 1
+                            adj_mat[diag_ind][NE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][NE_index] = 0
-                            adj_mat[NE_index][diag_ind] = 0
                         if obs_mat[m*k+i+1][j-1] != 3:
-                            adj_mat[diag_ind][SW_index] = 1
-                            adj_mat[SW_index][diag_ind] = 1
+                            adj_mat[diag_ind][SW_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SW_index] = 0
-                            adj_mat[SW_index][diag_ind] = 0
                         if obs_mat[m*k+i+1][j+1] != 3:
-                            adj_mat[diag_ind][SE_index] = 1
-                            adj_mat[SE_index][diag_ind] = 1
+                            adj_mat[diag_ind][SE_index] = diag_cost
                         else:
                             adj_mat[diag_ind][SE_index] = 0
-                            adj_mat[SE_index][diag_ind] = 0
                 else:
                     # this indicates the region is an obstacle
                     diag_ind = n*m*k + n*i + j
@@ -915,318 +721,234 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                         if k == 0:
                             above_ind = n*m*(k+1) + n*i + j
                             adj_mat[diag_ind][above_ind] = 0
-                            adj_mat[above_ind][diag_ind] = 0
                         elif k == h-1:
                             below_ind = n*m*(k-1) + n*i + j
                             adj_mat[diag_ind][below_ind] = 0
-                            adj_mat[below_ind][diag_ind] = 0
                         else:
                             above_ind = n*m*(k+1) + n*i + j
                             below_ind = n*m*(k-1) + n*i + j
                             adj_mat[diag_ind][above_ind] = 0
-                            adj_mat[above_ind][diag_ind] = 0
                             adj_mat[diag_ind][below_ind] = 0
-                            adj_mat[below_ind][diag_ind] = 0
                     if j < n-1:
                         if h > 1:
                             if k == 0:
                                 right_above_ind = n*m*(k+1) + n*i + j + 1
                                 adj_mat[diag_ind][right_above_ind] = 0
-                                adj_mat[right_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 right_below_ind = n*m*(k-1) + n*i + j + 1
                                 adj_mat[diag_ind][right_below_ind] = 0
-                                adj_mat[right_below_ind][diag_ind] = 0
                             else:
                                 right_above_ind = n*m*(k+1) + n*i + j + 1
                                 right_below_ind = n*m*(k-1) + n*i + j + 1
                                 adj_mat[diag_ind][right_above_ind] = 0
-                                adj_mat[right_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][right_below_ind] = 0
-                                adj_mat[right_below_ind][diag_ind] = 0
                         right_ind = n*m*k + n*i + j + 1
                         adj_mat[diag_ind][right_ind] = 0
-                        adj_mat[right_ind][diag_ind] = 0
                     if j > 0:
                         if h > 1:
                             if k == 0:
                                 left_above_ind = n*m*(k+1) + n*i + j - 1
                                 adj_mat[diag_ind][left_above_ind] = 0
-                                adj_mat[left_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 left_below_ind = n*m*(k-1) + n*i + j - 1
                                 adj_mat[diag_ind][left_below_ind] = 0
-                                adj_mat[left_below_ind][diag_ind] = 0
                             else:
                                 left_above_ind = n*m*(k+1) + n*i + j - 1
                                 left_below_ind = n*m*(k-1) + n*i + j - 1
                                 adj_mat[diag_ind][left_above_ind] = 0
-                                adj_mat[left_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][left_below_ind] = 0
-                                adj_mat[left_below_ind][diag_ind] = 0
                         left_ind = n*m*k + n*i + j - 1
                         adj_mat[diag_ind][left_ind] = 0
-                        adj_mat[left_ind][diag_ind] = 0
                     if i > 0:
                         if h > 1:
                             if k == 0:
                                 up_above_ind = n*m*(k+1) + n*(i-1) + j
                                 adj_mat[diag_ind][up_above_ind] = 0
-                                adj_mat[up_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 up_below_ind = n*m*(k-1) + n*(i-1) + j
                                 adj_mat[diag_ind][up_below_ind] = 0
-                                adj_mat[up_below_ind][diag_ind] = 0
                             else:
                                 up_above_ind = n*m*(k+1) + n*(i-1) + j
                                 up_below_ind = n*m*(k-1) + n*(i-1) + j
                                 adj_mat[diag_ind][up_above_ind] = 0
-                                adj_mat[up_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][up_below_ind] = 0
-                                adj_mat[up_below_ind][diag_ind] = 0
                         up_ind = n*m*k + n*(i-1) + j
                         adj_mat[diag_ind][up_ind] = 0
-                        adj_mat[up_ind][diag_ind] = 0
                     if i < m-1:
                         if h > 1:
                             if k == 0:
                                 down_above_ind = n*m*(k+1) + n*(i+1) + j
                                 adj_mat[diag_ind][down_above_ind] = 0
-                                adj_mat[down_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 down_below_ind = n*m*(k-1) + n*(i+1) + j
                                 adj_mat[diag_ind][down_below_ind] = 0
-                                adj_mat[down_below_ind][diag_ind] = 0
                             else:
                                 down_above_ind = n*m*(k+1) + n*(i+1) + j
                                 down_below_ind = n*m*(k-1) + n*(i+1) + j
                                 adj_mat[diag_ind][down_above_ind] = 0
-                                adj_mat[down_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][down_below_ind] = 0
-                                adj_mat[down_below_ind][diag_ind] = 0
                         down_ind = n*m*k + n*(i+1) + j
                         adj_mat[diag_ind][down_ind] = 0
-                        adj_mat[down_ind][diag_ind] = 0
                     if i == 0 and j == 0: # upper left
                         if h > 1:
                             if k == 0:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                             else:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                         SE_index = n*m*k + n*(i+1) + j + 1
                         adj_mat[diag_ind][SE_index] = 0
-                        adj_mat[SE_index][diag_ind] = 0
                     if i > 0 and i < m-1 and j == 0: # left column (not corner)
                         if h > 1:
                             if k == 0:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                         NE_index = n*m*k + n*(i-1) + j + 1
                         SE_index = n*m*k + n*(i+1) + j + 1
                         adj_mat[diag_ind][NE_index] = 0
-                        adj_mat[NE_index][diag_ind] = 0
                         adj_mat[diag_ind][SE_index] = 0
-                        adj_mat[SE_index][diag_ind] = 0
-                    if i == m-1 and n == 0:  # lower left
+                    if i == m-1 and j == 0:  # lower left
                         if h > 1:
                             if k == 0:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                         NE_index = n*m*k + n*(i-1) + j + 1
                         adj_mat[diag_ind][NE_index] = 0
-                        adj_mat[NE_index][diag_ind] = 0
                     if i == 0 and j < n-1 and j > 0:  # upper row (not corner)
                         if h > 1:
                             if k == 0:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                         SW_index = n*m*k + n*(i+1) + j - 1
                         SE_index = n*m*k + n*(i+1) + j + 1
                         adj_mat[diag_ind][SW_index] = 0
-                        adj_mat[SW_index][diag_ind] = 0
                         adj_mat[diag_ind][SE_index] = 0
-                        adj_mat[SE_index][diag_ind] = 0
                     if i == 0 and j == n-1: # upper right
                         if h > 1:
                             if k == 0:
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                         SW_index = n*m*k + n*(i+1) + j - 1
                         adj_mat[diag_ind][SW_index] = 0
-                        adj_mat[SW_index][diag_ind] = 0
                     if i > 0 and j == n-1 and i < m-1:  # right column (not corner)
                         if h > 1:
                             if k == 0:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                         NW_index = n*m*k + n*(i-1) + j - 1
                         SW_index = n*m*k + n*(i+1) + j - 1
                         adj_mat[diag_ind][NW_index] = 0
-                        adj_mat[NW_index][diag_ind] = 0
                         adj_mat[diag_ind][SW_index] = 0
-                        adj_mat[SW_index][diag_ind] = 0
                     if i == m-1 and j == n-1:  # bottom right
                         if h > 1:
                             if k == 0:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                             else:
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                         NW_index = n*m*k + n*(i-1) + j - 1
                         adj_mat[diag_ind][NW_index] = 0
-                        adj_mat[NW_index][diag_ind] = 0
                     if i == m-1 and j > 0 and j < n-1:  # bottom row (not corner)
                         if h > 1:
                             if k == 0:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                         NW_index = n*m*k + n*(i-1) + j - 1
                         NE_index = n*m*k + n*(i-1) + j + 1
                         adj_mat[diag_ind][NW_index] = 0
-                        adj_mat[NW_index][diag_ind] = 0
                         adj_mat[diag_ind][NE_index] = 0
-                        adj_mat[NE_index][diag_ind] = 0
                     if i > 0 and i < m-1 and j > 0 and j < n-1: # all middle nodes
                         if h > 1:
                             if k == 0:
@@ -1235,26 +957,18 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 SE_above_ind = n*m*(k+1) + n*(i+1) + j + 1
                                 SW_above_ind = n*m*(k+1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                             elif k == h-1:
                                 NE_below_ind = n*m*(k-1) + n*(i-1) + j + 1
                                 NW_below_ind = n*m*(k-1) + n*(i-1) + j - 1
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                             else:
                                 NE_above_ind = n*m*(k+1) + n*(i-1) + j + 1
                                 NW_above_ind = n*m*(k+1) + n*(i-1) + j - 1
@@ -1265,33 +979,21 @@ def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
                                 SE_below_ind = n*m*(k-1) + n*(i+1) + j + 1
                                 SW_below_ind = n*m*(k-1) + n*(i+1) + j - 1
                                 adj_mat[diag_ind][NE_above_ind] = 0
-                                adj_mat[NE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_above_ind] = 0
-                                adj_mat[NW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NE_below_ind] = 0
-                                adj_mat[NE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][NW_below_ind] = 0
-                                adj_mat[NW_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_above_ind] = 0
-                                adj_mat[SE_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_above_ind] = 0
-                                adj_mat[SW_above_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SE_below_ind] = 0
-                                adj_mat[SE_below_ind][diag_ind] = 0
                                 adj_mat[diag_ind][SW_below_ind] = 0
-                                adj_mat[SW_below_ind][diag_ind] = 0
                         NW_index = n*m*k + n*(i-1) + j - 1
                         NE_index = n*m*k + n*(i-1) + j + 1
                         SW_index = n*m*k + n*(i+1) + j - 1
                         SE_index = n*m*k + n*(i+1) + j + 1
                         adj_mat[diag_ind][NW_index] = 0
-                        adj_mat[NW_index][diag_ind] = 0
                         adj_mat[diag_ind][NE_index] = 0
-                        adj_mat[NE_index][diag_ind] = 0
                         adj_mat[diag_ind][SW_index] = 0
-                        adj_mat[SW_index][diag_ind] = 0
                         adj_mat[diag_ind][SE_index] = 0
-                        adj_mat[SE_index][diag_ind] = 0
     return adj_mat
 
 
@@ -1346,18 +1048,18 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
                         if nodeset1[i] == key1:
                             for key2 in bases:
                                 if nodeset2[i] == key2:
-                                    f1.write('%s %s {\'duration\': %d}\n'\
-                                            % (bases[key1], bases[key2], weight[i]))
+                                    f1.write('%s %s {\'duration\': %d, \'length\': %f}\n'\
+                                            % (bases[key1], bases[key2], 1.0, weight[i]))
                 else:
                     for key1 in bases:
                         if nodeset1[i] == key1:
-                            f1.write('%s r%d {\'duration\': %d}\n' % (bases[key1], nodeset2[i], weight[i]))
+                            f1.write('%s r%d {\'duration\': %d, \'length\': %f}\n' % (bases[key1], nodeset2[i], 1.0, weight[i]))
             elif nodeset2[i] in bases:
                 for key2 in bases:
                     if nodeset2[i] == key2:
-                        f1.write('r%d %s {\'duration\': %d}\n' % (nodeset1[i], bases[key2], weight[i]))
+                        f1.write('r%d %s {\'duration\': %d, \'length\': %f}\n' % (nodeset1[i], bases[key2], 1.0, weight[i]))
             else:
-                f1.write('r%d r%d {\'duration\': %d}\n' % (nodeset1[i], nodeset2[i], weight[i]))
+                f1.write('r%d r%d {\'duration\': %d, \'length\': %f}\n' % (nodeset1[i], nodeset2[i], 1.0, weight[i]))
     # finished writing to file
     f1.close()
 
@@ -1369,8 +1071,8 @@ if __name__ == '__main__':
     TS, obs_mat, state_mat = create_ts(m,n,h)
     # try out the init state and obstacles functions
     init_state = [30, 34, 1]
-    obstacles = [(3,2,0),(2,5,0)] # (row,column,altitude)
-    paths = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
+    obstacles = [(3,2,0),(2,5,0)] # (row,column,altitude/height)
+    paths = ['../data/ts_6x6_3D1.txt', '../data/ts_6x6_3D2.txt', '../data/ts_6x6_3D3.txt']
     bases = {30: 'Base', 34: 'Base2', 1: 'Base3'}
     disc = 0.5
     for i in range(len(init_state)):

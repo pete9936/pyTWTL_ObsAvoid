@@ -18,6 +18,7 @@ import networkx as nx
 import re
 import itertools
 from model import Model
+import pdb
 
 class FileError(Exception):
 	pass

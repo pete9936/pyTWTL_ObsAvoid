@@ -1,5 +1,5 @@
 '''
-.. module:: example_dynamicpriority_RP8.py
+.. module:: example_multicost_RP9.py
    :synopsis: Case studies for TWTL package and lab testing.
 
 .. moduleauthor:: Ryan Peterson <pete9936@umn.edu.edu>
@@ -21,7 +21,7 @@ import write_files
 
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_energy
+                      verify, compute_control_policy2, compute_energy, compute_length
 from geometric_funcs import check_intersect
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
@@ -57,7 +57,13 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     for key in dfa_dict:
         logging.info('Constructing product automaton with infinity DFA!')
         pa = ts_times_fsa(ets_dict[key], dfa_dict[key])
-        # Give initial weight attribute to all edges in pa
+        # Give length and weight attributes to all edges in pa
+        length_dict = {}
+        edges_all = nx.get_edge_attributes(ts_dict[key].g,'length')
+        for pa_edge in pa.g.edges():
+            edge = (pa_edge[0][0], pa_edge[1][0], 0)
+            length_dict[pa_edge] = edges_all[edge]
+        nx.set_edge_attributes(pa.g,"length",length_dict)
         nx.set_edge_attributes(pa.g,"weight",1)
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
         # Make a copy of the nominal PA to change
@@ -66,11 +72,25 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     for key in pa_nom_dict:
         print 'Size of PA:', pa_nom_dict[key].size()
 
+    # Compute the energy for each agent's PA at every node to use in offline instance
+    # Both energy functions computed
+    startEnergy = timeit.default_timer()
+    energy_dict = {}
+    for key in pa_nom_dict:
+        compute_energy(pa_nom_dict[key], dfa_dict[key])
+        compute_length(pa_nom_dict[key], dfa_dict[key])
+    stopEnergy = timeit.default_timer()
+    print 'Run Time (s) to get both the energy functions for all three PA: ', stopEnergy - startEnergy
+
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
     output_dict_nom = {}
     tau_dict_nom = {}
+    # Need a way to decide which nominal policy is more important, time or energy
+    # Only perform lowest time on the longest policy in order to have similar end times
+    # Could instead focus on some battery threshold idea, or if persistent surveillance then 
+    # we would always go with lower expended energy
     for key in pa_nom_dict:
         ts_policy_dict_nom[key], pa_policy_dict_nom[key], output_dict_nom[key], tau_dict_nom[key] = \
                     compute_control_policy(pa_nom_dict[key], dfa_dict[key], dfa_dict[key].kind)
@@ -78,14 +98,6 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     for key in ts_policy_dict_nom:
         if ts_policy_dict_nom[key] is None:
             logging.info('No control policy found!')
-
-    # Compute the energy for each agent's PA at every node to use in offline instance
-    startEnergy = timeit.default_timer()
-    energy_dict = {}
-    for key in ts_policy_dict_nom:
-        compute_energy(pa_nom_dict[key], dfa_dict[key])
-    stopEnergy = timeit.default_timer()
-    print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
 
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
@@ -439,7 +451,7 @@ def get_priority(pa_nom_dict, pa_policy, key_list):
     priority = []
     temp_energy = {}
     for key in key_list:
-        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
+        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy_t']
     # Sort the energy values found for all agents
     sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
     for key, energy_val in sorted_energy:
@@ -457,7 +469,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                keep_nodes[node[0]] = node[1]['energy']
+                keep_nodes[node[0]] = node[1]['energy_t']
                 break
     if not keep_nodes:
         ts_policy.append([init_loc[0],init_loc[0]])
@@ -481,7 +493,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                         except KeyError:
                             soft_nodes[i+1] = []
                         if neighbor == node[0] and node[0][0] not in soft_nodes[i+1]:
-                            energy_temp = node[1]['energy']
+                            energy_temp = node[1]['energy_t']
                             if energy_temp < energy_low:
                                 temp_node = node[0]
                                 energy_low = energy_temp
@@ -504,13 +516,13 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
         for neighbor in local_set2:
             for node in pa.g.nodes(data='true'):
                 if neighbor == node[0] and node[0][0] not in soft_nodes[1]:
-                    keep_nodes2[node[0]] = node[1]['energy']
+                    keep_nodes2[node[0]] = node[1]['energy_t']
                     break
     else:
         for neighbor in local_set2:
             for node in pa.g.nodes(data='true'):
                 if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                    keep_nodes2[node[0]] = node[1]['energy']
+                    keep_nodes2[node[0]] = node[1]['energy_t']
                     break
     if not keep_nodes2:
         ts_policy.append(one_hop_node[0])
@@ -533,7 +545,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                         except KeyError:
                             soft_nodes[i+2] = []
                         if neighbor == node[0] and node[0][0] not in soft_nodes[i+2]:
-                            energy_temp = node[1]['energy']
+                            energy_temp = node[1]['energy_t']
                             if energy_temp < energy_low:
                                 temp_node = node[0]
                                 energy_low = energy_temp
@@ -565,7 +577,7 @@ def extend_horizon(pa, pa_node):
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0]:
-                energy_temp = node[1]['energy']
+                energy_temp = node[1]['energy_t']
                 if energy_temp < energy_low:
                     energy_low = energy_temp
                     next_node = node[0]
@@ -591,7 +603,7 @@ def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
         if node not in weighted_nodes:
             for i in pa.g.nodes(data='true'):
                 if i[0] == node:
-                    temp_energy = i[1]['energy']
+                    temp_energy = i[1]['energy_t']
                     break
             if temp_energy < energy_fin:
                 energy_fin = temp_energy
@@ -653,7 +665,7 @@ def update_weight(pa_prime, s_token):
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP8.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_RP9.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
@@ -671,11 +683,15 @@ if __name__ == '__main__':
     phi3 = '[H^2 r31]^[0, 8] * [H^1 r10]^[0, 10]'
     # Currently set to use the same transition system
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
-    # ts_files = ['../data/ts_synth_6x6_diag1.txt', '../data/ts_synth_6x6_diag2.txt', '../data/ts_synth_6x6_diag3.txt']
-    # Set the time to go from one waypoint to the next (seconds), account for agent dynamics
+    ts_files = ['../data/ts_6x6_3D1.txt', '../data/ts_6x6_3D2.txt', '../data/ts_6x6_3D3.txt']
+    # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
+
+    # Really should have some notion of battery threshold in order to decide which type of
+    # energy makes more sense at the outset ****
+
+    # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
     time_wp = 1.5
-    # Define the radius of agents considering, this is for diagonal collision avoidance
+    # Define the radius of agents considered, used for diagonal collision avoidance
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
     lab_testing = False

@@ -299,7 +299,7 @@ def simple_control_policy(pa):
     pa.g.remove_node('virtual')
     return [x for x, _ in pa_path[:-1]]
 
-def simple_control_policy2(pa, init_key):
+def simple_control_policy2(pa, init_key, length=False):
     '''Computes a control policy which minimizes the total length (makespan)
     of the policy. It can be used on product automata obtained from both normal
     and infinity specification FSAs. In the infinity automata case, the returned
@@ -310,8 +310,12 @@ def simple_control_policy2(pa, init_key):
         return None
     # add virtual node with incoming edges from all final states
     pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
+
     # compute optimal path in PA and then project onto the TS
-    pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='weight')
+    if length == True:
+        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='length')
+    else:
+        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='weight')
 
     assert pa_path[-2] in pa.final
     pa.g.remove_node('virtual')
@@ -528,7 +532,24 @@ def compute_energy(pa, dfa):
         optimal_pa_path = simple_control_policy2(pa, node)
         energy_dict[node] = len(optimal_pa_path)
     # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy', energy_dict)
+    nx.set_node_attributes(pa.g,'energy_t', energy_dict)
+
+def compute_length(pa, dfa):
+    ''' Calculates the energy for each node in the nominal product automaton in
+    order to use this in a local gradient descent scheme for online execution to
+    avoid computing full path and use local communication protocol '''
+    length_dict = {}
+    edges_all = nx.get_edge_attributes(pa.g,'length')
+    # Get the shortest simple path for each node
+    for ind, node in enumerate(pa.g.nodes()):
+        optimal_pa_path = simple_control_policy2(pa, node, length=True)
+        length = 0
+        for i in range(len(optimal_pa_path)-1):
+            edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
+            length = length + edges_all[edge_temp]
+        length_dict[node] = length
+    # Update the PA graph with the energy attribute found
+    nx.set_node_attributes(pa.g,'energy_e', length_dict)
 
 def compute_distance(ts):
     ''' Calculate the distance from a given node to its surrounding transitions
