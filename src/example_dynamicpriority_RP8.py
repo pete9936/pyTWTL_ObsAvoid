@@ -69,10 +69,9 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     # Compute optimal path in Pa_Prime and project onto the TS, initial policy
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
-    output_dict_nom = {}
     tau_dict_nom = {}
     for key in pa_nom_dict:
-        ts_policy_dict_nom[key], pa_policy_dict_nom[key], output_dict_nom[key], tau_dict_nom[key] = \
+        ts_policy_dict_nom[key], pa_policy_dict_nom[key], tau_dict_nom[key] = \
                     compute_control_policy(pa_nom_dict[key], dfa_dict[key], dfa_dict[key].kind)
     # Perform initial check on nominal control policies
     for key in ts_policy_dict_nom:
@@ -427,7 +426,7 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
-                output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
+                tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
     # Write the CSV files for experiments
     for key in pa_nom_dict:

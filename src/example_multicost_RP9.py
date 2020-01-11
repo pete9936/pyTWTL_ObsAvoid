@@ -21,7 +21,8 @@ import write_files
 
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_energy, compute_length
+                      verify, compute_control_policy2, compute_control_policy3,\
+                      compute_moc_energy
 from geometric_funcs import check_intersect
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
@@ -29,7 +30,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
+def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -54,17 +55,20 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
         print 'Size of TS:', ets_dict[ind].size()
     # Get the nominal PA for each agent
     pa_nom_dict = {}
+    norm_factor = {}
     for key in dfa_dict:
         logging.info('Constructing product automaton with infinity DFA!')
         pa = ts_times_fsa(ets_dict[key], dfa_dict[key])
         # Give length and weight attributes to all edges in pa
-        length_dict = {}
-        edges_all = nx.get_edge_attributes(ts_dict[key].g,'length')
+        weight_dict = {}
+        edges_all = nx.get_edge_attributes(ts_dict[key].g,'edge_weight')
+        max_edge = max(edges_all, key=edges_all.get)
+        norm_factor[key] = edges_all[max_edge]
         for pa_edge in pa.g.edges():
             edge = (pa_edge[0][0], pa_edge[1][0], 0)
-            length_dict[pa_edge] = edges_all[edge]
-        nx.set_edge_attributes(pa.g,"length",length_dict)
-        nx.set_edge_attributes(pa.g,"weight",1)
+            weight_dict[pa_edge] = edges_all[edge]/norm_factor[key]
+        nx.set_edge_attributes(pa.g, 'edge_weight', weight_dict)
+        nx.set_edge_attributes(pa.g, 'weight', 1)
         logging.info('Product automaton size is: (%d, %d)', *pa.size())
         # Make a copy of the nominal PA to change
         pa_nom_dict[key] = copy.deepcopy(pa)
@@ -72,28 +76,34 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     for key in pa_nom_dict:
         print 'Size of PA:', pa_nom_dict[key].size()
 
-    # Compute the energy for each agent's PA at every node to use in offline instance
-    # Both energy functions computed
-    startEnergy = timeit.default_timer()
-    energy_dict = {}
+    # Use alpha to perform weighted optimization of time and edge_weight and make this a
+    # new edge attribute to find "shortest path" over
     for key in pa_nom_dict:
-        compute_energy(pa_nom_dict[key], dfa_dict[key])
-        compute_length(pa_nom_dict[key], dfa_dict[key])
-    stopEnergy = timeit.default_timer()
-    print 'Run Time (s) to get both the energy functions for all three PA: ', stopEnergy - startEnergy
+        moc_weight_dict = {}
+        time_weight = nx.get_edge_attributes(pa_nom_dict[key].g,'weight')
+        edge_weight = nx.get_edge_attributes(pa_nom_dict[key].g,'edge_weight')
+        for pa_edge in pa_nom_dict[key].g.edges():
+            moc_weight_dict[pa_edge] = alpha*time_weight[pa_edge] + (1-alpha)*edge_weight[pa_edge]
+        # Append the multi-objective cost to the edge attribtues of the PA
+        nx.set_edge_attributes(pa_nom_dict[key].g, 'moc_weight', moc_weight_dict)
 
-    # Compute optimal path in Pa_Prime and project onto the TS, initial policy
+    # Compute the energy for each agent's PA at every node to use in offline instance
+    startEnergy = timeit.default_timer()
+    for key in pa_nom_dict:
+        compute_moc_energy(pa_nom_dict[key], dfa_dict[key])
+    stopEnergy = timeit.default_timer()
+    print 'Run Time (s) to get both the energy function for all three PA: ', stopEnergy - startEnergy
+
+    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on moc_weight
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
-    output_dict_nom = {}
     tau_dict_nom = {}
-    # Need a way to decide which nominal policy is more important, time or energy
-    # Only perform lowest time on the longest policy in order to have similar end times
-    # Could instead focus on some battery threshold idea, or if persistent surveillance then 
-    # we would always go with lower expended energy
     for key in pa_nom_dict:
-        ts_policy_dict_nom[key], pa_policy_dict_nom[key], output_dict_nom[key], tau_dict_nom[key] = \
+        ts_policy_dict_nom[key], pa_policy_dict_nom[key], tau_dict_nom[key] = \
                     compute_control_policy(pa_nom_dict[key], dfa_dict[key], dfa_dict[key].kind)
+    for key in pa_nom_dict:
+        ts_policy_dict_nom[key], pa_policy_dict_nom[key] = \
+                    compute_control_policy3(pa_nom_dict[key], dfa_dict[key], pa_policy_dict_nom[key][0])
     # Perform initial check on nominal control policies
     for key in ts_policy_dict_nom:
         if ts_policy_dict_nom[key] is None:
@@ -124,13 +134,16 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
     tau_dict = tau_dict_nom
     local_flag = {}
+    terminate = {}
     compute_local = False
     switch_flag = False
     for key in ts_policy:
         local_flag[key] = False
+        terminate[key] = False
     num_hops = 1 # parameter for trade study
     # Get agent priority based on lowest energy
-    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list)
+    prev_priority = key_list
+    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list, prev_priority)
 
     # Print time statistics
     stopOff = timeit.default_timer()
@@ -227,8 +240,6 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
                                 node = policy_match[0][k_c]
                                 break
                         # Check if the trajectories will cross each other in transition
-                        # cross_weight = check_cross(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                        #                                    priority[0:p_ind2], key_list, disc, disc_z)
                         cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                                                             priority[0:p_ind2], key_list, radius, time_wp)
                         if cross_weight:
@@ -305,8 +316,8 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
                         init_loc = pa_control_policy_dict[pty][-1]
                         ts_temp = ts_policy[pty]
                         pa_temp = pa_policy[pty]
-                        ts_policy[pty], pa_policy[pty], ignore = extend_horizon(pa_nom_dict[pty], pa_policy[pty][0])
-                        if ignore:
+                        ts_policy[pty], pa_policy[pty], terminate[pty] = extend_horizon(pa_nom_dict[pty], pa_policy[pty][0])
+                        if terminate[pty]:
                             # This accounts for termination criteria
                             ts_policy[pty] = ts_temp
                             pa_policy[pty] = pa_temp
@@ -379,10 +390,9 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
                         update_final_state(pa_nom_dict[key], pa_prime, weighted_nodes, init_loc)
                     else:
                         pa_prime = update_weight(pa_nom_dict[key], weighted_nodes)
-
                     # Get control policy from current location
-                    ts_policy[key], pa_policy[key], tau_dict[key] = \
-                            compute_control_policy2(pa_prime, dfa_dict[key], init_loc) # Look at tau later ***
+                    ts_policy[key], pa_policy[key] = \
+                            compute_control_policy3(pa_prime, dfa_dict[key], init_loc) # Look at tau later **
                     # Get rid of the duplicate node
                     ts_policy[key].pop(0)
                     pa_policy_temp = list(pa_policy[key])
@@ -406,6 +416,7 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
             land_keys = []
             for key, val in ts_policy.items():
                 if len(val) == 0:
+                    # priority.remove(key)
                     land_keys.append(key)
                     del ts_policy[key]
                     del pa_policy[key]
@@ -422,7 +433,7 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
             # Update policy match
             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
             # Get agent priority based on lowest energy
-            priority = get_priority(pa_nom_dict, pa_policy, key_list)
+            priority = get_priority(pa_nom_dict, pa_policy, key_list, priority)
         else:
             running = False
 
@@ -439,37 +450,54 @@ def case1_synthesis(formulas, ts_files, radius, time_wp, lab_testing):
     # Write the nominal and final control policies to a file
     for key in pa_nom_dict:
         write_to_control_policy_file(ts_policy_dict_nom[key], pa_policy_dict_nom[key], \
-                output_dict_nom[key], tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
+                tau_dict_nom[key], dfa_dict[key],ts_dict[key],ets_dict[key],\
                 ts_control_policy_dict[key], pa_control_policy_dict[key], tau_dict[key], key)
     # Write the CSV files for experiments
     for key in pa_nom_dict:
         write_to_csv(ts_dict[key], ts_control_policy_dict[key], key, time_wp)
 
 
-def get_priority(pa_nom_dict, pa_policy, key_list):
+def get_priority(pa_nom_dict, pa_policy, key_list, prev_priority):
     ''' Computes the agent priority based on lowest energy. '''
     priority = []
     temp_energy = {}
+    progress_check = {}
     for key in key_list:
-        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy_t']
-    # Sort the energy values found for all agents
+        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy_moc']
+        state_0 = pa_policy[key][0][1]
+        try:
+            state_1 = pa_policy[key][1][1]
+        except IndexError:
+            state_1 = []
+        if state_0 != state_1:
+            progress_check[key] = True
+        else:
+            progress_check[key] = False
+    # Sort the energy values found for all agents in descending energy order
     sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
+    sorted_energy = sorted_energy[::-1]
+    for key in prev_priority:
+        if key in key_list:
+            if progress_check[key] == True:
+                priority.append(key)
     for key, energy_val in sorted_energy:
-        priority.append(key)
+        if key not in priority:
+            priority.append(key)
     return priority
 
 def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
-    ''' Compute the two hop local horizon when imminenet collision detected
+    ''' Compute the two hop local horizon when imminent collision detected
     or still within the local neighborhood. '''
     ts_policy = []
     pa_policy = []
+    epsilon = 0.001
     # Create local one-hop set
     local_set = pa.g.neighbors(init_loc)
     keep_nodes = {}
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                keep_nodes[node[0]] = node[1]['energy_t']
+                keep_nodes[node[0]] = node[1]['energy_moc']
                 break
     if not keep_nodes:
         ts_policy.append([init_loc[0],init_loc[0]])
@@ -478,7 +506,12 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
         return ts_policy, pa_policy
     # iterate through all hops
     if num_hops < 1:
-        one_hop_node = min(keep_nodes, key=keep_nodes.get)
+        # If there is no location with lower overall moc energy then stay put
+        temp = min(keep_nodes, key=keep_nodes.get)
+        if keep_nodes[temp] - keep_nodes[init_loc] < epsilon:
+            one_hop_node = init_loc
+        else:
+            one_hop_node = temp
     else:
         for keep_node in keep_nodes:
             temp_node = keep_node
@@ -493,7 +526,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                         except KeyError:
                             soft_nodes[i+1] = []
                         if neighbor == node[0] and node[0][0] not in soft_nodes[i+1]:
-                            energy_temp = node[1]['energy_t']
+                            energy_temp = node[1]['energy_moc']
                             if energy_temp < energy_low:
                                 temp_node = node[0]
                                 energy_low = energy_temp
@@ -505,7 +538,12 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                     return ts_policy, pa_policy
                 energy_temp = energy_temp + energy_low
             keep_nodes[keep_node] = energy_temp
-        one_hop_node = min(keep_nodes, key=keep_nodes.get)
+        # If there is no location with lower overall moc energy then stay put
+        temp = min(keep_nodes, key=keep_nodes.get)
+        if keep_nodes[temp] - keep_nodes[init_loc] < epsilon:
+            one_hop_node = init_loc
+        else:
+            one_hop_node = temp
     # Append the policies
     ts_policy.append(one_hop_node[0])
     pa_policy.append(one_hop_node)
@@ -516,13 +554,13 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
         for neighbor in local_set2:
             for node in pa.g.nodes(data='true'):
                 if neighbor == node[0] and node[0][0] not in soft_nodes[1]:
-                    keep_nodes2[node[0]] = node[1]['energy_t']
+                    keep_nodes2[node[0]] = node[1]['energy_moc']
                     break
     else:
         for neighbor in local_set2:
             for node in pa.g.nodes(data='true'):
                 if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                    keep_nodes2[node[0]] = node[1]['energy_t']
+                    keep_nodes2[node[0]] = node[1]['energy_moc']
                     break
     if not keep_nodes2:
         ts_policy.append(one_hop_node[0])
@@ -530,7 +568,12 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
         print 'No feasible location to move, therefore stay in current position'
         return ts_policy, pa_policy
     if num_hops < 2:
-        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
+        # If there is no location with lower overall moc energy then stay put
+        temp = min(keep_nodes2, key=keep_nodes2.get)
+        if keep_nodes2[temp] - keep_nodes2[one_hop_node] < epsilon:
+            two_hop_node = one_hop_node
+        else:
+            two_hop_node = temp
     else:
         for keep_node2 in local_set2:
             temp_node = keep_node2
@@ -545,7 +588,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                         except KeyError:
                             soft_nodes[i+2] = []
                         if neighbor == node[0] and node[0][0] not in soft_nodes[i+2]:
-                            energy_temp = node[1]['energy_t']
+                            energy_temp = node[1]['energy_moc']
                             if energy_temp < energy_low:
                                 temp_node = node[0]
                                 energy_low = energy_temp
@@ -557,7 +600,12 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                     return ts_policy, pa_policy
                 energy_temp = energy_temp + energy_low
             keep_nodes2[keep_node2] = energy_temp
-        two_hop_node = min(keep_nodes2, key=keep_nodes2.get)
+        # If there is no location with lower overall moc energy then stay put
+        temp = min(keep_nodes2, key=keep_nodes2.get)
+        if keep_nodes2[temp] - keep_nodes2[one_hop_node] < epsilon:
+            two_hop_node = one_hop_node
+        else:
+            two_hop_node = temp
     # Append policies returned
     ts_policy.append(two_hop_node[0])
     pa_policy.append(two_hop_node)
@@ -566,7 +614,7 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
 def extend_horizon(pa, pa_node):
     ''' This extends the receding horizon trajectory when immediate conflict
     not seen but still in the local neighborhood of another agent. '''
-    ignore_flag = False
+    terminate_flag = False
     ts_policy = []
     pa_policy = []
     ts_policy.append(pa_node[0])
@@ -577,7 +625,7 @@ def extend_horizon(pa, pa_node):
     for neighbor in local_set:
         for node in pa.g.nodes(data='true'):
             if neighbor == node[0]:
-                energy_temp = node[1]['energy_t']
+                energy_temp = node[1]['energy_moc']
                 if energy_temp < energy_low:
                     energy_low = energy_temp
                     next_node = node[0]
@@ -586,11 +634,11 @@ def extend_horizon(pa, pa_node):
         ignore_flag = True
         next_node = pa_node
         print 'No feasible location to move, therefore stay in current position'
-    if energy_low < 1:
-        ignore_flag = True
+    if next_node in pa.final:
+        terminate_flag = True
     ts_policy.append(next_node[0])
     pa_policy.append(next_node)
-    return ts_policy, pa_policy, ignore_flag
+    return ts_policy, pa_policy, terminate_flag
 
 def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     ''' Use of the energy function to get ideal final state to move to in
@@ -603,7 +651,7 @@ def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
         if node not in weighted_nodes:
             for i in pa.g.nodes(data='true'):
                 if i[0] == node:
-                    temp_energy = i[1]['energy_t']
+                    temp_energy = i[1]['energy_moc']
                     break
             if temp_energy < energy_fin:
                 energy_fin = temp_energy
@@ -686,9 +734,12 @@ if __name__ == '__main__':
     ts_files = ['../data/ts_6x6_3D1.txt', '../data/ts_6x6_3D2.txt', '../data/ts_6x6_3D3.txt']
     # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
 
-    # Really should have some notion of battery threshold in order to decide which type of
-    # energy makes more sense at the outset ****
-
+    # Define alpha for multi-objective optimization function J = min[alpha*time_weight + (1-alpha)*edge_weight]
+    # Note: For alpha=0 we only account for the weighted transition system (edge_weight),
+    #       for alpha=1 we only account for minimizing time (time_weight)
+    #       and thus becomes a single-objective optimization problem
+    # Otherwise it is a multi-objective cost minimization of the two factors
+    alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
     time_wp = 1.5
     # Define the radius of agents considered, used for diagonal collision avoidance
@@ -696,4 +747,4 @@ if __name__ == '__main__':
     # Set to True if running on Crazyflies in the lab
     lab_testing = False
     # consider more than one hop out, not here but just a note 12/5 ***
-    case1_synthesis(phi, ts_files, radius, time_wp, lab_testing)
+    case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)

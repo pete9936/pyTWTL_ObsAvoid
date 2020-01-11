@@ -13,7 +13,6 @@ import matplotlib.pyplot as plt
 
 def plot_2D(TS):
 ''' Create a 2D plot of the transition system '''
-    plt.figure()
     # plt.plot([1, 2, 3, 4], [10, 20, 25, 30], color='lightblue', linewidth=3)
     # plt.scatter([0.3, 3.8, 1.2, 2.5], [11, 25, 9, 26], color='darkgreen', marker='^')
     # plt.xlim(0.5, 4.5)
@@ -63,9 +62,9 @@ def plot_2D(TS):
                     ROI_locy = [ROI_locy, gridy(T.states(m*(k-1)+i,j))];
                     ROI_locz = [ROI_locz, gridz(m*n*(k-1)+j)];
 
-    % Generate text for each node value
+    # Generate text for each node value
     a = Alphabet(1:m*n*h)'; c = cellstr(a); dx = 0.15; dy = 0.18;
-    % Put bases in as well
+    # Put bases in as well
     for i=1:m*n
         if c{i} == Base
             c{i} = 'Base';
@@ -75,8 +74,8 @@ def plot_2D(TS):
             c{i} = 'Base3';
         end
     end
-    % Create set of transition arrows to plot
-    % Use Nodeset1 and Nodeset2
+    # Create set of transition arrows to plot
+    # Use Nodeset1 and Nodeset2
     Nodeset1arr = [];
     Nodeset2arr = [];
     for i=1:n*m*h
@@ -99,24 +98,20 @@ def plot_2D(TS):
         p2 = [p2; p2_x p2_y p2_z];
         dp = [dp; (p2_x-p1_x) (p2_y-p1_y) (p2_z-p1_z)];
 
-    % Generate figure for nominal path
-    figure(3)
+    # Generate figure for nominal path
+    plt.figure()
     scatter3(gridx,gridy,gridz,150,'filled','bs')
-    % text(gridx+dx, gridy+dy, gridz, c);
+    # text(gridx+dx, gridy+dy, gridz, c);
     hold on
     title('Transition System (TS)')
-    % set(get(gca,'title'),'Position',[3.0 -0.15])
+    # set(get(gca,'title'),'Position',[3.0 -0.15])
     set(gcf,'Color','[1 1 1]')
     scatter3(obs_locx,obs_locy,obs_locz,200,'filled','ro')
     scatter3(ROI_locx,ROI_locy,ROI_locz,200,'filled','go')
     quiver3(p1(:,1),p1(:,2),p1(:,3),dp(:,1),dp(:,2),dp(:,3),1.5,'k')
     axis off
     hold off
-
     plt.show()
-
-
-
 
 
 

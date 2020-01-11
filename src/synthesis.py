@@ -33,7 +33,7 @@ from operator import attrgetter
 
 import numpy as np
 import networkx as nx
-import pdb            # for debugging
+import pdb
 
 from lomap import Ts, Model
 from lomap import ts_times_ts
@@ -251,15 +251,13 @@ def one_loop_reach_graph(pa, states=None):
         paths = nx.shortest_path_length(pa.g, source=(x, s_init))
         edges = [(x, p[0], d) for p, d in paths.iteritems() if p in pa.final]
         g.add_weighted_edges_from(edges)
-
     return g
 
 def policy_output_word(path_ts, ap):
     '''Returns the output word corresponding to the given path in a transition
     system. The underlying transition system corresponds to a single robot or to
     multiple ones, in which case the states of the path are assumed to be
-    tuples.
-    '''
+    tuples. '''
     if isinstance(path_ts[0], tuple):
         output_word = [set(x) & ap for x in path_ts]
     else:
@@ -271,14 +269,12 @@ def multi_control_policy(pa):
     of the policy. It can be used on product automata obtained from both normal
     and infinity specification FSAs. In the infinity automata case, the returned
     policy corresponds to a valid relaxation, but it may not in general provide
-    the best temporal relaxation.
-    '''
+    the best temporal relaxation. '''
     if not pa.final:
         return None
     target_node = tuple(pa.final)
     # compute optimal path in PA and then project onto the TS
     pa_path = nx.shortest_path(pa.g, source=pa.init.keys()[0], target=target_node, weight='weight')
-
     return pa_path
 
 def simple_control_policy(pa):
@@ -299,7 +295,7 @@ def simple_control_policy(pa):
     pa.g.remove_node('virtual')
     return [x for x, _ in pa_path[:-1]]
 
-def simple_control_policy2(pa, init_key, length=False):
+def simple_control_policy2(pa, init_key, edge_weight=False):
     '''Computes a control policy which minimizes the total length (makespan)
     of the policy. It can be used on product automata obtained from both normal
     and infinity specification FSAs. In the infinity automata case, the returned
@@ -312,10 +308,28 @@ def simple_control_policy2(pa, init_key, length=False):
     pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
 
     # compute optimal path in PA and then project onto the TS
-    if length == True:
-        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='length')
+    if edge_weight == True:
+        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='edge_weight')
     else:
         pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='weight')
+
+    assert pa_path[-2] in pa.final
+    pa.g.remove_node('virtual')
+    return pa_path[:-1]
+
+def simple_control_policy_moc(pa, init_key):
+    '''Computes a control policy which minimizes the total length (makespan)
+    of the policy. It can be used on product automata obtained from both normal
+    and infinity specification FSAs. In the infinity automata case, the returned
+    policy corresponds to a valid relaxation, but it may not in general provide
+    the best temporal relaxation.
+    '''
+    if not pa.final:
+        return None
+    # add virtual node with incoming edges from all final states
+    pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
+    # compute optimal path in PA and then project onto the TS
+    pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='moc_weight')
 
     assert pa_path[-2] in pa.final
     pa.g.remove_node('virtual')
@@ -461,6 +475,7 @@ def relaxed_control_policy(tree, dfa, pa, constraint=None):
 
     raise ValueError('Unknown operation: {}!'.format(tree.operation))
 
+
 def compute_control_policy(pa, dfa, kind):
     '''Computes a control policy from product automaton pa. It also returns the
     corresponding output word over the set of atomic propositions ap. If there
@@ -486,32 +501,32 @@ def compute_control_policy(pa, dfa, kind):
         raise ValueError('Invalid value for the type of automata construction!')
     if optimal_ts_path is None:
         return None, None, None, None
-    output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
-    return optimal_ts_path, optimal_pa_path.path, output_word, optimal_tau
+    # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
+    return optimal_ts_path, optimal_pa_path.path, optimal_tau
 
-def compute_control_policy2(pa, dfa, init_loc):
+def compute_control_policy2(pa, dfa, init_loc, edge_weight=False):
     ''' Computes a control policy from product automaton pa. This takes into
     account the updated initial state where collision was detected. '''
-    # policies = relaxed_control_policy(dfa.tree, dfa, pa)
-    # if not policies:
-    #     return None, None, None
-    # # keep only policies which start from the initial PA state
-    # pa_init_key = []
-    # pa_init_key.append(init_loc)
-    # policies.paths = [p for p in policies if p.path[0] in pa_init_key]
-    # # choose optimal policy with respect to temporal robustness
-    # pdb.set_trace()
-    # optimal_pa_path = min(policies, key=attrgetter('tau'))
-    # optimal_ts_path = [x for x, _ in optimal_pa_path.path]
-    # optimal_tau = optimal_pa_path.tau
     # Get the shortest simple path
-    optimal_pa_path = simple_control_policy2(pa, init_loc)
+    if edge_weight == True:
+        optimal_pa_path = simple_control_policy2(pa, init_loc, edge_weight=True)
+    else:
+        optimal_pa_path = simple_control_policy2(pa, init_loc)
     optimal_ts_path = [x for x, _ in optimal_pa_path]
     optimal_tau = 0 # temporary *** (10/22)
     if optimal_ts_path is None:
         return None, None, None
-    # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path, optimal_tau
+
+def compute_control_policy3(pa, dfa, init_loc):
+    ''' Computes a control policy from product automaton pa. This takes into
+    account the updated initial state where collision was detected. '''
+    # Get the shortest simple path
+    optimal_pa_path = simple_control_policy_moc(pa, init_loc)
+    optimal_ts_path = [x for x, _ in optimal_pa_path]
+    if optimal_ts_path is None:
+        return None, None
+    return optimal_ts_path, optimal_pa_path
 
 def compute_multiagent_policy(pa):
     ''' This calculates the shortest path on a combined product automaton
@@ -522,7 +537,7 @@ def compute_multiagent_policy(pa):
         return None
     return optimal_pa_path
 
-def compute_energy(pa, dfa):
+def compute_time_energy(pa, dfa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
     avoid computing full path and use local communication protocol '''
@@ -534,22 +549,39 @@ def compute_energy(pa, dfa):
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy_t', energy_dict)
 
-def compute_length(pa, dfa):
+def compute_weight_energy(pa, dfa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
     avoid computing full path and use local communication protocol '''
-    length_dict = {}
-    edges_all = nx.get_edge_attributes(pa.g,'length')
+    weight_dict = {}
+    edges_all = nx.get_edge_attributes(pa.g,'edge_weight')
     # Get the shortest simple path for each node
     for ind, node in enumerate(pa.g.nodes()):
-        optimal_pa_path = simple_control_policy2(pa, node, length=True)
-        length = 0
+        optimal_pa_path = simple_control_policy2(pa, node, edge_weight=True)
+        weight = 0
         for i in range(len(optimal_pa_path)-1):
             edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
-            length = length + edges_all[edge_temp]
-        length_dict[node] = length
+            weight = weight + edges_all[edge_temp]
+        weight_dict[node] = weight
     # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy_e', length_dict)
+    nx.set_node_attributes(pa.g,'energy_w', weight_dict)
+
+def compute_moc_energy(pa, dfa):
+    ''' Calculates the energy for each node in the nominal product automaton in
+    order to use this in a local gradient descent scheme for online execution to
+    avoid computing full path and use local communication protocol '''
+    energy_dict = {}
+    edges_all = nx.get_edge_attributes(pa.g,'moc_weight')
+    # Get the shortest simple path for each node
+    for ind, node in enumerate(pa.g.nodes()):
+        optimal_pa_path = simple_control_policy_moc(pa, node)
+        energy = 0
+        for i in range(len(optimal_pa_path)-1):
+            edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
+            energy = energy + edges_all[edge_temp]
+        energy_dict[node] = energy
+    # Update the PA graph with the energy attribute found
+    nx.set_node_attributes(pa.g,'energy_moc', energy_dict)
 
 def compute_distance(ts):
     ''' Calculate the distance from a given node to its surrounding transitions
@@ -558,7 +590,6 @@ def compute_distance(ts):
     distance = []
     for key, (u, v) in node_set.items():
         temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
-
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal

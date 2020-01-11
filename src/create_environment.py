@@ -104,18 +104,17 @@ def update_adj_mat(m, n, adj_mat, obs_mat):
 def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
     ''' Update the adjacency matrix given an observation matrix '''
     # Breakdown of weights which are approximately Euclidean with a small
-    # penalty given for change in altitude and preference for lower altitude
-    up_penalty = 0.2
-    down_penalty = 0.1
-    up_cost = 1 + up_penalty
-    up_card_cost = 1.414 + up_penalty
-    up_diag_cost = 1.55 + up_penalty
-    down_cost = 1 + down_penalty
-    down_card_cost = 1.414 + down_penalty
-    down_diag_cost = 1.55 + down_penalty
+    # penalty given for change in altitude
+    epsilon = 0.1
     stay_cost = 0.5
     card_cost = 1
     diag_cost = 1.414
+    up_cost = 1 + epsilon
+    up_card_cost = 1.414 + epsilon
+    up_diag_cost = 1.55 + epsilon
+    down_cost = 1 + epsilon
+    down_card_cost = 1.414 + epsilon
+    down_diag_cost = 1.55 + epsilon
 
     for k in range(h):
         for i in range(m):
@@ -1048,18 +1047,18 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
                         if nodeset1[i] == key1:
                             for key2 in bases:
                                 if nodeset2[i] == key2:
-                                    f1.write('%s %s {\'duration\': %d, \'length\': %f}\n'\
+                                    f1.write('%s %s {\'duration\': %d, \'edge_weight\': %f}\n'\
                                             % (bases[key1], bases[key2], 1.0, weight[i]))
                 else:
                     for key1 in bases:
                         if nodeset1[i] == key1:
-                            f1.write('%s r%d {\'duration\': %d, \'length\': %f}\n' % (bases[key1], nodeset2[i], 1.0, weight[i]))
+                            f1.write('%s r%d {\'duration\': %d, \'edge_weight\': %f}\n' % (bases[key1], nodeset2[i], 1.0, weight[i]))
             elif nodeset2[i] in bases:
                 for key2 in bases:
                     if nodeset2[i] == key2:
-                        f1.write('r%d %s {\'duration\': %d, \'length\': %f}\n' % (nodeset1[i], bases[key2], 1.0, weight[i]))
+                        f1.write('r%d %s {\'duration\': %d, \'edge_weight\': %f}\n' % (nodeset1[i], bases[key2], 1.0, weight[i]))
             else:
-                f1.write('r%d r%d {\'duration\': %d, \'length\': %f}\n' % (nodeset1[i], nodeset2[i], 1.0, weight[i]))
+                f1.write('r%d r%d {\'duration\': %d, \'edge_weight\': %f}\n' % (nodeset1[i], nodeset2[i], 1.0, weight[i]))
     # finished writing to file
     f1.close()
 

@@ -96,12 +96,12 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
     f1.close()
     out.close()
 
-def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, output, tau, dfa, ts, ets, ts_policy, pa_policy, tau_new, key):
+def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, tau, dfa, ts, ets, ts_policy, pa_policy, tau_new, key):
     ''' This writes the nominal and final control policy for each agent to
     an output file. '''
     logging.info('Max deadline: %s', tau)
     if ts_nom_policy is not None:
-        logging.info('Generated output word is: %s', [tuple(o) for o in output])
+        # logging.info('Generated output word is: %s', [tuple(o) for o in output])
         policy = [x for x in ts_nom_policy if x not in ets.state_map]
         out = StringIO.StringIO()
         for u, v in zip(policy[:-1], policy[1:]):

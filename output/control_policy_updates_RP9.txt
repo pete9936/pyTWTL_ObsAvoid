@@ -1,0 +1,4 @@
+Control Policy for agent 1 at step 1:  r26 -> 1 -> r26
+
+Control Policy for agent 3 at step 2:  r15 -> 1 -> r10 -> 1 -> r10
+
