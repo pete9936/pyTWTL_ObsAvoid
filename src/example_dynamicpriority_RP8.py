@@ -538,8 +538,8 @@ def two_hop_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                                 energy_low = energy_temp
                                 break
                 if energy_low == float('inf'):
-                    ts_policy.append([keep_node2[0],keep_node2[0]])
-                    pa_policy.append(keep_node2, keep_node2)
+                    ts_policy.append(keep_node2[0])
+                    pa_policy.append(keep_node2)
                     print 'No feasible location to move, therefore stay in current position'
                     return ts_policy, pa_policy
                 energy_temp = energy_temp + energy_low

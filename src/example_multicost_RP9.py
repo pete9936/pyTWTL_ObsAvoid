@@ -112,8 +112,6 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     # set empty control policies that will be iteratively updated
     ts_control_policy_dict = {}
     pa_control_policy_dict = {}
-    # Set a Boolean vector to indicate if a path needs to be recomputed
-    policy_flag = [1]*len(ts_files)
 
     # Initialize policy variables
     for key in ts_policy_dict_nom:
@@ -125,9 +123,6 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
 
     # Initialize vars, give nominal policies
     iter_step = 0
-    append_flag = True
-    final_flag = False
-    final_count = 0
     running = True
     traj_length = 0
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
@@ -136,10 +131,13 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     terminate = {}
     for key in ts_policy:
         terminate[key] = False
-    num_hops = 2 # parameter for n-horizon local trajectory and information sharing
+    num_hops = 3 # parameter for n-horizon local trajectory and information sharing, must be at least 2
     # Get agent priority based on lowest energy
     prev_priority = key_list
-    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, key_list, prev_priority)
+    prev_states = {}
+    for key in ts_policy_dict_nom:
+        prev_states[key] = pa_policy_dict_nom[key][0]
+    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list, prev_priority)
 
     # Print time statistics
     stopOff = timeit.default_timer()
@@ -160,7 +158,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
         while policy_match:
             for p_ind, p_val in enumerate(priority):
                 if p_ind < 1:
-                    append_flag = True
+                    weighted_nodes = []
+                    weighted_soft_nodes = {}
+                    for i in range(num_hops-1):
+                        weighted_soft_nodes[i+1] = []
                 else:
                     # Get local neighborhood (n-hop) of nodes to search for a conflict
                     for k, key in enumerate(key_list):
@@ -168,13 +169,15 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             node = policy_match[0][k]
                             break
                     local_set = get_neighborhood(node, ts_dict[p_val], num_hops)
-                    prev_nodes = []
+                    one_hop_set = ts_dict[p_val].g.neighbors(node)
+                    # Assign hard constraint nodes in local neighborhood
+                    weighted_nodes = []
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
                             if pty == key:
                                 prev_node = policy_match[0][k]
-                                if prev_node in local_set:
-                                    prev_nodes.append(prev_node)
+                                if prev_node in one_hop_set:
+                                    weighted_nodes.append(prev_node)
                                 break
                     # Get soft constraint nodes from sharing n-hop trajectory
                     soft_nodes = {}
@@ -183,7 +186,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             if pty == key:
                                 ts_length = len(ts_policy[key])
                                 if ts_length > num_hops:
-                                    for i in range(num_hops):
+                                    for i in range(num_hops-1):
                                         if ts_policy[key][i+1] in local_set:
                                             try:
                                                 soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
@@ -196,168 +199,135 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                                 soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
                                             except KeyError:
                                                 soft_nodes[i+1] = ts_policy[key][i+1]
-                    if node in prev_nodes:
-                        policy_flag[p_val-1] = 0
-                        append_flag = False
-                        break
-                    else:
-                        policy_flag[p_val-1] = 1
-                        append_flag = True
-
-            if append_flag == False:
-                weighted_nodes = prev_nodes
-                weighted_soft_nodes = soft_nodes
-            else:
-                weighted_nodes = []
-                weighted_soft_nodes = soft_nodes
-            # Update weights if transitioning between same two nodes
-            ts_prev_states = []
-            ts_index = []
-            if len(policy_match[0]) > 1 and traj_length >= 1:
-                for key in ts_control_policy_dict:
-                    if len(ts_control_policy_dict[key]) == traj_length:
-                        ts_prev_states.append(ts_control_policy_dict[key][-1])
-            if ts_prev_states:
-                for p_ind2, p_val2 in enumerate(priority):
-                    if p_ind2 > 0:
-                        for k_c, key in enumerate(key_list):
-                            if p_val2 == key:
-                                node = policy_match[0][k_c]
-                                break
-                        # Check if the trajectories will cross each other in transition
-                        cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                                                            priority[0:p_ind2], key_list, radius, time_wp)
-                        if cross_weight:
-                            weighted_nodes = prev_nodes
-                            # weighted_soft_nodes = soft_nodes
-                            for cross_node in cross_weight:
-                                if cross_node not in weighted_nodes:
-                                    weighted_nodes.append(cross_node)
-                            policy_flag[p_val2-1] = 0
-                            append_flag = False
-                            # Check if agents using same transition
-                            for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
-                                for k, key in enumerate(key_list):
-                                    if p_val3 == key:
-                                        if ts_prev_states[k] == node:
-                                            if policy_match[0][k] == ts_prev_states[k_c]:
-                                                temp_node = policy_match[0][k]
-                                                if temp_node not in weighted_nodes:
-                                                    weighted_nodes.append(temp_node)
-                                                if node not in weighted_nodes:
-                                                    weighted_nodes.append(node)
-                                                break
+                    # Assign soft constraint nodes
+                    weighted_soft_nodes = soft_nodes
+                    # Update weights if transitioning between same two nodes
+                    ts_prev_states = []
+                    ts_index = []
+                    if len(policy_match[0]) > 1 and traj_length >= 1:
+                        for key in ts_control_policy_dict:
+                            if len(ts_control_policy_dict[key]) == traj_length:
+                                ts_prev_states.append(ts_control_policy_dict[key][-1])
+                    if ts_prev_states:
+                        for p_ind2, p_val2 in enumerate(priority):
+                            if p_ind2 > 0:
+                                for k_c, key in enumerate(key_list):
+                                    if p_val2 == key:
+                                        node = policy_match[0][k_c]
+                                        break
+                                # Check if the trajectories will cross each other in transition
+                                cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
+                                                                    priority[0:p_ind2], key_list, radius, time_wp)
+                                if cross_weight:
+                                    for cross_node in cross_weight:
+                                        if cross_node not in weighted_nodes:
+                                            weighted_nodes.append(cross_node)
+                                    # Check if agents using same transition
+                                    for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
+                                        for k, key in enumerate(key_list):
+                                            if p_val3 == key:
+                                                if ts_prev_states[k] == node:
+                                                    if policy_match[0][k] == ts_prev_states[k_c]:
+                                                        temp_node = policy_match[0][k]
+                                                        if temp_node not in weighted_nodes:
+                                                            weighted_nodes.append(temp_node)
+                                                        if node not in weighted_nodes:
+                                                            weighted_nodes.append(node)
+                                                        break
+                                        else:
+                                            continue
+                                        break
+                                    else:
+                                        continue
+                                    break
                                 else:
-                                    continue
-                                break
-                            else:
-                                continue
-                            break
-                        else:
-                            # Check if agents using same transition
-                            for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
-                                for k, key in enumerate(key_list):
-                                    if p_val3 == key:
-                                        if ts_prev_states[k] == node:
-                                            if policy_match[0][k] == ts_prev_states[k_c]:
-                                                weighted_nodes = prev_nodes
-                                                temp_node = policy_match[0][k]
-                                                if temp_node not in weighted_nodes:
-                                                    weighted_nodes.append(temp_node)
-                                                if node not in weighted_nodes:
-                                                    weighted_nodes.append(node)
-                                                policy_flag[p_val2-1] = 0
-                                                append_flag = False
-                                                break
-                                else:
-                                    continue
-                                break
-                            else:
-                                continue
-                            break
-            else:
-                append_flag = True
+                                    # Check if agents using same transition
+                                    for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
+                                        for k, key in enumerate(key_list):
+                                            if p_val3 == key:
+                                                if ts_prev_states[k] == node:
+                                                    if policy_match[0][k] == ts_prev_states[k_c]:
+                                                        temp_node = policy_match[0][k]
+                                                        if temp_node not in weighted_nodes:
+                                                            weighted_nodes.append(temp_node)
+                                                        if node not in weighted_nodes:
+                                                            weighted_nodes.append(node)
+                                                        break
+                                        else:
+                                            continue
+                                        break
+                                    else:
+                                        continue
+                                    break
+                # Compute local horizon function to account for receding horizon all the time
+                # while checking for termination
+                if traj_length >= 1:
+                    init_loc = pa_control_policy_dict[p_val][-1]
+                    ts_temp = ts_policy[p_val]
+                    pa_temp = pa_policy[p_val]
+                    # Compute receding horizon shortest path
+                    ts_policy[p_val], pa_policy[p_val], terminate[p_val] = \
+                            local_horizon(pa_nom_dict[p_val], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
+                    if terminate[p_val]:
+                        # This accounts for termination criteria
+                        pdb.set_trace()
+                        ts_policy[p_val] = ts_temp
+                        pa_policy[p_val] = pa_temp
+                    # Write updates to file
+                    iter_step += 1
+                    write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
 
-            # Need major motifications to extend_horizon function to account for receding horizon all the time
-            # Possibly check for termination in local_horizon function as well
-            if len(policy_match) == 1:
-                for pty in priority:
-                    if append_flag == True: # update local trajectory and move on
-                        init_loc = pa_control_policy_dict[pty][-1]
-                        ts_temp = ts_policy[pty]
-                        pa_temp = pa_policy[pty]
-                        ts_policy[pty], pa_policy[pty], terminate[pty] = extend_horizon(pa_nom_dict[pty], pa_policy[pty][0])
-                        if terminate[pty]:
-                            # This accounts for termination criteria
-                            ts_policy[pty] = ts_temp
-                            pa_policy[pty] = pa_temp
-                        else:
-                            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+            # Update policy match
+            pdb.set_trace()
+            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+
             # Append trajectories
-            if append_flag:
-                for key in ts_policy:
-                    ts_control_policy_dict[key].append(ts_policy[key].pop(0))
-                    pa_policy_temp = list(pa_policy[key])
-                    pa_control_policy_dict[key].append(pa_policy_temp.pop(0))
-                    pa_policy[key] = tuple(pa_policy_temp)
-                ts_write = policy_match.pop(0)
-                traj_length += 1
-                # publish this waypoint to a csv file
-                write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
-                # Execute waypoint in crazyswarm lab testing
-                if lab_testing:
-                    startWaypoint = timeit.default_timer()
-                    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure executable
-                    os.chdir("/home/ryan/Desktop/pyTWTL/src")
-                    stopWaypoint = timeit.default_timer()
-                    print 'Waypoint time, should be ~2.0sec: ', stopWaypoint - startWaypoint
-                break
-            else:
-                # Update PA with new weights and policies to match
-                iter_step += 1
-                # This for loop simply finds index of the 0
-                for key, pflag in enumerate(policy_flag):
-                    if pflag == 0:
-                        break
-                key = key+1
-                # Now recompute the control policy with updated edge weights
-                init_loc = pa_control_policy_dict[key][-1]
-                # Compute receding horizon shortest path
-                ts_policy[key], pa_policy[key] = \
-                        local_horizon(pa_nom_dict[key], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
+            for key in ts_policy:
+                ts_control_policy_dict[key].append(ts_policy[key].pop(0))
+                pa_policy_temp = list(pa_policy[key])
+                pa_control_policy_dict[key].append(pa_policy_temp.pop(0))
+                pa_policy[key] = tuple(pa_policy_temp)
+            ts_write = policy_match.pop(0)
+            traj_length += 1
+            # publish this waypoint to a csv file
+            write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
+            # Execute waypoint in crazyswarm lab testing
+            if lab_testing:
+                startWaypoint = timeit.default_timer()
+                os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure executable
+                os.chdir("/home/ryan/Desktop/pyTWTL/src")
+                stopWaypoint = timeit.default_timer()
+                print 'Waypoint time, should be ~2.0sec: ', stopWaypoint - startWaypoint
 
-                # Write updates to file
-                write_to_iter_file(ts_policy[key], ts_dict[key], ets_dict[key], key, iter_step)
+            # Update policy_match now that a trajectory has finalized and policy_match is empty
+            if ts_policy:
+                # Remove keys from policies that have terminated
+                land_keys = []
+                for key, val in ts_policy.items():
+                    if len(val) == 0:
+                        # priority.remove(key)
+                        land_keys.append(key)
+                        del ts_policy[key]
+                        del pa_policy[key]
+                # publish to the land csv file for lab testing
+                if land_keys:
+                    if lab_testing:
+                        write_to_land_file(land_keys)
+                        os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
+                        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure executable
+                        os.chdir("/home/ryan/Desktop/pyTWTL/src")
+                if not ts_policy:
+                    running = False
+                    break
                 # Update policy match
                 policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-
-        # Update policy_match now that a trajectory has finalized and policy_match is empty
-        if ts_policy:
-            # Remove keys from policies that have terminated
-            land_keys = []
-            for key, val in ts_policy.items():
-                if len(val) == 0:
-                    # priority.remove(key)
-                    land_keys.append(key)
-                    del ts_policy[key]
-                    del pa_policy[key]
-            # publish to the land csv file for lab testing
-            if land_keys:
-                if lab_testing:
-                    write_to_land_file(land_keys)
-                    os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                    os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure executable
-                    os.chdir("/home/ryan/Desktop/pyTWTL/src")
-            if not ts_policy:
+                # Get agent priority based on lowest energy
+                for key in key_list:
+                    prev_states[key] = pa_control_policy_dict[key][-1]
+                priority = get_priority(pa_nom_dict, pa_policy, prev_states, key_list, priority)
+            else:
                 running = False
-                break
-            # Update policy match
-            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-            # Get agent priority based on lowest energy
-            priority = get_priority(pa_nom_dict, pa_policy, key_list, priority)
-        else:
-            running = False
 
     # Print run time statistics
     stopOnline = timeit.default_timer()
@@ -379,16 +349,16 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
         write_to_csv(ts_dict[key], ts_control_policy_dict[key], key, time_wp)
 
 
-def get_priority(pa_nom_dict, pa_policy, key_list, prev_priority):
+def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
     ''' Computes the agent priority based on lowest energy. '''
     priority = []
     temp_energy = {}
     progress_check = {}
     for key in key_list:
         temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy_moc']
-        state_0 = pa_policy[key][0][1]
+        state_0 = prev_states[key][1]
         try:
-            state_1 = pa_policy[key][1][1]
+            state_1 = pa_policy[key][0][1]
         except IndexError:
             state_1 = []
         if state_0 != state_1:
@@ -414,31 +384,8 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     pa_policy = []
     epsilon = 0.001
     terminate_flag = False
-    # Check initial input and account for num_hops=0 case
-    if num_hops < 1:
-        keep_nodes = {}
-        local_set = pa.g.neighbors(init_loc)
-        for neighbor in local_set:
-            for node in pa.g.nodes(data='true'):
-                if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                    keep_nodes[node[0]] = node[1]['energy_moc']
-                    break
-        if not keep_nodes:
-            ts_policy.append([init_loc[0], init_loc[0]])
-            pa_policy.append(init_loc, init_loc)
-            print 'No feasible location to move, therefore stay in current position'
-            return ts_policy, pa_policy
-        temp = min(keep_nodes, key=keep_nodes.get)
-        # If there is no location with lower overall moc energy then stay put
-        if keep_nodes[temp] - keep_nodes[init_loc] < epsilon:
-            next_node = init_loc
-        else:
-            next_node = temp
-        ts_policy.append([next_node[0], next_node[0]])
-        pa_policy.append(next_node, next_node)
-        return ts_policy, pa_policy
-
     # Compute the n-hop trajectory
+    # Ensures a minimum 2-hop trajectory
     prev_node = init_loc
     for i in range(num_hops):
         keep_nodes = {}
@@ -453,73 +400,70 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
                 ts_policy.append([init_loc[0],init_loc[0]])
                 pa_policy.append(init_loc, init_loc)
                 print 'No feasible location to move, therefore stay in current position'
-                return ts_policy, pa_policy
+                return ts_policy, pa_policy, terminate_flag
         else:
+            try:
+                soft_nodes[i+1]
+            except KeyError:
+                soft_nodes[i+1] = []
             for neighbor in local_set:
                 for node in pa.g.nodes(data='true'):
-                    try:
-                        soft_nodes[i+1]
-                    except KeyError:
-                        soft_nodes[i+1] = []
-                    if neighbor == node[0] and node[0][0] not in soft_nodes[i+1]:
-                        keep_nodes[node[0]] = node[1]['energy_moc']
+                    if neighbor == node[0]:
+                        if node[0][0] in soft_nodes[i+1]:
+                            keep_nodes[node[0]] = node[1]['energy_moc'] + 2 # penalty if in soft_nodes
+                        else:
+                            keep_nodes[node[0]] = node[1]['energy_moc']
                         break
             if not keep_nodes:
                 ts_policy.append(prev_node[0])
                 pa_policy.append(prev_node)
                 print 'No feasible location to move, therefore stay in current position'
-                return ts_policy, pa_policy
+                if prev_node in pa.final:
+                    terminate_flag = True
+                return ts_policy, pa_policy, terminate_flag
+
         # Iterate through all hops
-        # Ensures a minimum 2-hop trajectory
-        if num_hops < 2:
-            temp = min(keep_nodes, key=keep_nodes.get)
-            # If there is no location with lower overall moc energy then stay put
-            if keep_nodes[temp] - keep_nodes[prev_node] < epsilon:
-                next_node = prev_node
-            else:
-                next_node = temp
-            ts_policy.append(next_node[0])
-            ts_policy.append(next_node[0])
-            pa_policy.append(next_node)
-            pa_policy.append(next_node)
-            return ts_policy, pa_policy
+        for keep_node in keep_nodes:
+            temp_node = keep_node
+            energy_temp = keep_nodes[keep_node]
+            for j in range(num_hops-i):
+                local_set = pa.g.neighbors(temp_node)
+                energy_low = float('inf')
+                try:
+                    soft_nodes[j+i+1]
+                except KeyError:
+                    soft_nodes[j+i+1] = []
+                for neighbor in local_set:
+                    for node in pa.g.nodes(data='true'):
+                        if neighbor == node[0] and node[0][0] not in soft_nodes[j+i+1]:
+                            energy_temp2 = node[1]['energy_moc']
+                            if energy_temp2 < energy_low:
+                                temp_node = node[0]
+                                energy_low = energy_temp2
+                                break
+                if energy_low == float('inf'):
+                    ts_policy.append(keep_node[0])
+                    pa_policy.append(keep_node)
+                    if keep_node in pa.final:
+                        terminate_flag = True
+                    return ts_policy, pa_policy, terminate_flag
+                energy_temp = energy_temp + energy_low
+            keep_nodes[keep_node] = energy_temp
+        # If there is no location with lower overall moc energy then stay put
+        temp = min(keep_nodes, key=keep_nodes.get)
+        pdb.set_trace()
+        if abs(keep_nodes[temp] - keep_nodes[prev_node]) < epsilon:
+            next_node = prev_node
         else:
-            for keep_node in keep_nodes:
-                temp_node = keep_node
-                energy_temp = keep_nodes[keep_node]
-                for j in range(num_hops-i):
-                    local_set = pa.g.neighbors(temp_node)
-                    energy_low = float('inf')
-                    for neighbor in local_set:
-                        for node in pa.g.nodes(data='true'):
-                            try:
-                                soft_nodes[j+i+1]
-                            except KeyError:
-                                soft_nodes[j+i+1] = []
-                            if neighbor == node[0] and node[0][0] not in soft_nodes[j+i+1]:
-                                energy_temp = node[1]['energy_moc']
-                                if energy_temp < energy_low:
-                                    temp_node = node[0]
-                                    energy_low = energy_temp
-                                    break
-                    if energy_low == float('inf'):
-                        ts_policy.append(keep_node[0])
-                        pa_policy.append(keep_node)
-                    energy_temp = energy_temp + energy_low
-                keep_nodes[keep_node] = energy_temp
-            # If there is no location with lower overall moc energy then stay put
-            temp = min(keep_nodes, key=keep_nodes.get)
-            if keep_nodes[temp] - keep_nodes[prev_node] < epsilon:
-                next_node = prev_node
-            else:
-                next_node = temp
+            next_node = temp
         # Append policies returned
         ts_policy.append(next_node[0])
         pa_policy.append(next_node)
+        if next_node in pa.final:
+            terminate_flag = True
+            return ts_policy, pa_policy, terminate_flag
         prev_node = next_node
 
-    #if next_node in pa.final:
-    #    terminate_flag = True
     return ts_policy, pa_policy, terminate_flag
 
 
