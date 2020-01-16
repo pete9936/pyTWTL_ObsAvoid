@@ -1070,7 +1070,7 @@ if __name__ == '__main__':
     TS, obs_mat, state_mat = create_ts(m,n,h)
     # try out the init state and obstacles functions
     init_state = [30, 34, 1, 4, 6]
-    obstacles = [(3,2,0),(3,2,1),(3,2,1),(2,5,0),(5,3,0),(5,3,1)] # (row,column,altitude/height)
+    obstacles = [(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)] # (row,column,altitude/height)
     paths = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
             '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
     bases = {30: 'Base', 34: 'Base2', 1: 'Base3', 4: 'Base4', 6: 'Base5'}

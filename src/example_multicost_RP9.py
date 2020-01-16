@@ -142,6 +142,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
+    pdb.set_trace()
 
     # Execute takeoff caommand for all crazyflies in lab testing
     if lab_testing:
@@ -188,16 +189,18 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                     for i in range(num_hops-1):
                                         if ts_policy[key][i+1] in local_set:
                                             try:
-                                                soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
+                                                soft_nodes[i+1]
+                                                soft_nodes[i+1].append(ts_policy[key][i+1])
                                             except KeyError:
-                                                soft_nodes[i+1] = ts_policy[key][i+1]
+                                                soft_nodes[i+1] = [ts_policy[key][i+1]]
                                 else:
                                     for i in range(ts_length-1):
                                         if ts_policy[key][i+1] in local_set:
                                             try:
-                                                soft_nodes[i+1] = [soft_nodes[i+1], ts_policy[key][i+1]]
+                                                soft_nodes[i+1]
+                                                soft_nodes[i+1].append(ts_policy[key][i+1])
                                             except KeyError:
-                                                soft_nodes[i+1] = ts_policy[key][i+1]
+                                                soft_nodes[i+1] = [ts_policy[key][i+1]]
                                 for i in range(num_hops-1):
                                     try:
                                         soft_nodes[i+1]
@@ -274,8 +277,8 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                     iter_step += 1
                     write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
 
-            # Update policy match
-            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+                # Update policy match
+                policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
 
             # Append trajectories
             for key in ts_policy:
@@ -302,7 +305,6 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 land_keys = []
                 for key, val in ts_policy.items():
                     if len(val) == 0:
-                        # priority.remove(key)
                         land_keys.append(key)
                         del ts_policy[key]
                         del pa_policy[key]
@@ -514,21 +516,6 @@ def update_policy_match(ts_policy):
     # Set policy_match
     return temp_match, policy_match_index, key_list
 
-def update_weight(pa_prime, s_token):
-    ''' Update edge weights of PA when a collision between nodes is detected.
-    This searches the edges and if an edge is connected to the obstacle node
-    then we assign updated weight. '''
-    for s in s_token:
-        for i in pa_prime.g.edges():
-            for item in i:
-                if s in item:
-                    weight_new = pa_prime.g.number_of_edges()/2 + 1
-                    temp = list(i)
-                    temp.append(weight_new)
-                    pa_prime.g.add_weighted_edges_from([tuple(temp)])
-                    break
-    return pa_prime
-
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
@@ -545,10 +532,10 @@ if __name__ == '__main__':
     # case study 1: Synthesis
     phi1 = '[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]'
     phi2 = '[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]'
-    phi3 = '[H^1 r84]^[0, 7] * [H^1 r98]^[0, 7] * [H^1 Base3]^[0, 7]'
-    phi4 = '[H^2 r53]^[0, 6] * [H^1 r86]^[0, 7] * [H^1 Base4]^[0, 7]'
-    phi5 = '[H^2 r105]^[0, 8] * [H^1 r98]^[0, 8] * [H^1 Base5]^[0, 8]'
-    # Currently set to use the same transition system
+    phi3 = '[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]'
+    phi4 = '[H^1 r53]^[0, 6] * [H^1 r86]^[0, 7] * [H^1 Base4]^[0, 7]'
+    phi5 = '[H^1 r105]^[0, 8] * [H^1 Base5]^[0, 8]'
+    # Set to use the same transition system
     phi = [phi1, phi2, phi3, phi4, phi5]
     ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
                 '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
@@ -561,10 +548,9 @@ if __name__ == '__main__':
     # Otherwise it is a multi-objective cost minimization of the two factors
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.5
+    time_wp = 1.7
     # Define the radius (m) of agents considered, used for diagonal collision avoidance
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
     lab_testing = False
-    # consider more than one hop out, not here but just a note 12/5 ***
     case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)

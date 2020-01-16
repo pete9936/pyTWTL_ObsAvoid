@@ -88,7 +88,6 @@ r88 {'prop':{'r88'}, 'position': (0.25, -0.75, 1.00)}
 r89 {'prop':{'r89'}, 'position': (0.25, -1.25, 1.00)}
 r90 {'prop':{'r90'}, 'position': (-0.25, 1.25, 1.00)}
 r91 {'prop':{'r91'}, 'position': (-0.25, 0.75, 1.00)}
-r92 {'prop':{'r92'}, 'position': (-0.25, 0.25, 1.00)}
 r93 {'prop':{'r93'}, 'position': (-0.25, -0.25, 1.00)}
 r94 {'prop':{'r94'}, 'position': (-0.25, -0.75, 1.00)}
 r95 {'prop':{'r95'}, 'position': (-0.25, -1.25, 1.00)}
@@ -824,7 +823,6 @@ r49 r85 {'duration': 1, 'edge_weight': 1.100000}
 r49 r86 {'duration': 1, 'edge_weight': 1.514000}
 r49 r90 {'duration': 1, 'edge_weight': 1.650000}
 r49 r91 {'duration': 1, 'edge_weight': 1.514000}
-r49 r92 {'duration': 1, 'edge_weight': 1.650000}
 r50 r7 {'duration': 1, 'edge_weight': 1.650000}
 r50 r8 {'duration': 1, 'edge_weight': 1.514000}
 r50 r9 {'duration': 1, 'edge_weight': 1.650000}
@@ -848,7 +846,6 @@ r50 r85 {'duration': 1, 'edge_weight': 1.514000}
 r50 r86 {'duration': 1, 'edge_weight': 1.100000}
 r50 r87 {'duration': 1, 'edge_weight': 1.514000}
 r50 r91 {'duration': 1, 'edge_weight': 1.650000}
-r50 r92 {'duration': 1, 'edge_weight': 1.514000}
 r50 r93 {'duration': 1, 'edge_weight': 1.650000}
 r51 r8 {'duration': 1, 'edge_weight': 1.650000}
 r51 r9 {'duration': 1, 'edge_weight': 1.514000}
@@ -872,7 +869,6 @@ r51 r82 {'duration': 1, 'edge_weight': 1.650000}
 r51 r86 {'duration': 1, 'edge_weight': 1.514000}
 r51 r87 {'duration': 1, 'edge_weight': 1.100000}
 r51 r88 {'duration': 1, 'edge_weight': 1.514000}
-r51 r92 {'duration': 1, 'edge_weight': 1.650000}
 r51 r93 {'duration': 1, 'edge_weight': 1.514000}
 r51 r94 {'duration': 1, 'edge_weight': 1.650000}
 r52 r9 {'duration': 1, 'edge_weight': 1.650000}
@@ -957,7 +953,6 @@ r55 r85 {'duration': 1, 'edge_weight': 1.514000}
 r55 r86 {'duration': 1, 'edge_weight': 1.650000}
 r55 r90 {'duration': 1, 'edge_weight': 1.514000}
 r55 r91 {'duration': 1, 'edge_weight': 1.100000}
-r55 r92 {'duration': 1, 'edge_weight': 1.514000}
 r55 r96 {'duration': 1, 'edge_weight': 1.650000}
 r55 r97 {'duration': 1, 'edge_weight': 1.514000}
 r55 r98 {'duration': 1, 'edge_weight': 1.650000}
@@ -980,7 +975,6 @@ r57 r64 {'duration': 1, 'edge_weight': 1.414000}
 r57 r86 {'duration': 1, 'edge_weight': 1.650000}
 r57 r87 {'duration': 1, 'edge_weight': 1.514000}
 r57 r88 {'duration': 1, 'edge_weight': 1.650000}
-r57 r92 {'duration': 1, 'edge_weight': 1.514000}
 r57 r93 {'duration': 1, 'edge_weight': 1.100000}
 r57 r94 {'duration': 1, 'edge_weight': 1.514000}
 r57 r98 {'duration': 1, 'edge_weight': 1.650000}
@@ -1065,7 +1059,6 @@ r61 r67 {'duration': 1, 'edge_weight': 1.000000}
 r61 r68 {'duration': 1, 'edge_weight': 1.414000}
 r61 r90 {'duration': 1, 'edge_weight': 1.650000}
 r61 r91 {'duration': 1, 'edge_weight': 1.514000}
-r61 r92 {'duration': 1, 'edge_weight': 1.650000}
 r61 r96 {'duration': 1, 'edge_weight': 1.514000}
 r61 r97 {'duration': 1, 'edge_weight': 1.100000}
 r61 r98 {'duration': 1, 'edge_weight': 1.514000}
@@ -1087,7 +1080,6 @@ r62 r63 {'duration': 1, 'edge_weight': 1.000000}
 r62 r67 {'duration': 1, 'edge_weight': 1.414000}
 r62 r68 {'duration': 1, 'edge_weight': 1.000000}
 r62 r91 {'duration': 1, 'edge_weight': 1.650000}
-r62 r92 {'duration': 1, 'edge_weight': 1.514000}
 r62 r93 {'duration': 1, 'edge_weight': 1.650000}
 r62 r97 {'duration': 1, 'edge_weight': 1.514000}
 r62 r98 {'duration': 1, 'edge_weight': 1.100000}
@@ -1109,7 +1101,6 @@ r63 r63 {'duration': 1, 'edge_weight': 0.500000}
 r63 r64 {'duration': 1, 'edge_weight': 1.000000}
 r63 r68 {'duration': 1, 'edge_weight': 1.414000}
 r63 r70 {'duration': 1, 'edge_weight': 1.414000}
-r63 r92 {'duration': 1, 'edge_weight': 1.650000}
 r63 r93 {'duration': 1, 'edge_weight': 1.514000}
 r63 r94 {'duration': 1, 'edge_weight': 1.650000}
 r63 r98 {'duration': 1, 'edge_weight': 1.514000}
@@ -1423,7 +1414,6 @@ r85 r85 {'duration': 1, 'edge_weight': 0.500000}
 r85 r86 {'duration': 1, 'edge_weight': 1.000000}
 r85 r90 {'duration': 1, 'edge_weight': 1.414000}
 r85 r91 {'duration': 1, 'edge_weight': 1.000000}
-r85 r92 {'duration': 1, 'edge_weight': 1.414000}
 r86 r43 {'duration': 1, 'edge_weight': 1.650000}
 r86 r44 {'duration': 1, 'edge_weight': 1.514000}
 r86 r45 {'duration': 1, 'edge_weight': 1.650000}
@@ -1439,7 +1429,6 @@ r86 r85 {'duration': 1, 'edge_weight': 1.000000}
 r86 r86 {'duration': 1, 'edge_weight': 0.500000}
 r86 r87 {'duration': 1, 'edge_weight': 1.000000}
 r86 r91 {'duration': 1, 'edge_weight': 1.414000}
-r86 r92 {'duration': 1, 'edge_weight': 1.000000}
 r86 r93 {'duration': 1, 'edge_weight': 1.414000}
 r87 r44 {'duration': 1, 'edge_weight': 1.650000}
 r87 r45 {'duration': 1, 'edge_weight': 1.514000}
@@ -1455,7 +1444,6 @@ r87 r82 {'duration': 1, 'edge_weight': 1.414000}
 r87 r86 {'duration': 1, 'edge_weight': 1.000000}
 r87 r87 {'duration': 1, 'edge_weight': 0.500000}
 r87 r88 {'duration': 1, 'edge_weight': 1.000000}
-r87 r92 {'duration': 1, 'edge_weight': 1.414000}
 r87 r93 {'duration': 1, 'edge_weight': 1.000000}
 r87 r94 {'duration': 1, 'edge_weight': 1.414000}
 r88 r45 {'duration': 1, 'edge_weight': 1.650000}
@@ -1513,27 +1501,9 @@ r91 r85 {'duration': 1, 'edge_weight': 1.000000}
 r91 r86 {'duration': 1, 'edge_weight': 1.414000}
 r91 r90 {'duration': 1, 'edge_weight': 1.000000}
 r91 r91 {'duration': 1, 'edge_weight': 0.500000}
-r91 r92 {'duration': 1, 'edge_weight': 1.000000}
 r91 r96 {'duration': 1, 'edge_weight': 1.414000}
 r91 r97 {'duration': 1, 'edge_weight': 1.000000}
 r91 r98 {'duration': 1, 'edge_weight': 1.414000}
-r92 r49 {'duration': 1, 'edge_weight': 1.650000}
-r92 r50 {'duration': 1, 'edge_weight': 1.514000}
-r92 r51 {'duration': 1, 'edge_weight': 1.650000}
-r92 r55 {'duration': 1, 'edge_weight': 1.514000}
-r92 r57 {'duration': 1, 'edge_weight': 1.514000}
-r92 r61 {'duration': 1, 'edge_weight': 1.650000}
-r92 r62 {'duration': 1, 'edge_weight': 1.514000}
-r92 r63 {'duration': 1, 'edge_weight': 1.650000}
-r92 r85 {'duration': 1, 'edge_weight': 1.414000}
-r92 r86 {'duration': 1, 'edge_weight': 1.000000}
-r92 r87 {'duration': 1, 'edge_weight': 1.414000}
-r92 r91 {'duration': 1, 'edge_weight': 1.000000}
-r92 r92 {'duration': 1, 'edge_weight': 0.500000}
-r92 r93 {'duration': 1, 'edge_weight': 1.000000}
-r92 r97 {'duration': 1, 'edge_weight': 1.414000}
-r92 r98 {'duration': 1, 'edge_weight': 1.000000}
-r92 r99 {'duration': 1, 'edge_weight': 1.414000}
 r93 r50 {'duration': 1, 'edge_weight': 1.650000}
 r93 r51 {'duration': 1, 'edge_weight': 1.514000}
 r93 r52 {'duration': 1, 'edge_weight': 1.650000}
@@ -1545,7 +1515,6 @@ r93 r64 {'duration': 1, 'edge_weight': 1.650000}
 r93 r86 {'duration': 1, 'edge_weight': 1.414000}
 r93 r87 {'duration': 1, 'edge_weight': 1.000000}
 r93 r88 {'duration': 1, 'edge_weight': 1.414000}
-r93 r92 {'duration': 1, 'edge_weight': 1.000000}
 r93 r93 {'duration': 1, 'edge_weight': 0.500000}
 r93 r94 {'duration': 1, 'edge_weight': 1.000000}
 r93 r98 {'duration': 1, 'edge_weight': 1.414000}
@@ -1603,7 +1572,6 @@ r97 r67 {'duration': 1, 'edge_weight': 1.514000}
 r97 r68 {'duration': 1, 'edge_weight': 1.650000}
 r97 r90 {'duration': 1, 'edge_weight': 1.414000}
 r97 r91 {'duration': 1, 'edge_weight': 1.000000}
-r97 r92 {'duration': 1, 'edge_weight': 1.414000}
 r97 r96 {'duration': 1, 'edge_weight': 1.000000}
 r97 r97 {'duration': 1, 'edge_weight': 0.500000}
 r97 r98 {'duration': 1, 'edge_weight': 1.000000}
@@ -1618,7 +1586,6 @@ r98 r63 {'duration': 1, 'edge_weight': 1.514000}
 r98 r67 {'duration': 1, 'edge_weight': 1.650000}
 r98 r68 {'duration': 1, 'edge_weight': 1.514000}
 r98 r91 {'duration': 1, 'edge_weight': 1.414000}
-r98 r92 {'duration': 1, 'edge_weight': 1.000000}
 r98 r93 {'duration': 1, 'edge_weight': 1.414000}
 r98 r97 {'duration': 1, 'edge_weight': 1.000000}
 r98 r98 {'duration': 1, 'edge_weight': 0.500000}
@@ -1633,7 +1600,6 @@ r99 r63 {'duration': 1, 'edge_weight': 1.100000}
 r99 r64 {'duration': 1, 'edge_weight': 1.514000}
 r99 r68 {'duration': 1, 'edge_weight': 1.650000}
 r99 r70 {'duration': 1, 'edge_weight': 1.650000}
-r99 r92 {'duration': 1, 'edge_weight': 1.414000}
 r99 r93 {'duration': 1, 'edge_weight': 1.000000}
 r99 r94 {'duration': 1, 'edge_weight': 1.414000}
 r99 r98 {'duration': 1, 'edge_weight': 1.000000}
