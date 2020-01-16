@@ -92,7 +92,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     for key in pa_nom_dict:
         compute_moc_energy(pa_nom_dict[key], dfa_dict[key])
     stopEnergy = timeit.default_timer()
-    print 'Run Time (s) to get both the energy function for all three PA: ', stopEnergy - startEnergy
+    print 'Run Time (s) to get the moc energy function for all three PA: ', stopEnergy - startEnergy
 
     # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on moc_weight
     ts_policy_dict_nom = {}
@@ -544,13 +544,14 @@ if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
     phi1 = '[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]'
-    # Add a second agent
-    phi2 = '[H^2 r21]^[0, 8] * [H^1 r23]^[0, 7]'
-    # Add a third agent
-    phi3 = '[H^2 r31]^[0, 8] * [H^1 r10]^[0, 10]'
+    phi2 = '[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]'
+    phi3 = '[H^1 r84]^[0, 7] * [H^1 r98]^[0, 7] * [H^1 Base3]^[0, 7]'
+    phi4 = '[H^2 r53]^[0, 6] * [H^1 r86]^[0, 7] * [H^1 Base4]^[0, 7]'
+    phi5 = '[H^2 r105]^[0, 8] * [H^1 r98]^[0, 8] * [H^1 Base5]^[0, 8]'
     # Currently set to use the same transition system
-    phi = [phi1, phi2, phi3]
-    ts_files = ['../data/ts_6x6_3D1.txt', '../data/ts_6x6_3D2.txt', '../data/ts_6x6_3D3.txt']
+    phi = [phi1, phi2, phi3, phi4, phi5]
+    ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
+                '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
     # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
 
     # Define alpha for multi-objective optimization function J = min[alpha*time_weight + (1-alpha)*edge_weight]
