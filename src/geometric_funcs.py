@@ -55,6 +55,40 @@ def get_discretization(ts):
         disc_z = 0
     return disc, disc_z
 
+def downwash_check(cur_ind, ts, ts_next_states, priority, key_list, radius):
+    ''' Find nodes in transition directly above or below agent of higher priority in order
+    to avoid downwash instability for quadrotors. '''
+    downwash_nodes = []
+    downwash_zone = 7*radius  # (3.5 diameters should be sufficient)
+    node_set = nx.get_node_attributes(ts.g,"position")
+    cur_next_pose = node_set[ts_next_states[cur_ind]]
+    x_cur_next = cur_next_pose[0]
+    y_cur_next = cur_next_pose[1]
+    # determine if grid is defined in 2D or 3D
+    try:
+        cur_next_pose[2]
+        flag_3d = True
+    except IndexError:
+        flag_3d = False
+    # run through higher priority set
+    if flag_3d == True:
+        for p_ind, p_val in enumerate(priority):
+            for k, key in enumerate(key_list):
+                if p_val == key:
+                    comp_next_pose = node_set[ts_next_states[k]]
+                    x_comp_next = comp_next_pose[0]
+                    y_comp_next = comp_next_pose[1]
+                    z_comp_next = comp_next_pose[2]
+                    z_cur_next = cur_next_pose[2]
+                    a0 = np.array([x_cur_next, y_cur_next])
+                    b0 = np.array([x_comp_next, y_comp_next])
+                    dist = np.linalg.norm(a0-b0)
+                    if dist < 2*radius:
+                        if abs(z_cur_next-z_comp_next) < downwash_zone:
+                            downwash_nodes.append(ts_next_states[k])
+                    break
+    return downwash_nodes
+
 def check_intersect(cur_ind, ts, ts_prev_states, ts_next_states, priority, key_list, radius, seg_time):
     ''' Check if moving in diagonal directions causes any conflict. Look into only performing
     this if local neighborhood is true, and only with the agents in the local neighborhood.

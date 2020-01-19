@@ -23,7 +23,7 @@ from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_control_policy2, compute_control_policy3,\
                       compute_moc_energy
-from geometric_funcs import check_intersect
+from geometric_funcs import check_intersect, downwash_check
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
 from learning import learn_deadlines
@@ -142,7 +142,6 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
-    pdb.set_trace()
 
     # Execute takeoff caommand for all crazyflies in lab testing
     if lab_testing:
@@ -178,6 +177,13 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                 prev_node = policy_match[0][k]
                                 if prev_node in one_hop_set:
                                     weighted_nodes.append(prev_node)
+                                # Check if downwash constraint needs to be added, mostly for physical testing
+                                downwash_weight = downwash_check(k, ets_dict[key], policy_match[0], \
+                                                                priority[0:k], key_list, radius)
+                                if downwash_weight:
+                                    for downwash_node in downwash_weight:
+                                        if downwash_node not in weighted_nodes:
+                                            weighted_nodes.append(downwash_node)
                                 break
                     # Get soft constraint nodes from sharing n-hop trajectory
                     soft_nodes = {}
@@ -216,7 +222,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             if len(ts_control_policy_dict[key]) == traj_length:
                                 ts_prev_states.append(ts_control_policy_dict[key][-1])
                     if ts_prev_states:
-                        for p_ind2, p_val2 in enumerate(priority):
+                        for p_ind2, p_val2 in enumerate(priority[0:p_ind]):
                             if p_ind2 > 0:
                                 for k_c, key in enumerate(key_list):
                                     if p_val2 == key:
@@ -549,7 +555,7 @@ if __name__ == '__main__':
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
     time_wp = 1.7
-    # Define the radius (m) of agents considered, used for diagonal collision avoidance
+    # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
     lab_testing = False
