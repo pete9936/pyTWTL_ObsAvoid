@@ -15,6 +15,7 @@ import csv
 
 import networkx as nx
 import matplotlib.pyplot as plt
+import numpy as np
 
 import twtl
 import write_files
@@ -137,13 +138,17 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     for key in ts_policy_dict_nom:
         prev_states[key] = pa_policy_dict_nom[key][0]
     priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list, prev_priority)
+    # Create Agent energy dictionary for post-processing
+    agent_energy_dict = {}
+    for key in ts_policy_dict_nom:
+        agent_energy_dict[key] = []
 
     # Print time statistics
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
 
-    # Execute takeoff caommand for all crazyflies in lab testing
+    # Execute takeoff command for all crazyflies in lab testing
     if lab_testing:
         startTakeoff = timeit.default_timer()
         os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
@@ -288,6 +293,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
 
             # Append trajectories
             for key in ts_policy:
+                agent_energy_dict[key].append(pa_nom_dict[key].g.node[pa_policy[key][0]]['energy_moc'])
                 ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                 pa_policy_temp = list(pa_policy[key])
                 pa_control_policy_dict[key].append(pa_policy_temp.pop(0))
@@ -338,6 +344,9 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     print 'Online run time for safe algorithm: ', stopOnline - startOnline
     stopFull = timeit.default_timer()
     print 'Full run time for safe algorithm: ', stopFull - startFull
+
+    # Print energy statistics from run
+    # plot_energy(agent_energy_dict)
 
     # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
@@ -533,6 +542,35 @@ def setup_logging():
     ch.setFormatter(logging.Formatter(fs, dfs))
     root.addHandler(ch)
 
+def plot_energy(agent_energy):
+    '''Generate plots for energy at each state along the trajectory. Plot for each
+    agent and another for the total energy of the system.'''
+    plt.figure(figsize=(11,6))
+    plt.subplot(211)
+    sys_energy = []
+    for key in agent_energy:
+        datay = np.asarray(agent_energy[key])
+        datax = np.arange(len(datay))
+        plt.plot(datax, datay, 'o--', label='Agent %s' %key, linewidth=2.0)
+        if len(sys_energy) < len(datay):
+            temp = datay.copy()
+            temp[:len(sys_energy)] += sys_energy
+            sys_energy = temp
+        else:
+            sys_energy[:len(datay)] += datay
+    plt.ylabel('Agent Energy', fontsize=12)
+    #plt.grid(axis='y')
+    #plt.tick_params(labelsize=11)
+    #plt.axis([0, 12, 0, 13])
+    plt.legend()
+    plt.subplot(212)
+    plt.ylabel('System Energy', fontsize=12)
+    plt.xlabel('time-steps', fontsize=12)
+    datax = np.arange(len(sys_energy))
+    plt.plot(datax, sys_energy,'bo:', linewidth=4.5)
+    #plt.xticks(datax)
+    plt.show()
+
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
@@ -547,11 +585,11 @@ if __name__ == '__main__':
                 # '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
     # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
 
-    # Define alpha for multi-objective optimization function J = min[alpha*time_weight + (1-alpha)*edge_weight]
-    # Note: For alpha=0 we only account for the weighted transition system (edge_weight),
-    #       for alpha=1 we only account for minimizing time (time_weight)
-    #       and thus becomes a single-objective optimization problem
-    # Otherwise it is a multi-objective cost minimization of the two factors
+    ''' Define alpha for multi-objective optimization function J = min[alpha*time_weight + (1-alpha)*edge_weight]
+        Note: For alpha=0 we only account for the weighted transition system (edge_weight),
+           for alpha=1 we only account for minimizing time (time_weight)
+           and thus becomes a single-objective optimization problem
+        Otherwise it is a multi-objective cost minimization of the two factors. '''
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
     time_wp = 1.7
