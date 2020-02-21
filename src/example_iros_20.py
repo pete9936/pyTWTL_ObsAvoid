@@ -31,7 +31,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
+def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testing):
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -93,9 +93,9 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     for key in pa_nom_dict:
         compute_energy(pa_nom_dict[key], dfa_dict[key])
     stopEnergy = timeit.default_timer()
-    print 'Run Time (s) to get the moc energy function for all three PA: ', stopEnergy - startEnergy
+    print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
 
-    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on moc_weight
+    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on new_weight
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
     tau_dict_nom = {}
@@ -282,11 +282,11 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
                     # Compute receding horizon shortest path
-                    ts_policy[p_val], pa_policy[p_val] = \
-                            local_horizon(pa_nom_dict[p_val], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
+                    ts_policy[p_val], pa_policy[p_val] = local_horizon(pa_nom_dict[p_val], weighted_nodes,\
+                                                            weighted_soft_nodes, num_hops, init_loc, gamma)
                     # Write updates to file
-                    iter_step += 1
-                    write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
+                    # iter_step += 1
+                    # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
 
                 # Update policy match
                 policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
@@ -306,7 +306,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
             if lab_testing:
                 startWaypoint = timeit.default_timer()
                 os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure executable
+                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py")
                 os.chdir("/home/ryan/Desktop/pyTWTL/src")
                 stopWaypoint = timeit.default_timer()
                 print 'Waypoint time, should be ~2.0sec: ', stopWaypoint - startWaypoint
@@ -325,7 +325,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                     if lab_testing:
                         write_to_land_file(land_keys)
                         os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure executable
+                        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py")
                         os.chdir("/home/ryan/Desktop/pyTWTL/src")
                 if not ts_policy:
                     running = False
@@ -390,7 +390,7 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
             priority.append(key)
     return priority
 
-def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
+def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc, gamma):
     ''' Compute the n-hop lowest energy horizon without imminent conflict and
     while avoiding soft constraints if possible'''
     ts_policy = []
@@ -534,7 +534,7 @@ def update_policy_match(ts_policy):
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_RP9.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_iros.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
@@ -559,17 +559,12 @@ def plot_energy(agent_energy):
         else:
             sys_energy[:len(datay)] += datay
     plt.ylabel('Agent Energy', fontsize=14)
-    # plt.grid(axis='y')
-    # plt.tick_params(labelsize=12)
-    # plt.axis([0, 12, 0, 13])
     plt.legend()
     plt.subplot(212)
     plt.ylabel('System Energy', fontsize=14)
     plt.xlabel('time-steps', fontsize=14)
     datax = np.arange(len(sys_energy))
     plt.plot(datax, sys_energy,'bo:', linewidth=4.5)
-    # plt.ytick_params(labelsize=12)
-    # plt.xticks(datax)
     plt.show()
 
 if __name__ == '__main__':
@@ -586,16 +581,22 @@ if __name__ == '__main__':
                 # '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
     # ts_files = ['../data/ts_synth_6x6_3D1.txt', '../data/ts_synth_6x6_3D2.txt', '../data/ts_synth_6x6_3D3.txt']
 
-    ''' Define alpha for multi-objective optimization function J = min[alpha*time_weight + (1-alpha)*edge_weight]
+    ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
-           for alpha=1 we only account for minimizing time (time_weight)
-           and thus becomes a single-objective optimization problem
-        Otherwise it is a multi-objective cost minimization of the two factors. '''
+              for alpha=1 we only account for minimizing time (time_weight)
+              and thus becomes a single-objective optimization problem.
+              Otherwise it is a multi-objective cost minimization of the two factors. '''
     alpha = 0.5
+    ''' Define gamma [0:1] as the discount factor for soft constraints, used for pre-emptive avoidance
+        Note: If gamma=1 we care about all future conflicts on n-hop path equally
+              If gamma=0 we do not care at all about future collisions after immediate node
+              Intermediate, e.g., gamma=0.5 tapers off penalty for soft constraint as function of
+              hops away since: penalty = gamma^(hop_num-1) '''
+    gamma = 0.7
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.7
+    time_wp = 1.8
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
     lab_testing = False
-    case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)
+    case1_synthesis(phi, ts_files, alpha, gamma, radius, time_wp, lab_testing)

@@ -566,12 +566,12 @@ def compute_weight_energy(pa, dfa):
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy_w', weight_dict)
 
-def compute_moc_energy(pa, dfa):
+def compute_energy(pa, dfa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
     avoid computing full path and use local communication protocol '''
     energy_dict = {}
-    edges_all = nx.get_edge_attributes(pa.g,'moc_weight')
+    edges_all = nx.get_edge_attributes(pa.g,'new_weight')
     # Get the shortest simple path for each node
     for ind, node in enumerate(pa.g.nodes()):
         optimal_pa_path = simple_control_policy_moc(pa, node)
@@ -581,7 +581,7 @@ def compute_moc_energy(pa, dfa):
             energy = energy + edges_all[edge_temp]
         energy_dict[node] = energy
     # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy_moc', energy_dict)
+    nx.set_node_attributes(pa.g,'energy', energy_dict)
 
 def compute_distance(ts):
     ''' Calculate the distance from a given node to its surrounding transitions
