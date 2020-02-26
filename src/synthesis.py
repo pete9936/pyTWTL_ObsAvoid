@@ -329,7 +329,10 @@ def simple_control_policy_moc(pa, init_key):
     # add virtual node with incoming edges from all final states
     pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
     # compute optimal path in PA and then project onto the TS
-    pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='moc_weight')
+    try:
+        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='new_weight')
+    except nx.exception.NetworkXNoPath:
+        return None
 
     assert pa_path[-2] in pa.final
     pa.g.remove_node('virtual')
@@ -566,7 +569,7 @@ def compute_weight_energy(pa, dfa):
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy_w', weight_dict)
 
-def compute_energy(pa, dfa):
+def compute_energy(pa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
     avoid computing full path and use local communication protocol '''
@@ -582,6 +585,26 @@ def compute_energy(pa, dfa):
         energy_dict[node] = energy
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy', energy_dict)
+
+def compute_energy_local(pa, local_set):
+    ''' Calculates the updated energy for each node in the neighboring set
+    which allows for proper updates of energy in online manner '''
+    energy_dict = {}
+    edges_all = nx.get_edge_attributes(pa.g,'new_weight')
+    # Get the shortest simple path for each node
+    for node in local_set:
+        optimal_pa_path = simple_control_policy_moc(pa, node)
+        if optimal_pa_path == None:
+            energy_dict[node] = float('inf')
+        else:
+            energy = 0
+            for i in range(len(optimal_pa_path)-1):
+                edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
+                energy = energy + edges_all[edge_temp]
+            energy_dict[node] = energy
+    # Update the PA graph with the energy attribute found
+    nx.set_node_attributes(pa.g,'energy', energy_dict)
+
 
 def compute_distance(ts):
     ''' Calculate the distance from a given node to its surrounding transitions

@@ -91,11 +91,11 @@ def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testi
     # Compute the energy (multi-objective cost function) for each agent's PA at every node
     startEnergy = timeit.default_timer()
     for key in pa_nom_dict:
-        compute_energy(pa_nom_dict[key], dfa_dict[key])
+        compute_energy(pa_nom_dict[key])
     stopEnergy = timeit.default_timer()
-    print 'Run Time (s) to get the energy function for all three PA: ', stopEnergy - startEnergy
+    print 'Run Time (s) to get the moc energy function for all three PA: ', stopEnergy - startEnergy
 
-    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on new_weight
+    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on moc_weight
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
     tau_dict_nom = {}
@@ -172,7 +172,8 @@ def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testi
                         if p_val == key:
                             node = policy_match[0][k]
                             break
-                    local_set = get_neighborhood(node, ts_dict[p_val], num_hops)
+                    # Note that communication range needs to be 2*H, the receding horizon length
+                    local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
                     one_hop_set = ts_dict[p_val].g.neighbors(node)
                     # Assign hard constraint nodes in local neighborhood
                     weighted_nodes = []
@@ -282,11 +283,11 @@ def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testi
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
                     # Compute receding horizon shortest path
-                    ts_policy[p_val], pa_policy[p_val] = local_horizon(pa_nom_dict[p_val], weighted_nodes,\
-                                                            weighted_soft_nodes, num_hops, init_loc, gamma)
+                    ts_policy[p_val], pa_policy[p_val] = \
+                        local_horizon(pa_nom_dict[p_val], weighted_nodes, weighted_soft_nodes, num_hops, init_loc, gamma)
                     # Write updates to file
-                    # iter_step += 1
-                    # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
+                    iter_step += 1
+                    write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
 
                 # Update policy match
                 policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
@@ -306,7 +307,7 @@ def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testi
             if lab_testing:
                 startWaypoint = timeit.default_timer()
                 os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py")
+                os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_waypoint.py") # make sure executable
                 os.chdir("/home/ryan/Desktop/pyTWTL/src")
                 stopWaypoint = timeit.default_timer()
                 print 'Waypoint time, should be ~2.0sec: ', stopWaypoint - startWaypoint
@@ -325,7 +326,7 @@ def case1_synthesis(formulas, ts_files, alpha, gamma, radius, time_wp, lab_testi
                     if lab_testing:
                         write_to_land_file(land_keys)
                         os.chdir("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts")
-                        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py")
+                        os.system("/home/ryan/crazyswarm/ros_ws/src/crazyswarm/scripts/twtl_land.py") # make sure executable
                         os.chdir("/home/ryan/Desktop/pyTWTL/src")
                 if not ts_policy:
                     running = False
@@ -369,22 +370,23 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
     progress_check = {}
     for key in key_list:
         temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
-        state_0 = prev_states[key][1]
-        try:
-            state_1 = pa_policy[key][0][1]
-        except IndexError:
-            state_1 = []
-        if state_0 != state_1:
-            progress_check[key] = True
-        else:
-            progress_check[key] = False
+        # Protocol for checking if an agent is satisfying a hold operator
+        # state_0 = prev_states[key][1]
+        # try:
+        #     state_1 = pa_policy[key][0][1]
+        # except IndexError:
+        #     state_1 = []
+        # if state_0 != state_1:
+        #     progress_check[key] = True
+        # else:
+        #     progress_check[key] = False
     # Sort the energy values found for all agents in descending energy order
     sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
-    sorted_energy = sorted_energy[::-1]
+    # sorted_energy = sorted_energy[::-1]
     for key in prev_priority:
         if key in key_list:
-            if progress_check[key] == True:
-                priority.append(key)
+            # if progress_check[key] == True:
+            priority.append(key)
     for key, energy_val in sorted_energy:
         if key not in priority:
             priority.append(key)
@@ -392,7 +394,8 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
 
 def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc, gamma):
     ''' Compute the n-hop lowest energy horizon without imminent conflict and
-    while avoiding soft constraints if possible'''
+    incorporating penalty for soft constraints based on number of hops from
+    the current state. '''
     ts_policy = []
     pa_policy = []
     epsilon = 0.001
@@ -410,8 +413,8 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc, gamma):
                         keep_nodes[node[0]] = node[1]['energy']
                         break
             if not keep_nodes:
-                ts_policy.append([init_loc[0],init_loc[0]])
-                pa_policy.append(init_loc, init_loc)
+                ts_policy = [init_loc[0],init_loc[0]]
+                pa_policy = [init_loc, init_loc]
                 print 'No feasible location to move, therefore stay in current position'
                 return ts_policy, pa_policy
         else:
@@ -419,7 +422,7 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc, gamma):
                 for node in pa.g.nodes(data='true'):
                     if neighbor == node[0]:
                         if node[0][0] in soft_nodes[i]:
-                            keep_nodes[node[0]] = node[1]['energy'] + 1 # penalty if in soft_nodes
+                            keep_nodes[node[0]] = node[1]['energy'] + gamma**i # penalty if in soft_nodes
                         else:
                             keep_nodes[node[0]] = node[1]['energy']
                         break
@@ -442,13 +445,13 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc, gamma):
                     for node in pa.g.nodes(data='true'):
                         if neighbor == node[0]:
                             if node[0][0] in soft_nodes[j+i+1]:
-                                energy_temp2 = node[1]['energy'] + 1 # penalty if in soft_nodes
+                                energy_temp2 = node[1]['energy'] + gamma**i # penalty if in soft_nodes
                             else:
                                 energy_temp2 = node[1]['energy']
                             if energy_temp2 < energy_low:
                                 temp_node = node[0]
                                 energy_low = energy_temp2
-                                break
+                            break
                 if energy_low == float('inf'):
                     ts_policy.append(keep_node[0])
                     pa_policy.append(keep_node)
@@ -494,8 +497,8 @@ def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     pa_prime.final.add(temp_node)
 
 def get_neighborhood(node, ts, num_hops):
-    ''' function to get the n-hop neighborhood of nodes to compare for
-    collision avoidance '''
+    ''' Function to get the n-hop neighborhood of nodes to compare for
+    collision avoidance. Where num_hops is 2*H (the receding horizon length) '''
     local_set = ts.g.neighbors(node)
     n_hop_set = []
     for i in range(num_hops):
@@ -534,7 +537,7 @@ def update_policy_match(ts_policy):
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/examples_iros.log', level=loglevel,
+    logging.basicConfig(filename='../output/examples_iros_20.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
@@ -559,12 +562,17 @@ def plot_energy(agent_energy):
         else:
             sys_energy[:len(datay)] += datay
     plt.ylabel('Agent Energy', fontsize=14)
+    # plt.grid(axis='y')
+    # plt.tick_params(labelsize=12)
+    # plt.axis([0, 12, 0, 13])
     plt.legend()
     plt.subplot(212)
     plt.ylabel('System Energy', fontsize=14)
     plt.xlabel('time-steps', fontsize=14)
     datax = np.arange(len(sys_energy))
     plt.plot(datax, sys_energy,'bo:', linewidth=4.5)
+    # plt.ytick_params(labelsize=12)
+    # plt.xticks(datax)
     plt.show()
 
 if __name__ == '__main__':
@@ -592,9 +600,9 @@ if __name__ == '__main__':
               If gamma=0 we do not care at all about future collisions after immediate node
               Intermediate, e.g., gamma=0.5 tapers off penalty for soft constraint as function of
               hops away since: penalty = gamma^(hop_num-1) '''
-    gamma = 0.7
+    gamma = 0.6
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.8
+    time_wp = 1.7
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
