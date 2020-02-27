@@ -131,7 +131,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     tau_dict = tau_dict_nom
     # Choose parameter for n-horizon local trajectory and information sharing,
     # must be at least 2
-    num_hops = 2
+    num_hops = 3
     # Get agent priority based on lowest energy
     prev_priority = key_list
     prev_states = {}
@@ -382,7 +382,59 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
             priority.append(key)
     return priority
 
+def findPaths(pa, init, n):
+    ''' This takes a network pa, a node init, and a length n. It recursively finds
+    all paths of length n-1 starting from neighbors of init. '''
+    if n==0:
+        return [[init]]
+    if init in pa.final:
+        return [[init]]
+    paths = []
+    for neighbor in pa.g.neighbors(init):
+        for path in findPaths(pa,neighbor,n-1):
+            if init not in path:
+                paths.append([init]+path)
+    return paths
+
 def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
+    ''' Compute the n-hop lowest energy horizon without imminent conflict and
+    incorporating penalty for soft constraints based on number of hops from
+    the current state. '''
+    ts_policy = []
+    pa_policy = []
+    epsilon = 0.001
+
+    # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
+    soft_nodes[0] = weighted_nodes
+    index = 0
+    paths_temp = findPaths(pa, init_loc, num_hops)
+    paths = copy.deepcopy(paths_temp)
+    # Get rid of all infeasible paths due to constraints
+    for path in paths_temp:
+        for ind, node in enumerate(path[1::]):
+            if node[0] in soft_nodes[ind]:
+                paths.remove(path)
+                break
+
+    all_node_energy = nx.get_node_attributes(pa.g,'energy')
+    path_energy = []
+    for path in paths:
+        temp_energy = 0
+        for node in path[1::]:
+            node_energy = all_node_energy[node]
+            temp_energy = temp_energy + node_energy
+        path_energy.append(temp_energy)
+    # Get index of the minimum energy path
+    index_min = min(xrange(len(path_energy)), key=path_energy.__getitem__)
+
+    for node in paths[index_min][1::]:
+        ts_policy.append(node[0])
+        pa_policy.append(node)
+
+    return ts_policy, pa_policy
+
+
+def local_horizon_old(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     ''' Compute the n-hop lowest energy horizon without imminent conflict and
     incorporating penalty for soft constraints based on number of hops from
     the current state. '''
@@ -463,66 +515,6 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
         prev_node = next_node
 
     return ts_policy, pa_policy
-
-def findPaths(pa, init, n):
-    ''' This takes a network pa, a node init, and a length n. It recursively finds
-    all paths of length n-1 starting from neighbors of init. '''
-    if n==0:
-        return [[init]]
-    paths = []
-    for neighbor in pa.g.neighbors(init):
-        for path in findPaths(pa,neighbor,n-1):
-            if init not in pa.final:
-                paths.append([init]+path)
-            else:
-                paths.append(path)
-    return paths
-
-def local_horizon2(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
-    ''' Compute the n-hop lowest energy horizon without imminent conflict and
-    incorporating penalty for soft constraints based on number of hops from
-    the current state. '''
-    ts_policy = []
-    pa_policy = []
-    epsilon = 0.001
-
-    # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
-    soft_nodes[0] = weighted_nodes
-    index = 0
-    paths_temp = findPaths(pa, init_loc, num_hops)
-    paths = copy.deepcopy(paths_temp)
-    # Get rid of all infeasible paths due to constraints
-    for path in paths_temp:
-        for ind, node in enumerate(path[1::]):
-            if node[0] in soft_nodes[ind]:
-                paths.remove(path)
-                break
-
-    all_node_energy = nx.get_node_attributes(pa.g,'energy')
-    path_energy = []
-    for path in paths:
-        temp_energy = 0
-        for node in path[1::]:
-            node_energy = all_node_energy[node]
-            temp_energy = temp_energy + node_energy
-        path_energy.append(temp_energy)
-    # Get index of the minimum energy path
-    index_min = min(xrange(len(path_energy)), key=path_energy.__getitem__)
-
-    for node in paths[index_min][1::]:
-        ts_policy.append(node[0])
-        pa_policy.append(node)
-        if node in pa.final:
-            # Taking care of issues with termination, fix later ***
-            for ind, spot in enumerate(pa_policy[::-1]):
-                if spot == init_loc:
-                    pa_policy = pa_policy[num_hops-ind::]
-                    ts_policy = ts_policy[num_hops-ind::]
-                    break
-            return ts_policy, pa_policy
-
-    return ts_policy, pa_policy
-
 
 def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     ''' Use of the energy function to get ideal final state to move to in
