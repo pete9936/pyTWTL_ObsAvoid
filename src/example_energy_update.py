@@ -370,6 +370,7 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
     progress_check = {}
     for key in key_list:
         temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
+        # Protocol for checking if an agent is satisfying a hold operator
         state_0 = prev_states[key][1]
         try:
             state_1 = pa_policy[key][0][1]

@@ -1,10 +1,10 @@
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
-02/26/2020 12:02:56 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
-02/26/2020 12:02:56 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
-02/26/2020 12:02:56 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
+02/26/2020 08:51:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
+02/26/2020 08:51:25 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
+02/26/2020 08:51:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 7 ) (Eventually (Hold 1 r12 ) 0 7 ) )
 Directed: True
 Multi: False
@@ -15,7 +15,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'})]
 		
-02/26/2020 12:02:56 PM DEBUG [spec] tree:
+02/26/2020 08:51:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -36,21 +36,21 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:02:56 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:02:56 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:02:56 PM DEBUG 
+02/26/2020 08:51:25 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:51:25 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:51:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:02:56 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
-02/26/2020 12:02:56 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
-02/26/2020 12:02:56 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
-02/26/2020 12:02:56 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
-02/26/2020 12:02:56 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:51:25 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
+02/26/2020 08:51:25 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
+02/26/2020 08:51:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
+02/26/2020 08:51:25 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
+02/26/2020 08:51:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 8 ) (Eventually (Hold 1 r23 ) 0 5 ) )
 Directed: True
 Multi: False
@@ -61,7 +61,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'})]
 		
-02/26/2020 12:02:56 PM DEBUG [spec] tree:
+02/26/2020 08:51:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -82,24 +82,24 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:02:56 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:02:56 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:02:56 PM DEBUG 
+02/26/2020 08:51:25 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:51:25 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:51:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:02:56 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
-02/26/2020 12:02:56 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
-02/26/2020 12:02:56 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
-02/26/2020 12:02:56 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:02:56 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
-02/26/2020 12:02:56 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
-02/26/2020 12:02:56 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
-02/26/2020 12:02:56 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:51:25 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
+02/26/2020 08:51:25 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
+02/26/2020 08:51:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
+02/26/2020 08:51:25 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:51:25 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
+02/26/2020 08:51:25 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
+02/26/2020 08:51:25 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
+02/26/2020 08:51:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) (Eventually (Hold 1 r73 ) 0 3 ) )
 Directed: True
 Multi: False
@@ -110,7 +110,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (4, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'}), (5, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'})]
 		
-02/26/2020 12:02:56 PM DEBUG [spec] tree:
+02/26/2020 08:51:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -143,71 +143,73 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([6])
 
-02/26/2020 12:02:56 PM DEBUG [spec] No of nodes: 7
-02/26/2020 12:02:56 PM DEBUG [spec] No of edges: 12
-02/26/2020 12:02:56 PM DEBUG 
+02/26/2020 08:51:25 PM DEBUG [spec] No of nodes: 7
+02/26/2020 08:51:25 PM DEBUG [spec] No of edges: 12
+02/26/2020 08:51:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:02:56 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
-02/26/2020 12:02:56 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
-02/26/2020 12:02:56 PM DEBUG 
+02/26/2020 08:51:25 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
+02/26/2020 08:51:25 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
+02/26/2020 08:51:25 PM DEBUG 
 
 Start policy computation
 
-02/26/2020 12:02:56 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:02:56 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:02:56 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:02:56 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:02:56 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:02:56 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:02:56 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:02:56 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:02:56 PM INFO Product automaton size is: (307, 4782)
-02/26/2020 12:02:58 PM INFO Generated control policy is: r25 -> 1 -> r26 -> 1 -> r21
-02/26/2020 12:02:58 PM INFO Generated control policy is: r27 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:58 PM INFO Generated control policy is: r44 -> 1 -> r86 -> 1 -> r86
-02/26/2020 12:02:59 PM INFO Generated control policy is: r26 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r86 -> 1 -> r86 -> 1 -> r91
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r86 -> 1 -> r91 -> 1 -> r97
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r14
-02/26/2020 12:02:59 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r91 -> 1 -> r97 -> 1 -> r97
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r14 -> 1 -> r13
-02/26/2020 12:02:59 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r97 -> 1 -> r97 -> 1 -> r91
-02/26/2020 12:02:59 PM INFO Generated control policy is: r14 -> 1 -> r13 -> 1 -> r12
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:02:59 PM INFO Generated control policy is: r97 -> 1 -> r91 -> 1 -> r85
-02/26/2020 12:02:59 PM INFO Generated control policy is: r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r22
-02/26/2020 12:02:59 PM INFO Generated control policy is: r91 -> 1 -> r85 -> 1 -> r79
-02/26/2020 12:02:59 PM INFO Generated control policy is: r12 -> 1 -> r12
-02/26/2020 12:02:59 PM INFO Generated control policy is: r21 -> 1 -> r22 -> 1 -> r23
-02/26/2020 12:02:59 PM INFO Generated control policy is: r85 -> 1 -> r79 -> 1 -> r73
-02/26/2020 12:02:59 PM INFO Generated control policy is: r12
-02/26/2020 12:02:59 PM INFO Generated control policy is: r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:02:59 PM INFO Generated control policy is: r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:02:59 PM INFO Generated control policy is: r23 -> 1 -> r23
-02/26/2020 12:02:59 PM INFO Generated control policy is: r73 -> 1 -> r73
-02/26/2020 12:02:59 PM INFO Generated control policy is: r23
-02/26/2020 12:02:59 PM INFO Generated control policy is: r73
-02/26/2020 12:02:59 PM INFO Max deadline: -2
-02/26/2020 12:02:59 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:02:59 PM INFO Max deadline: 1
-02/26/2020 12:02:59 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:02:59 PM INFO Max deadline: 1
-02/26/2020 12:02:59 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
-02/26/2020 12:03:23 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
-02/26/2020 12:03:23 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
-02/26/2020 12:03:23 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:51:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:51:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:51:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:51:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:51:25 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:51:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:51:25 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:51:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:51:25 PM INFO Product automaton size is: (307, 4782)
+02/26/2020 08:51:28 PM INFO Generated control policy is: r25 -> 1 -> r26 -> 1 -> r21
+02/26/2020 08:51:28 PM INFO Generated control policy is: r27 -> 1 -> r21 -> 1 -> r15
+02/26/2020 08:51:28 PM INFO Generated control policy is: r44 -> 1 -> r86 -> 1 -> r86
+02/26/2020 08:51:28 PM INFO Generated control policy is: r26 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:51:28 PM INFO Generated control policy is: r21 -> 1 -> r15 -> 1 -> r15
+02/26/2020 08:51:28 PM INFO Generated control policy is: r86 -> 1 -> r86 -> 1 -> r91
+02/26/2020 08:51:28 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:51:28 PM INFO Generated control policy is: r15 -> 1 -> r15 -> 1 -> r15
+02/26/2020 08:51:28 PM INFO Generated control policy is: r86 -> 1 -> r91 -> 1 -> r97
+02/26/2020 08:51:29 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r14
+02/26/2020 08:51:29 PM INFO Generated control policy is: r15 -> 1 -> r15 -> 1 -> r21
+02/26/2020 08:51:29 PM INFO Generated control policy is: r91 -> 1 -> r97 -> 1 -> r97
+02/26/2020 08:51:29 PM INFO Generated control policy is: r21 -> 1 -> r14 -> 1 -> r13
+02/26/2020 08:51:29 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:51:29 PM INFO Generated control policy is: r97 -> 1 -> r97 -> 1 -> r91
+02/26/2020 08:51:29 PM INFO Generated control policy is: r14 -> 1 -> r13 -> 1 -> r12
+02/26/2020 08:51:29 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:51:29 PM INFO Generated control policy is: r97 -> 1 -> r91 -> 1 -> r85
+02/26/2020 08:51:29 PM INFO Generated control policy is: r13 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:51:29 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r22
+02/26/2020 08:51:29 PM INFO Generated control policy is: r91 -> 1 -> r85 -> 1 -> r79
+02/26/2020 08:51:29 PM INFO Generated control policy is: Base5 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:51:29 PM INFO Generated control policy is: r21 -> 1 -> r22 -> 1 -> r23
+02/26/2020 08:51:29 PM INFO Generated control policy is: r85 -> 1 -> r79 -> 1 -> r73
+02/26/2020 08:51:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:51:29 PM INFO Generated control policy is: r22 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:51:29 PM INFO Generated control policy is: r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 08:51:29 PM INFO Generated control policy is: r12
+02/26/2020 08:51:29 PM INFO Generated control policy is: r29 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:51:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:51:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:51:29 PM INFO Generated control policy is: r73
+02/26/2020 08:51:29 PM INFO Generated control policy is: r23
+02/26/2020 08:51:29 PM INFO Max deadline: -1
+02/26/2020 08:51:29 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:51:29 PM INFO Max deadline: 2
+02/26/2020 08:51:29 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:51:29 PM INFO Max deadline: 1
+02/26/2020 08:51:29 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
+02/26/2020 08:53:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
+02/26/2020 08:53:25 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
+02/26/2020 08:53:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 7 ) (Eventually (Hold 1 r12 ) 0 7 ) )
 Directed: True
 Multi: False
@@ -218,7 +220,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'})]
 		
-02/26/2020 12:03:23 PM DEBUG [spec] tree:
+02/26/2020 08:53:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -239,21 +241,21 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:03:23 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:03:23 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:03:23 PM DEBUG 
+02/26/2020 08:53:25 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:53:25 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:53:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:03:23 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
-02/26/2020 12:03:23 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
-02/26/2020 12:03:23 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
-02/26/2020 12:03:23 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
-02/26/2020 12:03:23 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:25 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
+02/26/2020 08:53:25 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
+02/26/2020 08:53:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
+02/26/2020 08:53:25 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
+02/26/2020 08:53:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 8 ) (Eventually (Hold 1 r23 ) 0 5 ) )
 Directed: True
 Multi: False
@@ -264,7 +266,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'})]
 		
-02/26/2020 12:03:23 PM DEBUG [spec] tree:
+02/26/2020 08:53:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -285,24 +287,24 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:03:23 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:03:23 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:03:23 PM DEBUG 
+02/26/2020 08:53:25 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:53:25 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:53:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:03:23 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
-02/26/2020 12:03:23 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
-02/26/2020 12:03:23 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
-02/26/2020 12:03:23 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:03:23 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
-02/26/2020 12:03:23 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
-02/26/2020 12:03:23 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
-02/26/2020 12:03:23 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:25 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
+02/26/2020 08:53:25 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
+02/26/2020 08:53:25 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
+02/26/2020 08:53:25 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:25 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
+02/26/2020 08:53:25 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
+02/26/2020 08:53:25 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
+02/26/2020 08:53:25 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) (Eventually (Hold 1 r73 ) 0 3 ) )
 Directed: True
 Multi: False
@@ -313,7 +315,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (4, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'}), (5, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'})]
 		
-02/26/2020 12:03:23 PM DEBUG [spec] tree:
+02/26/2020 08:53:25 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -346,71 +348,918 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([6])
 
-02/26/2020 12:03:23 PM DEBUG [spec] No of nodes: 7
-02/26/2020 12:03:23 PM DEBUG [spec] No of edges: 12
-02/26/2020 12:03:23 PM DEBUG 
+02/26/2020 08:53:25 PM DEBUG [spec] No of nodes: 7
+02/26/2020 08:53:25 PM DEBUG [spec] No of edges: 12
+02/26/2020 08:53:25 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:03:23 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
-02/26/2020 12:03:23 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
-02/26/2020 12:03:23 PM DEBUG 
+02/26/2020 08:53:25 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
+02/26/2020 08:53:25 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
+02/26/2020 08:53:25 PM DEBUG 
 
 Start policy computation
 
-02/26/2020 12:03:23 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:03:23 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:03:24 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:03:24 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:03:24 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:03:24 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:03:24 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:03:24 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:03:24 PM INFO Product automaton size is: (307, 4782)
-02/26/2020 12:03:26 PM INFO Generated control policy is: r25 -> 1 -> r26 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r27 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r44 -> 1 -> r86 -> 1 -> r86
-02/26/2020 12:03:26 PM INFO Generated control policy is: r26 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r86 -> 1 -> r86 -> 1 -> r91
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r86 -> 1 -> r91 -> 1 -> r97
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r14
-02/26/2020 12:03:26 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r91 -> 1 -> r97 -> 1 -> r97
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r14 -> 1 -> r13
-02/26/2020 12:03:26 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r97 -> 1 -> r97 -> 1 -> r91
-02/26/2020 12:03:26 PM INFO Generated control policy is: r14 -> 1 -> r13 -> 1 -> r12
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:03:26 PM INFO Generated control policy is: r97 -> 1 -> r91 -> 1 -> r85
-02/26/2020 12:03:26 PM INFO Generated control policy is: r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:03:26 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r22
-02/26/2020 12:03:27 PM INFO Generated control policy is: r91 -> 1 -> r85 -> 1 -> r79
-02/26/2020 12:03:27 PM INFO Generated control policy is: r12 -> 1 -> r12
-02/26/2020 12:03:27 PM INFO Generated control policy is: r21 -> 1 -> r22 -> 1 -> r23
-02/26/2020 12:03:27 PM INFO Generated control policy is: r85 -> 1 -> r79 -> 1 -> r73
-02/26/2020 12:03:27 PM INFO Generated control policy is: r12
-02/26/2020 12:03:27 PM INFO Generated control policy is: r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:03:27 PM INFO Generated control policy is: r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:03:27 PM INFO Generated control policy is: r23 -> 1 -> r23
-02/26/2020 12:03:27 PM INFO Generated control policy is: r73 -> 1 -> r73
-02/26/2020 12:03:27 PM INFO Generated control policy is: r23
-02/26/2020 12:03:27 PM INFO Generated control policy is: r73
-02/26/2020 12:03:27 PM INFO Max deadline: -2
-02/26/2020 12:03:27 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:03:27 PM INFO Max deadline: 1
-02/26/2020 12:03:27 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:03:27 PM INFO Max deadline: 1
-02/26/2020 12:03:27 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
-02/26/2020 12:08:03 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
-02/26/2020 12:08:03 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
-02/26/2020 12:08:03 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:25 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:25 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:53:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:25 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:53:25 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:25 PM INFO Product automaton size is: (307, 4782)
+02/26/2020 08:53:28 PM INFO Generated control policy is: r25 -> 1 -> r26
+02/26/2020 08:53:28 PM INFO Generated control policy is: r27 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r44 -> 1 -> r86
+02/26/2020 08:53:28 PM INFO Generated control policy is: r26 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r15
+02/26/2020 08:53:28 PM INFO Generated control policy is: r86 -> 1 -> r86
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r15 -> 1 -> r15
+02/26/2020 08:53:28 PM INFO Generated control policy is: r86 -> 1 -> r91
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r15 -> 1 -> r15
+02/26/2020 08:53:28 PM INFO Generated control policy is: r91 -> 1 -> r97
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r14
+02/26/2020 08:53:28 PM INFO Generated control policy is: r15 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r97 -> 1 -> r97
+02/26/2020 08:53:28 PM INFO Generated control policy is: r14 -> 1 -> r13
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r97 -> 1 -> r91
+02/26/2020 08:53:28 PM INFO Generated control policy is: r13 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 08:53:28 PM INFO Generated control policy is: r91 -> 1 -> r85
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r21 -> 1 -> r22
+02/26/2020 08:53:28 PM INFO Generated control policy is: r85 -> 1 -> r79
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r22 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:28 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:28 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:28 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:29 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:29 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:29 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 08:53:30 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:53:30 PM INFO Generated control policy is: Base5 -> 1 -> r12
+02/26/2020 08:53:30 PM INFO Generated control policy is: r29 -> 1 -> r23
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
+02/26/2020 08:53:44 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
+02/26/2020 08:53:44 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
+02/26/2020 08:53:44 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 7 ) (Eventually (Hold 1 r12 ) 0 7 ) )
 Directed: True
 Multi: False
@@ -421,7 +1270,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'})]
 		
-02/26/2020 12:08:03 PM DEBUG [spec] tree:
+02/26/2020 08:53:44 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -442,21 +1291,21 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:08:03 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:08:03 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:08:03 PM DEBUG 
+02/26/2020 08:53:44 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:53:44 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:53:44 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:03 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
-02/26/2020 12:08:03 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
-02/26/2020 12:08:03 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
-02/26/2020 12:08:03 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
-02/26/2020 12:08:03 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:44 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
+02/26/2020 08:53:44 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
+02/26/2020 08:53:44 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
+02/26/2020 08:53:44 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
+02/26/2020 08:53:44 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 8 ) (Eventually (Hold 1 r23 ) 0 5 ) )
 Directed: True
 Multi: False
@@ -467,7 +1316,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'})]
 		
-02/26/2020 12:08:03 PM DEBUG [spec] tree:
+02/26/2020 08:53:44 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -488,24 +1337,24 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:08:03 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:08:03 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:08:03 PM DEBUG 
+02/26/2020 08:53:44 PM DEBUG [spec] No of nodes: 6
+02/26/2020 08:53:44 PM DEBUG [spec] No of edges: 10
+02/26/2020 08:53:44 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:03 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
-02/26/2020 12:08:03 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
-02/26/2020 12:08:03 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
-02/26/2020 12:08:03 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:03 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
-02/26/2020 12:08:03 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
-02/26/2020 12:08:03 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
-02/26/2020 12:08:03 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:44 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
+02/26/2020 08:53:44 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
+02/26/2020 08:53:44 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
+02/26/2020 08:53:44 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 08:53:44 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
+02/26/2020 08:53:44 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
+02/26/2020 08:53:44 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
+02/26/2020 08:53:44 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) (Eventually (Hold 1 r73 ) 0 3 ) )
 Directed: True
 Multi: False
@@ -516,7 +1365,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (4, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'}), (5, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'})]
 		
-02/26/2020 12:08:03 PM DEBUG [spec] tree:
+02/26/2020 08:53:44 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -549,71 +1398,71 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([6])
 
-02/26/2020 12:08:03 PM DEBUG [spec] No of nodes: 7
-02/26/2020 12:08:03 PM DEBUG [spec] No of edges: 12
-02/26/2020 12:08:03 PM DEBUG 
+02/26/2020 08:53:44 PM DEBUG [spec] No of nodes: 7
+02/26/2020 08:53:44 PM DEBUG [spec] No of edges: 12
+02/26/2020 08:53:44 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:03 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
-02/26/2020 12:08:03 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
-02/26/2020 12:08:03 PM DEBUG 
+02/26/2020 08:53:44 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
+02/26/2020 08:53:44 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
+02/26/2020 08:53:44 PM DEBUG 
 
 Start policy computation
 
-02/26/2020 12:08:03 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:04 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:04 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:04 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:04 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:08:04 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:04 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:08:04 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:04 PM INFO Product automaton size is: (307, 4782)
-02/26/2020 12:08:06 PM INFO Generated control policy is: r25 -> 1 -> r26
-02/26/2020 12:08:06 PM INFO Generated control policy is: r27 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r44 -> 1 -> r86
-02/26/2020 12:08:06 PM INFO Generated control policy is: r26 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r86 -> 1 -> r86
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r15 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r86 -> 1 -> r91
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r15 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r91 -> 1 -> r97
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r14
-02/26/2020 12:08:06 PM INFO Generated control policy is: r15 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r97 -> 1 -> r97
-02/26/2020 12:08:06 PM INFO Generated control policy is: r14 -> 1 -> r13
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r97 -> 1 -> r91
-02/26/2020 12:08:06 PM INFO Generated control policy is: r13 -> 1 -> r12
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r21
-02/26/2020 12:08:06 PM INFO Generated control policy is: r91 -> 1 -> r85
-02/26/2020 12:08:06 PM INFO Generated control policy is: r12 -> 1 -> r12
-02/26/2020 12:08:06 PM INFO Generated control policy is: r21 -> 1 -> r22
-02/26/2020 12:08:06 PM INFO Generated control policy is: r85 -> 1 -> r79
-02/26/2020 12:08:06 PM INFO Generated control policy is: r12
-02/26/2020 12:08:06 PM INFO Generated control policy is: r22 -> 1 -> r23
-02/26/2020 12:08:06 PM INFO Generated control policy is: r79 -> 1 -> r73
-02/26/2020 12:08:06 PM INFO Generated control policy is: r23 -> 1 -> r23
-02/26/2020 12:08:06 PM INFO Generated control policy is: r73 -> 1 -> r73
-02/26/2020 12:08:06 PM INFO Generated control policy is: r23
-02/26/2020 12:08:06 PM INFO Generated control policy is: r73
-02/26/2020 12:08:06 PM INFO Max deadline: -2
-02/26/2020 12:08:06 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:08:06 PM INFO Max deadline: 1
-02/26/2020 12:08:06 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:08:06 PM INFO Max deadline: 1
-02/26/2020 12:08:06 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
-02/26/2020 12:08:31 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
-02/26/2020 12:08:31 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
-02/26/2020 12:08:31 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 08:53:44 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:44 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:45 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 08:53:45 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:45 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:53:45 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:45 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 08:53:45 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 08:53:45 PM INFO Product automaton size is: (307, 4782)
+02/26/2020 08:53:47 PM INFO Generated control policy is: r25 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:53:49 PM INFO Generated control policy is: r27 -> 1 -> r21 -> 1 -> r15 -> 1 -> r15
+02/26/2020 08:53:51 PM INFO Generated control policy is: r44 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91
+02/26/2020 08:53:51 PM INFO Generated control policy is: r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:54:03 PM INFO Generated control policy is: r21 -> 1 -> r15 -> 1 -> r15 -> 1 -> r15
+02/26/2020 08:54:28 PM INFO Generated control policy is: r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97
+02/26/2020 08:54:29 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14
+02/26/2020 08:54:49 PM INFO Generated control policy is: r15 -> 1 -> r15 -> 1 -> r15 -> 1 -> r21
+02/26/2020 08:55:01 PM INFO Generated control policy is: r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97
+02/26/2020 08:55:02 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13
+02/26/2020 08:55:15 PM INFO Generated control policy is: r15 -> 1 -> r15 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:55:30 PM INFO Generated control policy is: r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91
+02/26/2020 08:55:31 PM INFO Generated control policy is: r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12
+02/26/2020 08:55:42 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
+02/26/2020 08:55:50 PM INFO Generated control policy is: r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85
+02/26/2020 08:55:51 PM INFO Generated control policy is: r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:56:08 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22
+02/26/2020 08:56:12 PM INFO Generated control policy is: r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79
+02/26/2020 08:56:12 PM INFO Generated control policy is: r13 -> 1 -> Base5 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:56:14 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23
+02/26/2020 08:56:17 PM INFO Generated control policy is: r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73
+02/26/2020 08:56:17 PM INFO Generated control policy is: r12 -> 1 -> Base5 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:56:18 PM INFO Generated control policy is: r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:56:23 PM INFO Generated control policy is: r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 08:56:23 PM INFO Generated control policy is: r12
+02/26/2020 08:56:24 PM INFO Generated control policy is: r22 -> 1 -> r29 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:56:24 PM INFO Generated control policy is: r79 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 08:56:25 PM INFO Generated control policy is: r23 -> 1 -> r29 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:56:26 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 08:56:26 PM INFO Generated control policy is: r23
+02/26/2020 08:56:26 PM INFO Generated control policy is: r73
+02/26/2020 08:56:26 PM INFO Max deadline: -2
+02/26/2020 08:56:26 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
+02/26/2020 08:56:26 PM INFO Max deadline: 1
+02/26/2020 08:56:26 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
+02/26/2020 08:56:26 PM INFO Max deadline: 1
+02/26/2020 08:56:26 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 2 r21 )
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r21'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
+02/26/2020 09:18:28 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 7 ) DFA2: (Eventually (Hold 1 r12 ) 0 7 )
+02/26/2020 09:18:28 PM DEBUG [spec] spec: [H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]
+02/26/2020 09:18:28 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 7 ) (Eventually (Hold 1 r12 ) 0 7 ) )
 Directed: True
 Multi: False
@@ -624,7 +1473,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r12', 'weight': 0, 'label': u'r12'})]
 		
-02/26/2020 12:08:31 PM DEBUG [spec] tree:
+02/26/2020 09:18:28 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -645,21 +1494,21 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:08:31 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:08:31 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:08:31 PM DEBUG 
+02/26/2020 09:18:28 PM DEBUG [spec] No of nodes: 6
+02/26/2020 09:18:28 PM DEBUG [spec] No of edges: 10
+02/26/2020 09:18:28 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:31 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
-02/26/2020 12:08:31 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
-02/26/2020 12:08:31 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
-02/26/2020 12:08:31 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
-02/26/2020 12:08:31 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 09:18:28 PM INFO The bound of formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" is (4, 15)!
+02/26/2020 09:18:28 PM INFO Translated formula "[H^2 r21]^[0, 7] * [H^1 r12]^[0, 7]" to infinity DFA of size (6, 10)!
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 8 DFA: (Hold 2 r21 )
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r23 Duration: 1 Negation: False Props: set(['r23', 'r21'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r23 )
+02/26/2020 09:18:28 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 8 ) DFA2: (Eventually (Hold 1 r23 ) 0 5 )
+02/26/2020 09:18:28 PM DEBUG [spec] spec: [H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]
+02/26/2020 09:18:28 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Eventually (Hold 2 r21 ) 0 8 ) (Eventually (Hold 1 r23 ) 0 5 ) )
 Directed: True
 Multi: False
@@ -670,7 +1519,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'}), (4, 3, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3]), 'guard': u'r23', 'weight': 0, 'label': u'r23'})]
 		
-02/26/2020 12:08:31 PM DEBUG [spec] tree:
+02/26/2020 09:18:28 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -691,24 +1540,24 @@ Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '
      Init: set([3])
      Final: set([5])
 
-02/26/2020 12:08:31 PM DEBUG [spec] No of nodes: 6
-02/26/2020 12:08:31 PM DEBUG [spec] No of edges: 10
-02/26/2020 12:08:31 PM DEBUG 
+02/26/2020 09:18:28 PM DEBUG [spec] No of nodes: 6
+02/26/2020 09:18:28 PM DEBUG [spec] No of edges: 10
+02/26/2020 09:18:28 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:31 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
-02/26/2020 12:08:31 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
-02/26/2020 12:08:31 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
-02/26/2020 12:08:31 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
-02/26/2020 12:08:31 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
-02/26/2020 12:08:31 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
-02/26/2020 12:08:31 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
-02/26/2020 12:08:31 PM DEBUG [spec] mode: Infinity DFA: 
+02/26/2020 09:18:28 PM INFO The bound of formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" is (4, 14)!
+02/26/2020 09:18:28 PM INFO Translated formula "[H^2 r21]^[0, 8] * [H^1 r23]^[0, 5]" to infinity DFA of size (6, 10)!
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r86 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r86 )
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r97 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r97 )
+02/26/2020 09:18:28 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r86 ) 0 7 ) DFA2: (Eventually (Hold 1 r97 ) 0 7 )
+02/26/2020 09:18:28 PM DEBUG [hold] Prop: r73 Duration: 1 Negation: False Props: set(['r97', 'r73', 'r86'])
+02/26/2020 09:18:28 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r73 )
+02/26/2020 09:18:28 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) DFA2: (Eventually (Hold 1 r73 ) 0 3 )
+02/26/2020 09:18:28 PM DEBUG [spec] spec: [H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]
+02/26/2020 09:18:28 PM DEBUG [spec] mode: Infinity DFA: 
 Name: (Concat (Concat (Eventually (Hold 1 r86 ) 0 7 ) (Eventually (Hold 1 r97 ) 0 7 ) ) (Eventually (Hold 1 r73 ) 0 3 ) )
 Directed: True
 Multi: False
@@ -719,7 +1568,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r86', 'weight': 0, 'label': u'r86'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r97', 'weight': 0, 'label': u'r97'}), (4, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'}), (5, 4, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([2, 3, 6, 7]), 'guard': u'r73', 'weight': 0, 'label': u'r73'})]
 		
-02/26/2020 12:08:31 PM DEBUG [spec] tree:
+02/26/2020 09:18:28 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -752,61 +1601,61 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([6])
 
-02/26/2020 12:08:31 PM DEBUG [spec] No of nodes: 7
-02/26/2020 12:08:31 PM DEBUG [spec] No of edges: 12
-02/26/2020 12:08:31 PM DEBUG 
+02/26/2020 09:18:28 PM DEBUG [spec] No of nodes: 7
+02/26/2020 09:18:28 PM DEBUG [spec] No of edges: 12
+02/26/2020 09:18:28 PM DEBUG 
 End of translate
 
 
-02/26/2020 12:08:31 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
-02/26/2020 12:08:31 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
-02/26/2020 12:08:31 PM DEBUG 
+02/26/2020 09:18:28 PM INFO The bound of formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" is (5, 19)!
+02/26/2020 09:18:28 PM INFO Translated formula "[H^1 r86]^[0, 7] * [H^1 r97]^[0, 7] * [H^1 r73]^[0, 3]" to infinity DFA of size (7, 12)!
+02/26/2020 09:18:28 PM DEBUG 
 
 Start policy computation
 
-02/26/2020 12:08:31 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:31 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:31 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
-02/26/2020 12:08:31 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:31 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:08:32 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:32 PM INFO Product automaton size is: (206, 3204)
-02/26/2020 12:08:32 PM INFO Constructing product automaton with infinity DFA!
-02/26/2020 12:08:32 PM INFO Product automaton size is: (307, 4782)
-02/26/2020 12:08:34 PM INFO Generated control policy is: r25 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:34 PM INFO Generated control policy is: r27 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:34 PM INFO Generated control policy is: r44 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91
-02/26/2020 12:08:34 PM INFO Generated control policy is: r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:34 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22
-02/26/2020 12:08:34 PM INFO Generated control policy is: r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97
-02/26/2020 12:08:34 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14
-02/26/2020 12:08:34 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:34 PM INFO Generated control policy is: r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97
-02/26/2020 12:08:34 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13
-02/26/2020 12:08:34 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:34 PM INFO Generated control policy is: r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91
-02/26/2020 12:08:34 PM INFO Generated control policy is: r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12
-02/26/2020 12:08:34 PM INFO Generated control policy is: r15 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21
-02/26/2020 12:08:35 PM INFO Generated control policy is: r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85
-02/26/2020 12:08:35 PM INFO Generated control policy is: r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:08:35 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22
-02/26/2020 12:08:35 PM INFO Generated control policy is: r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79
-02/26/2020 12:08:35 PM INFO Generated control policy is: r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:08:35 PM INFO Generated control policy is: r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23
-02/26/2020 12:08:35 PM INFO Generated control policy is: r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73
-02/26/2020 12:08:35 PM INFO Generated control policy is: r12 -> 1 -> r12
-02/26/2020 12:08:35 PM INFO Generated control policy is: r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:08:35 PM INFO Generated control policy is: r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:08:35 PM INFO Generated control policy is: r12
-02/26/2020 12:08:35 PM INFO Generated control policy is: r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:08:35 PM INFO Generated control policy is: r79 -> 1 -> r73 -> 1 -> r73
-02/26/2020 12:08:35 PM INFO Generated control policy is: r23 -> 1 -> r23
-02/26/2020 12:08:35 PM INFO Generated control policy is: r73 -> 1 -> r73
-02/26/2020 12:08:35 PM INFO Generated control policy is: r23
-02/26/2020 12:08:35 PM INFO Generated control policy is: r73
-02/26/2020 12:08:35 PM INFO Max deadline: -2
-02/26/2020 12:08:35 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
-02/26/2020 12:08:35 PM INFO Max deadline: 1
-02/26/2020 12:08:35 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
-02/26/2020 12:08:35 PM INFO Max deadline: 1
-02/26/2020 12:08:35 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
+02/26/2020 09:18:28 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 09:18:28 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 09:18:28 PM DEBUG [extend_ts] TS: (102, 1594) ETS:(102, 1594)
+02/26/2020 09:18:28 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 09:18:28 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 09:18:28 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 09:18:28 PM INFO Product automaton size is: (206, 3204)
+02/26/2020 09:18:28 PM INFO Constructing product automaton with infinity DFA!
+02/26/2020 09:18:28 PM INFO Product automaton size is: (307, 4782)
+02/26/2020 09:18:31 PM INFO Generated control policy is: r25 -> 1 -> r26
+02/26/2020 09:18:31 PM INFO Generated control policy is: r27 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r44 -> 1 -> r86
+02/26/2020 09:18:31 PM INFO Generated control policy is: r26 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r15
+02/26/2020 09:18:31 PM INFO Generated control policy is: r86 -> 1 -> r86
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r15 -> 1 -> r15
+02/26/2020 09:18:31 PM INFO Generated control policy is: r86 -> 1 -> r91
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r15 -> 1 -> r15
+02/26/2020 09:18:31 PM INFO Generated control policy is: r91 -> 1 -> r97
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r14
+02/26/2020 09:18:31 PM INFO Generated control policy is: r15 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r97 -> 1 -> r97
+02/26/2020 09:18:31 PM INFO Generated control policy is: r14 -> 1 -> r13
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r97 -> 1 -> r91
+02/26/2020 09:18:31 PM INFO Generated control policy is: r13 -> 1 -> r12
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r21
+02/26/2020 09:18:31 PM INFO Generated control policy is: r91 -> 1 -> r85
+02/26/2020 09:18:31 PM INFO Generated control policy is: r12 -> 1 -> r12
+02/26/2020 09:18:31 PM INFO Generated control policy is: r21 -> 1 -> r22
+02/26/2020 09:18:31 PM INFO Generated control policy is: r85 -> 1 -> r79
+02/26/2020 09:18:31 PM INFO Generated control policy is: r12
+02/26/2020 09:18:31 PM INFO Generated control policy is: r22 -> 1 -> r23
+02/26/2020 09:18:31 PM INFO Generated control policy is: r79 -> 1 -> r73
+02/26/2020 09:18:31 PM INFO Generated control policy is: r23 -> 1 -> r23
+02/26/2020 09:18:31 PM INFO Generated control policy is: r73 -> 1 -> r73
+02/26/2020 09:18:31 PM INFO Generated control policy is: r23
+02/26/2020 09:18:31 PM INFO Generated control policy is: r73
+02/26/2020 09:18:31 PM INFO Max deadline: -2
+02/26/2020 09:18:31 PM INFO Generated control policy is: Base -> 1 -> r31 -> 1 -> r26 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r14 -> 1 -> r13 -> 1 -> r12 -> 1 -> r12
+02/26/2020 09:18:31 PM INFO Max deadline: 1
+02/26/2020 09:18:31 PM INFO Generated control policy is: Base2 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r22 -> 1 -> r23 -> 1 -> r23
+02/26/2020 09:18:31 PM INFO Max deadline: 1
+02/26/2020 09:18:31 PM INFO Generated control policy is: Base3 -> 1 -> r43 -> 1 -> r86 -> 1 -> r86 -> 1 -> r91 -> 1 -> r97 -> 1 -> r97 -> 1 -> r91 -> 1 -> r85 -> 1 -> r79 -> 1 -> r73 -> 1 -> r73
