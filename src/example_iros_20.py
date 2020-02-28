@@ -133,11 +133,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     # must be at least 2
     num_hops = 3
     # Get agent priority based on lowest energy
-    prev_priority = key_list
     prev_states = {}
     for key in ts_policy_dict_nom:
         prev_states[key] = pa_policy_dict_nom[key][0]
-    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list, prev_priority)
+    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list)
     # Create Agent energy dictionary for post-processing
     agent_energy_dict = {}
     for key in ts_policy_dict_nom:
@@ -175,7 +174,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                     # Note that communication range needs to be 2*H, the receding horizon length
                     local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
                     one_hop_set = ts_dict[p_val].g.neighbors(node)
-                    # Assign hard constraint nodes in local neighborhood
+                    # Assign constraints for immediate transition
                     weighted_nodes = []
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
@@ -191,7 +190,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                         if downwash_node not in weighted_nodes:
                                             weighted_nodes.append(downwash_node)
                                 break
-                    # Get soft constraint nodes from sharing n-hop trajectory
+                    # Get constraints for later transitions
                     soft_nodes = {}
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
@@ -218,7 +217,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                         soft_nodes[i+1]
                                     except KeyError:
                                         soft_nodes[i+1] = []
-                    # Assign soft constraint nodes
+                    # Assign later constraint nodes
                     weighted_soft_nodes = soft_nodes
                     # Update weights if transitioning between same two nodes
                     ts_prev_states = []
@@ -287,7 +286,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                         local_horizon(pa_nom_dict[p_val], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
                     # Write updates to file
                     iter_step += 1
-                    write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
+                    # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
 
                 # Update policy match
                 policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
@@ -302,7 +301,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
             ts_write = policy_match.pop(0)
             traj_length += 1
             # publish this waypoint to a csv file
-            write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
+            # write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
             # Execute waypoint in crazyswarm lab testing
             if lab_testing:
                 startWaypoint = timeit.default_timer()
@@ -336,7 +335,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 # Get agent priority based on lowest energy
                 for key in key_list:
                     prev_states[key] = pa_control_policy_dict[key][-1]
-                priority = get_priority(pa_nom_dict, pa_policy, prev_states, key_list, priority)
+                priority = get_priority(pa_nom_dict, pa_policy, prev_states, key_list)
             else:
                 running = False
 
@@ -345,9 +344,14 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     print 'Online run time for safe algorithm: ', stopOnline - startOnline
     stopFull = timeit.default_timer()
     print 'Full run time for safe algorithm: ', stopFull - startFull
+    # Print other statistics from simulation
+    print 'Number of iterations for run: ', iter_step
+    print 'Average time for itertion is: ', (stopOnline - startOnline)/iter_step
+    print 'Number of full updates in run: ', traj_length
+    print 'Average update time for single step: ', (stopOnline - startOnline)/traj_length
 
     # Print energy statistics from run
-    # plot_energy(agent_energy_dict)
+    plot_energy(agent_energy_dict)
 
     # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
@@ -363,23 +367,19 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
         write_to_csv(ts_dict[key], ts_control_policy_dict[key], key, time_wp)
 
 
-def get_priority(pa_nom_dict, pa_policy, prev_states, key_list, prev_priority):
+def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
     ''' Computes the agent priority based on lowest energy. '''
     priority = []
     temp_energy = {}
     progress_check = {}
     for key in key_list:
         temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
-
     # Sort the energy values found for all agents in descending energy order
     sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
-
-    for key in prev_priority:
-        if key in key_list:
-            priority.append(key)
+    # Generate set of priorities with lwoest energy given highest priority
     for key, energy_val in sorted_energy:
-        if key not in priority:
-            priority.append(key)
+        priority.append(key)
+
     return priority
 
 def findPaths(pa, init, n):
@@ -430,89 +430,6 @@ def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
     for node in paths[index_min][1::]:
         ts_policy.append(node[0])
         pa_policy.append(node)
-
-    return ts_policy, pa_policy
-
-
-def local_horizon_old(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
-    ''' Compute the n-hop lowest energy horizon without imminent conflict and
-    incorporating penalty for soft constraints based on number of hops from
-    the current state. '''
-    ts_policy = []
-    pa_policy = []
-    epsilon = 0.001
-    # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
-    prev_node = init_loc
-    for i in range(num_hops):
-        keep_nodes = {}
-        local_set = pa.g.neighbors(prev_node)
-        if prev_node not in local_set:
-            local_set.append(prev_node)
-        if i < 1:
-            for neighbor in local_set:
-                for node in pa.g.nodes(data='true'):
-                    if neighbor == node[0] and node[0][0] not in weighted_nodes:
-                        keep_nodes[node[0]] = node[1]['energy']
-                        break
-            if not keep_nodes:
-                ts_policy = [init_loc[0],init_loc[0]]
-                pa_policy = [init_loc, init_loc]
-                print 'No feasible location to move, therefore stay in current position'
-                return ts_policy, pa_policy
-        else:
-            for neighbor in local_set:
-                for node in pa.g.nodes(data='true'):
-                    if neighbor == node[0] and node[0][0] not in soft_nodes[i]:
-                            keep_nodes[node[0]] = node[1]['energy']
-                            break
-            if not keep_nodes:
-                ts_policy.append(prev_node[0])
-                pa_policy.append(prev_node)
-                print 'No feasible location to move, therefore stay in current position'
-                return ts_policy, pa_policy
-
-        # Iterate through all hops
-        for keep_node in keep_nodes:
-            temp_node = keep_node
-            energy_temp = keep_nodes[keep_node]
-            for j in range(num_hops-i-1):
-                local_node_set = pa.g.neighbors(temp_node)
-                if temp_node not in local_node_set:
-                    local_node_set.append(temp_node)
-                energy_low = float('inf')
-                for neighbor in local_node_set:
-                    for node in pa.g.nodes(data='true'):
-                        if neighbor == node[0]:
-                            if node[0][0] in soft_nodes[j+i+1]:
-                                energy_temp2 = float('inf')
-                            else:
-                                energy_temp2 = node[1]['energy']
-                            if energy_temp2 < energy_low:
-                                temp_node = node[0]
-                                energy_low = energy_temp2
-                            break
-                if energy_low == float('inf'):
-                    ts_policy.append(keep_node[0])
-                    pa_policy.append(keep_node)
-                    return ts_policy, pa_policy
-                energy_temp = energy_temp + energy_low
-            keep_nodes[keep_node] = energy_temp
-        # If there is no location with lower energy then stay put
-        temp = min(keep_nodes, key=keep_nodes.get)
-        try:
-            keep_nodes[prev_node]
-            if abs(keep_nodes[temp] - keep_nodes[prev_node]) < epsilon:
-                next_node = prev_node
-            else:
-                next_node = temp
-        except KeyError:
-            next_node = temp
-        # Append policies returned
-        ts_policy.append(next_node[0])
-        pa_policy.append(next_node)
-        if next_node in pa.final:
-            return ts_policy, pa_policy
-        prev_node = next_node
 
     return ts_policy, pa_policy
 
