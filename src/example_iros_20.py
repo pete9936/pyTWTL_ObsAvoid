@@ -134,7 +134,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     tau_dict = tau_dict_nom
     # Choose parameter for n-horizon local trajectory and information sharing,
     # must be at least 2
-    num_hops = 3
+    num_hops = 2
     # Get agent priority based on lowest energy
     prev_states = {}
     for key in ts_policy_dict_nom:
@@ -149,6 +149,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
+    pdb.set_trace()
 
     # Execute takeoff command for all crazyflies in lab testing
     if lab_testing:
@@ -304,7 +305,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
             ts_write = policy_match.pop(0)
             traj_length += 1
             # publish this waypoint to a csv file
-            # write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
+            write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
             # Execute waypoint in crazyswarm lab testing
             if lab_testing:
                 startWaypoint = timeit.default_timer()
@@ -354,7 +355,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     print 'Average update time for single step: ', (stopOnline - startOnline)/traj_length
 
     # Print energy statistics from run
-    plot_energy(agent_energy_dict)
+    # plot_energy(agent_energy_dict)
 
     # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
@@ -539,12 +540,12 @@ if __name__ == '__main__':
     phi1 = '[H^2 r21]^[0, 6] * [H^1 r12]^[0, 5]'
     phi2 = '[H^2 r21]^[0, 5] * [H^1 r23]^[0, 4]'
     phi3 = '[H^1 r86]^[0, 4] * [H^2 r97]^[0, 4]'
-    # phi4 = '[H^2 r89]^[0, 5] * [H^1 Base4]^[0, 3]'
-    # phi5 = '[H^1 r105]^[0, 6] * [H^1 Base5]^[0, 6]'
+    phi4 = '[H^2 r89]^[0, 5] * [H^1 Base4]^[0, 3]'
+    phi5 = '[H^1 r105]^[0, 6] * [H^1 Base5]^[0, 6]'
     # Set to use the same transition system
-    phi = [phi1, phi2, phi3]#, phi4, phi5]
-    ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt']#, \
-                # '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
+    phi = [phi1, phi2, phi3, phi4, phi5]
+    ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
+                '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
@@ -553,9 +554,9 @@ if __name__ == '__main__':
               Otherwise it is a multi-objective cost minimization of the two factors. '''
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.7
+    time_wp = 1.8
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
-    lab_testing = False
+    lab_testing = True
     case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)

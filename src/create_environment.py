@@ -1024,7 +1024,7 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
                 for j in range(n):
                     x = disc*m/2 - disc/2 - i*disc
                     y = disc*n/2 - disc/2 - j*disc
-                    z = 0.5 + k*0.25  # this is due to our lab testing environment
+                    z = 0.4 + k*0.3  # this is due to our lab testing environment
                     if obs_mat[m*k+i][j] == 3:
                         continue
                     elif state_mat[m*k+i][j] in bases:
@@ -1074,7 +1074,7 @@ if __name__ == '__main__':
     paths = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
             '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
     bases = {30: 'Base', 34: 'Base2', 1: 'Base3', 4: 'Base4', 6: 'Base5'}
-    disc = 0.5
+    disc = 0.43
     for i in range(len(init_state)):
         obs_mat = update_obs_mat(obs_mat, state_mat, m, obstacles, init_state[i])
         # Update the adjacency matrix
