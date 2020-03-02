@@ -558,5 +558,5 @@ if __name__ == '__main__':
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
-    lab_testing = True
+    lab_testing = False
     case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)
