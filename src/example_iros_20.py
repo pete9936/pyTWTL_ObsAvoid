@@ -149,7 +149,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     stopOff = timeit.default_timer()
     print 'Offline run time for all initial setup: ', stopOff - startOff
     startOnline = timeit.default_timer()
-    pdb.set_trace()
+    # pdb.set_trace()
 
     # Execute takeoff command for all crazyflies in lab testing
     if lab_testing:
@@ -231,7 +231,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             if len(ts_control_policy_dict[key]) == traj_length:
                                 ts_prev_states.append(ts_control_policy_dict[key][-1])
                     if ts_prev_states:
-                        for p_ind2, p_val2 in enumerate(priority[0:p_ind]):
+                        for p_ind2, p_val2 in enumerate(priority[0:p_ind+1]):
                             if p_ind2 > 0:
                                 for k_c, key in enumerate(key_list):
                                     if p_val2 == key:
@@ -240,6 +240,8 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                 # Check if the trajectories will cross each other in transition
                                 cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                                                                     priority[0:p_ind2], key_list, radius, time_wp)
+                                # if traj_length > 4:
+                                #     pdb.set_trace()
                                 if cross_weight:
                                     for cross_node in cross_weight:
                                         if cross_node not in weighted_nodes:
@@ -554,9 +556,9 @@ if __name__ == '__main__':
               Otherwise it is a multi-objective cost minimization of the two factors. '''
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.8
+    time_wp = 1.9
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if running on Crazyflies in the lab
-    lab_testing = False
+    lab_testing = True
     case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)

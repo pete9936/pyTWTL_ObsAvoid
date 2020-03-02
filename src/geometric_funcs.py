@@ -156,6 +156,10 @@ def check_intersect(cur_ind, ts, ts_prev_states, ts_next_states, priority, key_l
                     print 'Distance between both segments:', distance
                     if distance == None:
                         break
+                    elif pA == None:
+                        if distance <= radius:
+                            weighted_nodes.append(ts_next_states[k])
+                        break
                     else:
                         A = a1 - a0
                         B = b1 - b0
@@ -198,8 +202,9 @@ def closestDistanceBetweenLines(a0,a1,b0,b1):
     if not denom:
         d0 = np.dot(_A,(b0-a0))
         d1 = np.dot(_A,(b1-a0))
+        # dist = min(d0,d1)
         # Segments overlap, return distance between parallel segments
-        return None,None,None # np.linalg.norm(((d0*_A)+a0)-b0)
+        return None,None, np.linalg.norm(((d0*_A)+a0)-b0)
 
     # Lines cross at some point (skew): Calculate the projected closest points
     t = (b0 - a0);
