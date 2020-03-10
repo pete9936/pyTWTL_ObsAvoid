@@ -507,30 +507,6 @@ def compute_control_policy(pa, dfa, kind):
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path.path, optimal_tau
 
-def compute_control_policy2(pa, dfa, init_loc, edge_weight=False):
-    ''' Computes a control policy from product automaton pa. This takes into
-    account the updated initial state where collision was detected. '''
-    # Get the shortest simple path
-    if edge_weight == True:
-        optimal_pa_path = simple_control_policy2(pa, init_loc, edge_weight=True)
-    else:
-        optimal_pa_path = simple_control_policy2(pa, init_loc)
-    optimal_ts_path = [x for x, _ in optimal_pa_path]
-    optimal_tau = 0 # temporary *** (10/22)
-    if optimal_ts_path is None:
-        return None, None, None
-    return optimal_ts_path, optimal_pa_path, optimal_tau
-
-def compute_control_policy3(pa, dfa, init_loc):
-    ''' Computes a control policy from product automaton pa. This takes into
-    account the updated initial state where collision was detected. '''
-    # Get the shortest simple path
-    optimal_pa_path = simple_control_policy_moc(pa, init_loc)
-    optimal_ts_path = [x for x, _ in optimal_pa_path]
-    if optimal_ts_path is None:
-        return None, None
-    return optimal_ts_path, optimal_pa_path
-
 def compute_multiagent_policy(pa):
     ''' This calculates the shortest path on a combined product automaton
     for multiple agents to find the optimal centralized path '''

@@ -14,7 +14,7 @@ import pdb, os, math
 
 def create_ts(m, n, h):
     ''' function to create the initial grid for the transition system given
-    the m x n grid'''
+    the m x n x h grid'''
     # Initialize the states to their node names
     state_mat = np.arange(m*n*h).reshape((m*h,n))
     # Initialize an observation matrix with null observations
@@ -34,10 +34,7 @@ def update_obs_mat(obs_mat, state_mat, m, obstacles = None, init_state = None):
             index3 = obstacles[i][2]
             obs_mat[m*index3+index1][index2] = 3
     if init_state != None:
-        state_loc = np.argwhere(state_mat == init_state)
-        row = state_loc[0][0]
-        col = state_loc[0][1]
-        obs_mat[row][col] = 1
+        obs_mat[m*init_state[2]+init_state[0]][init_state[1]] = 1
     return obs_mat
 
 def update_adj_mat(m, n, adj_mat, obs_mat):
@@ -104,7 +101,7 @@ def update_adj_mat(m, n, adj_mat, obs_mat):
 def update_adj_mat_3D(m, n, h, adj_mat, obs_mat):
     ''' Update the adjacency matrix given an observation matrix '''
     # Breakdown of weights which are approximately Euclidean with a small
-    # penalty given for change in altitude
+    # penalty given for change in altitude (fuel cost)
     epsilon = 0.1
     stay_cost = 0.5
     card_cost = 1
@@ -1008,14 +1005,18 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
                 nodeset1.append(i)
                 nodeset2.append(j)
                 weight.append(adj_mat[i][j])
+    # Change the bases indices to usable format
+    bases_new = {}
+    for base_cords in bases:
+        new_key = n*base_cords[0]+base_cords[1]+n*m*base_cords[2]
+        bases_new[new_key] = bases[base_cords]
+
+
     with open(path, 'w+') as f1:
         # Print file header and initial position
         f1.write('name Simple DTS\n')
-        if iter == 0:
-            f1.write('init {\'Base\':1}\n')
-        else:
-            base_ind = iter+1
-            f1.write('init {\'Base%d\':1}\n' % base_ind)
+        base_ind = iter+1
+        f1.write('init {\'Base%d\':1}\n' % base_ind)
         f1.write(';\n')
 
         # Publish the sets of nodes
@@ -1027,13 +1028,13 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
                     z = 0.4 + k*0.3  # this is due to our lab testing environment
                     if obs_mat[m*k+i][j] == 3:
                         continue
-                    elif state_mat[m*k+i][j] in bases:
-                        for key in bases:
+                    elif state_mat[m*k+i][j] in bases_new:
+                        for key in bases_new:
                             if key == state_mat[i][j]:
-                                if bases[key] == 'Base':
-                                    f1.write('%s {\'prop\': set(), \'position\': (%1.2f, %1.2f, %1.2f)}\n' % (bases[key], x, y, z))
+                                if bases_new[key] == 'Base':
+                                    f1.write('%s {\'prop\': set(), \'position\': (%1.2f, %1.2f, %1.2f)}\n' % (bases_new[key], x, y, z))
                                 else:
-                                    f1.write('%s {\'prop\':{\'%s\'}, \'position\': (%1.2f, %1.2f, %1.2f)}\n' % (bases[key], bases[key], x, y, z))
+                                    f1.write('%s {\'prop\':{\'%s\'}, \'position\': (%1.2f, %1.2f, %1.2f)}\n' % (bases_new[key], bases_new[key], x, y, z))
                     else:
                         f1.write('r%d {\'prop\':{\'r%d\'}, \'position\': (%1.2f, %1.2f, %1.2f)}\n'\
                                                 % (state_mat[m*k+i][j], state_mat[m*k+i][j], x, y, z))
@@ -1041,22 +1042,22 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
 
         # Publish the sets of edges and edge weights
         for i in range(len(nodeset1)):
-            if nodeset1[i] in bases:
-                if nodeset2[i] in bases:
-                    for key1 in bases:
+            if nodeset1[i] in bases_new:
+                if nodeset2[i] in bases_new:
+                    for key1 in bases_new:
                         if nodeset1[i] == key1:
-                            for key2 in bases:
+                            for key2 in bases_new:
                                 if nodeset2[i] == key2:
                                     f1.write('%s %s {\'duration\': %d, \'edge_weight\': %f}\n'\
-                                            % (bases[key1], bases[key2], 1.0, weight[i]))
+                                            % (bases_new[key1], bases_new[key2], 1.0, weight[i]))
                 else:
-                    for key1 in bases:
+                    for key1 in bases_new:
                         if nodeset1[i] == key1:
-                            f1.write('%s r%d {\'duration\': %d, \'edge_weight\': %f}\n' % (bases[key1], nodeset2[i], 1.0, weight[i]))
-            elif nodeset2[i] in bases:
-                for key2 in bases:
+                            f1.write('%s r%d {\'duration\': %d, \'edge_weight\': %f}\n' % (bases_new[key1], nodeset2[i], 1.0, weight[i]))
+            elif nodeset2[i] in bases_new:
+                for key2 in bases_new:
                     if nodeset2[i] == key2:
-                        f1.write('r%d %s {\'duration\': %d, \'edge_weight\': %f}\n' % (nodeset1[i], bases[key2], 1.0, weight[i]))
+                        f1.write('r%d %s {\'duration\': %d, \'edge_weight\': %f}\n' % (nodeset1[i], bases_new[key2], 1.0, weight[i]))
             else:
                 f1.write('r%d r%d {\'duration\': %d, \'edge_weight\': %f}\n' % (nodeset1[i], nodeset2[i], 1.0, weight[i]))
     # finished writing to file
@@ -1068,15 +1069,18 @@ if __name__ == '__main__':
     n = 6
     h = 3
     TS, obs_mat, state_mat = create_ts(m,n,h)
-    # try out the init state and obstacles functions
-    init_state = [30, 34, 1, 4, 6]
-    obstacles = [(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)] # (row,column,altitude/height)
+    # Specify initial states and obstacles (row,column,altitude/height)
+    # Indexed from (0,0,0) which is the upper left corner at ground height
+    init_states = [(5,0,0),(5,4,0),(0,1,0),(0,4,0),(1,0,0)]
+    obstacles = [(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)]
+    # Names and locations of the output TS .txt files for each agent
     paths = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
             '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
-    bases = {30: 'Base', 34: 'Base2', 1: 'Base3', 4: 'Base4', 6: 'Base5'}
+    bases = {(5,0,0): 'Base1', (5,4,0): 'Base2', (0,1,0): 'Base3', (0,4,0): 'Base4', (1,0,0): 'Base5'}
+    # Choose appropriate cell discretization for environment (meters)
     disc = 0.43
-    for i in range(len(init_state)):
-        obs_mat = update_obs_mat(obs_mat, state_mat, m, obstacles, init_state[i])
+    for i in range(len(init_states)):
+        obs_mat = update_obs_mat(obs_mat, state_mat, m, obstacles, init_states[i])
         # Update the adjacency matrix
         TS = update_adj_mat_3D(m, n, h, TS, obs_mat)
         # Now create the proper output .txt files

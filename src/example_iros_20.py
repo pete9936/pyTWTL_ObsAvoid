@@ -22,8 +22,7 @@ import write_files
 
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
-                      verify, compute_control_policy2, compute_control_policy3,\
-                      compute_energy
+                      verify, compute_energy
 from geometric_funcs import check_intersect, downwash_check
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
@@ -98,16 +97,14 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     stopEnergy = timeit.default_timer()
     print 'Run Time (s) to get the moc energy function for all three PA: ', stopEnergy - startEnergy
 
-    # Compute optimal path in Pa_Prime and project onto the TS, and initial policy based on moc_weight
+    # Compute optimal path in PA and project onto the TS, and initial policy based on weighted average
     ts_policy_dict_nom = {}
     pa_policy_dict_nom = {}
     tau_dict_nom = {}
     for key in pa_nom_dict:
         ts_policy_dict_nom[key], pa_policy_dict_nom[key], tau_dict_nom[key] = \
                     compute_control_policy(pa_nom_dict[key], dfa_dict[key], dfa_dict[key].kind)
-    for key in pa_nom_dict:
-        ts_policy_dict_nom[key], pa_policy_dict_nom[key] = \
-                    compute_control_policy3(pa_nom_dict[key], dfa_dict[key], pa_policy_dict_nom[key][0])
+
     # Perform initial check on nominal control policies
     for key in ts_policy_dict_nom:
         if ts_policy_dict_nom[key] is None:
@@ -165,10 +162,9 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
         while policy_match:
             for p_ind, p_val in enumerate(priority):
                 if p_ind < 1:
-                    weighted_nodes = []
-                    weighted_soft_nodes = {}
-                    for i in range(num_hops-1):
-                        weighted_soft_nodes[i+1] = []
+                    weighted_nodes = {}
+                    for i in range(num_hops):
+                        weighted_nodes[i] = []
                 else:
                     # Get local neighborhood (n-hop) of nodes to search for a conflict
                     for k, key in enumerate(key_list):
@@ -179,23 +175,23 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                     local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
                     one_hop_set = ts_dict[p_val].g.neighbors(node)
                     # Assign constraints for immediate transition
-                    weighted_nodes = []
+                    weighted_nodes = {}
+                    weighted_nodes[0] = []
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
                             if pty == key:
                                 prev_node = policy_match[0][k]
                                 if prev_node in one_hop_set:
-                                    weighted_nodes.append(prev_node)
+                                    weighted_nodes[0].append(prev_node)
                                 # Check if downwash constraint needs to be added, mostly for physical testing
                                 downwash_weight = downwash_check(k, ets_dict[key], policy_match[0], \
                                                                 priority[0:k], key_list, radius)
                                 if downwash_weight:
                                     for downwash_node in downwash_weight:
-                                        if downwash_node not in weighted_nodes:
-                                            weighted_nodes.append(downwash_node)
+                                        if downwash_node not in weighted_nodes[0]:
+                                            weighted_nodes[0].append(downwash_node)
                                 break
                     # Get constraints for later transitions
-                    soft_nodes = {}
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
                             if pty == key:
@@ -204,25 +200,23 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                     for i in range(num_hops-1):
                                         if ts_policy[key][i+1] in local_set:
                                             try:
-                                                soft_nodes[i+1]
-                                                soft_nodes[i+1].append(ts_policy[key][i+1])
+                                                weighted_nodes[i+1]
+                                                weighted_nodes[i+1].append(ts_policy[key][i+1])
                                             except KeyError:
-                                                soft_nodes[i+1] = [ts_policy[key][i+1]]
+                                                weighted_nodes[i+1] = [ts_policy[key][i+1]]
                                 else:
                                     for i in range(ts_length-1):
                                         if ts_policy[key][i+1] in local_set:
                                             try:
-                                                soft_nodes[i+1]
-                                                soft_nodes[i+1].append(ts_policy[key][i+1])
+                                                weighted_nodes[i+1]
+                                                weighted_nodes[i+1].append(ts_policy[key][i+1])
                                             except KeyError:
-                                                soft_nodes[i+1] = [ts_policy[key][i+1]]
+                                                weighted_nodes[i+1] = [ts_policy[key][i+1]]
                                 for i in range(num_hops-1):
                                     try:
-                                        soft_nodes[i+1]
+                                        weighted_nodes[i+1]
                                     except KeyError:
-                                        soft_nodes[i+1] = []
-                    # Assign later constraint nodes
-                    weighted_soft_nodes = soft_nodes
+                                        weighted_nodes[i+1] = []
                     # Update weights if transitioning between same two nodes
                     ts_prev_states = []
                     ts_index = []
@@ -240,12 +234,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                 # Check if the trajectories will cross each other in transition
                                 cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                                                                     priority[0:p_ind2], key_list, radius, time_wp)
-                                # if traj_length > 4:
-                                #     pdb.set_trace()
                                 if cross_weight:
                                     for cross_node in cross_weight:
                                         if cross_node not in weighted_nodes:
-                                            weighted_nodes.append(cross_node)
+                                            weighted_nodes[0].append(cross_node)
                                     # Check if agents using same transition
                                     for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
                                         for k, key in enumerate(key_list):
@@ -253,10 +245,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                                 if ts_prev_states[k] == node:
                                                     if policy_match[0][k] == ts_prev_states[k_c]:
                                                         temp_node = policy_match[0][k]
-                                                        if temp_node not in weighted_nodes:
-                                                            weighted_nodes.append(temp_node)
-                                                        if node not in weighted_nodes:
-                                                            weighted_nodes.append(node)
+                                                        if temp_node not in weighted_nodes[0]:
+                                                            weighted_nodes[0].append(temp_node)
+                                                        if node not in weighted_nodes[0]:
+                                                            weighted_nodes[0].append(node)
                                                         break
                                         else:
                                             continue
@@ -272,10 +264,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                                 if ts_prev_states[k] == node:
                                                     if policy_match[0][k] == ts_prev_states[k_c]:
                                                         temp_node = policy_match[0][k]
-                                                        if temp_node not in weighted_nodes:
-                                                            weighted_nodes.append(temp_node)
-                                                        if node not in weighted_nodes:
-                                                            weighted_nodes.append(node)
+                                                        if temp_node not in weighted_nodes[0]:
+                                                            weighted_nodes[0].append(temp_node)
+                                                        if node not in weighted_nodes[0]:
+                                                            weighted_nodes[0].append(node)
                                                         break
                                         else:
                                             continue
@@ -288,8 +280,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
                     # Compute receding horizon shortest path
-                    ts_policy[p_val], pa_policy[p_val] = \
-                        local_horizon(pa_nom_dict[p_val], weighted_nodes, weighted_soft_nodes, num_hops, init_loc)
+                    ts_policy[p_val], pa_policy[p_val] = local_horizon(pa_nom_dict[p_val], weighted_nodes, num_hops, init_loc)
                     # Write updates to file
                     iter_step += 1
                     # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
@@ -388,6 +379,30 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
 
     return priority
 
+def minCost(cost, m, n):
+    ''' Dynamic Programming in order to find minimum cost path. '''
+    # Instead of following line, we can use int tc[m+1][n+1] or
+    # dynamically allocate memory to save space. The following
+    # line is used to keep the program simple and make it working
+    # on all compilers.
+    # This is for a 3x3 grid, goal is to go from (0,0)-->(m,n)
+    # https://www.geeksforgeeks.org/min-cost-path-dp-6/
+    R = 3
+    C = 3
+    tc = [[0 for x in range(C)] for x in range(R)]
+    tc[0][0] = cost[0][0]
+    # Initialize first column of total cost(tc) array
+    for i in range(1, m+1):
+        tc[i][0] = tc[i-1][0] + cost[i][0]
+    # Initialize first row of tc array
+    for j in range(1, n+1):
+        tc[0][j] = tc[0][j-1] + cost[0][j]
+    # Construct rest of the tc array
+    for i in range(1, m+1):
+        for j in range(1, n+1):
+            tc[i][j] = min(tc[i-1][j-1], tc[i-1][j], tc[i][j-1]) + cost[i][j]
+    return tc[m][n]
+
 def findPaths(pa, init, n):
     ''' This takes a network pa, a node init, and a length n. It recursively finds
     all paths of length n-1 starting from neighbors of init. '''
@@ -402,23 +417,37 @@ def findPaths(pa, init, n):
                 paths.append([init]+path)
     return paths
 
-def local_horizon(pa, weighted_nodes, soft_nodes, num_hops, init_loc):
+def findPaths2(pa,init,n,excludeSet = None):
+    if excludeSet == None:
+        excludeSet = set([init])
+    else:
+        excludeSet.add(init)
+    if n==0:
+        return [[init]]
+    if init in pa.final:
+        return [[init]]
+    paths = [[init]+path for neighbor in pa.g.neighbors(init) if neighbor not in excludeSet for path in findPaths2(pa,neighbor,n-1,excludeSet)]
+    excludeSet.remove(init)
+    return paths
+
+def local_horizon(pa, weighted_nodes, num_hops, init_loc):
     ''' Compute the n-hop lowest energy horizon without imminent conflict and
     incorporating penalty for soft constraints based on number of hops from
     the current state. '''
+    # http://www2.hawaii.edu/~suthers/courses/ics311f17/Notes/Topic-19.html
+    # Implement Floyd-Warshall method for Dynamic Programming approach, order O(V^3)
+    # https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
+    # For python code on it, simple
     ts_policy = []
     pa_policy = []
-    epsilon = 0.001
 
     # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
-    soft_nodes[0] = weighted_nodes
-    index = 0
     paths_temp = findPaths(pa, init_loc, num_hops)
     paths = copy.deepcopy(paths_temp)
     # Get rid of all infeasible paths due to constraints
     for path in paths_temp:
         for ind, node in enumerate(path[1::]):
-            if node[0] in soft_nodes[ind]:
+            if node[0] in weighted_nodes[ind]:
                 paths.remove(path)
                 break
 

@@ -1,5 +1,5 @@
 name Simple DTS
-init {'Base':1}
+init {'Base1':1}
 ;
 r0 {'prop':{'r0'}, 'position': (1.07, 1.07, 0.40)}
 Base3 {'prop':{'Base3'}, 'position': (1.07, 0.65, 0.40)}
@@ -29,7 +29,7 @@ r26 {'prop':{'r26'}, 'position': (-0.65, 0.21, 0.40)}
 r27 {'prop':{'r27'}, 'position': (-0.65, -0.22, 0.40)}
 r28 {'prop':{'r28'}, 'position': (-0.65, -0.65, 0.40)}
 r29 {'prop':{'r29'}, 'position': (-0.65, -1.07, 0.40)}
-Base {'prop': set(), 'position': (-1.07, 1.07, 0.40)}
+Base1 {'prop':{'Base1'}, 'position': (-1.07, 1.07, 0.40)}
 r31 {'prop':{'r31'}, 'position': (-1.07, 0.65, 0.40)}
 r32 {'prop':{'r32'}, 'position': (-1.07, 0.21, 0.40)}
 Base2 {'prop':{'Base2'}, 'position': (-1.07, -0.65, 0.40)}
@@ -415,7 +415,7 @@ r24 r18 {'duration': 1, 'edge_weight': 1.000000}
 r24 r19 {'duration': 1, 'edge_weight': 1.414000}
 r24 r24 {'duration': 1, 'edge_weight': 0.500000}
 r24 r25 {'duration': 1, 'edge_weight': 1.000000}
-r24 Base {'duration': 1, 'edge_weight': 1.000000}
+r24 Base1 {'duration': 1, 'edge_weight': 1.000000}
 r24 r31 {'duration': 1, 'edge_weight': 1.414000}
 r24 r54 {'duration': 1, 'edge_weight': 1.514000}
 r24 r55 {'duration': 1, 'edge_weight': 1.650000}
@@ -428,7 +428,7 @@ r25 r19 {'duration': 1, 'edge_weight': 1.000000}
 r25 r24 {'duration': 1, 'edge_weight': 1.000000}
 r25 r25 {'duration': 1, 'edge_weight': 0.500000}
 r25 r26 {'duration': 1, 'edge_weight': 1.000000}
-r25 Base {'duration': 1, 'edge_weight': 1.414000}
+r25 Base1 {'duration': 1, 'edge_weight': 1.414000}
 r25 r31 {'duration': 1, 'edge_weight': 1.000000}
 r25 r32 {'duration': 1, 'edge_weight': 1.414000}
 r25 r54 {'duration': 1, 'edge_weight': 1.650000}
@@ -495,18 +495,18 @@ r29 r64 {'duration': 1, 'edge_weight': 1.514000}
 r29 r65 {'duration': 1, 'edge_weight': 1.100000}
 r29 r70 {'duration': 1, 'edge_weight': 1.650000}
 r29 r71 {'duration': 1, 'edge_weight': 1.514000}
-Base r24 {'duration': 1, 'edge_weight': 1.000000}
-Base r25 {'duration': 1, 'edge_weight': 1.414000}
-Base Base {'duration': 1, 'edge_weight': 0.500000}
-Base r31 {'duration': 1, 'edge_weight': 1.000000}
-Base r60 {'duration': 1, 'edge_weight': 1.514000}
-Base r61 {'duration': 1, 'edge_weight': 1.650000}
-Base r66 {'duration': 1, 'edge_weight': 1.100000}
-Base r67 {'duration': 1, 'edge_weight': 1.514000}
+Base1 r24 {'duration': 1, 'edge_weight': 1.000000}
+Base1 r25 {'duration': 1, 'edge_weight': 1.414000}
+Base1 Base1 {'duration': 1, 'edge_weight': 0.500000}
+Base1 r31 {'duration': 1, 'edge_weight': 1.000000}
+Base1 r60 {'duration': 1, 'edge_weight': 1.514000}
+Base1 r61 {'duration': 1, 'edge_weight': 1.650000}
+Base1 r66 {'duration': 1, 'edge_weight': 1.100000}
+Base1 r67 {'duration': 1, 'edge_weight': 1.514000}
 r31 r24 {'duration': 1, 'edge_weight': 1.414000}
 r31 r25 {'duration': 1, 'edge_weight': 1.000000}
 r31 r26 {'duration': 1, 'edge_weight': 1.414000}
-r31 Base {'duration': 1, 'edge_weight': 1.000000}
+r31 Base1 {'duration': 1, 'edge_weight': 1.000000}
 r31 r31 {'duration': 1, 'edge_weight': 0.500000}
 r31 r32 {'duration': 1, 'edge_weight': 1.000000}
 r31 r60 {'duration': 1, 'edge_weight': 1.650000}
@@ -1027,7 +1027,7 @@ r60 r18 {'duration': 1, 'edge_weight': 1.514000}
 r60 r19 {'duration': 1, 'edge_weight': 1.650000}
 r60 r24 {'duration': 1, 'edge_weight': 1.100000}
 r60 r25 {'duration': 1, 'edge_weight': 1.514000}
-r60 Base {'duration': 1, 'edge_weight': 1.514000}
+r60 Base1 {'duration': 1, 'edge_weight': 1.514000}
 r60 r31 {'duration': 1, 'edge_weight': 1.650000}
 r60 r54 {'duration': 1, 'edge_weight': 1.000000}
 r60 r55 {'duration': 1, 'edge_weight': 1.414000}
@@ -1046,7 +1046,7 @@ r61 r19 {'duration': 1, 'edge_weight': 1.514000}
 r61 r24 {'duration': 1, 'edge_weight': 1.514000}
 r61 r25 {'duration': 1, 'edge_weight': 1.100000}
 r61 r26 {'duration': 1, 'edge_weight': 1.514000}
-r61 Base {'duration': 1, 'edge_weight': 1.650000}
+r61 Base1 {'duration': 1, 'edge_weight': 1.650000}
 r61 r31 {'duration': 1, 'edge_weight': 1.514000}
 r61 r32 {'duration': 1, 'edge_weight': 1.650000}
 r61 r54 {'duration': 1, 'edge_weight': 1.414000}
@@ -1154,7 +1154,7 @@ r65 r106 {'duration': 1, 'edge_weight': 1.650000}
 r65 r107 {'duration': 1, 'edge_weight': 1.514000}
 r66 r24 {'duration': 1, 'edge_weight': 1.514000}
 r66 r25 {'duration': 1, 'edge_weight': 1.650000}
-r66 Base {'duration': 1, 'edge_weight': 1.100000}
+r66 Base1 {'duration': 1, 'edge_weight': 1.100000}
 r66 r31 {'duration': 1, 'edge_weight': 1.514000}
 r66 r60 {'duration': 1, 'edge_weight': 1.000000}
 r66 r61 {'duration': 1, 'edge_weight': 1.414000}
@@ -1167,7 +1167,7 @@ r66 r103 {'duration': 1, 'edge_weight': 1.514000}
 r67 r24 {'duration': 1, 'edge_weight': 1.650000}
 r67 r25 {'duration': 1, 'edge_weight': 1.514000}
 r67 r26 {'duration': 1, 'edge_weight': 1.650000}
-r67 Base {'duration': 1, 'edge_weight': 1.514000}
+r67 Base1 {'duration': 1, 'edge_weight': 1.514000}
 r67 r31 {'duration': 1, 'edge_weight': 1.100000}
 r67 r32 {'duration': 1, 'edge_weight': 1.514000}
 r67 r60 {'duration': 1, 'edge_weight': 1.414000}

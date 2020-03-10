@@ -156,7 +156,7 @@ def check_intersect(cur_ind, ts, ts_prev_states, ts_next_states, priority, key_l
                     print 'Distance between both segments:', distance
                     if distance == None:
                         break
-                    elif pA == None:
+                    elif pA is None:
                         if distance <= radius:
                             weighted_nodes.append(ts_next_states[k])
                         break
