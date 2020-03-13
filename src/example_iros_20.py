@@ -379,30 +379,6 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
 
     return priority
 
-def minCost(cost, m, n):
-    ''' Dynamic Programming in order to find minimum cost path. '''
-    # Instead of following line, we can use int tc[m+1][n+1] or
-    # dynamically allocate memory to save space. The following
-    # line is used to keep the program simple and make it working
-    # on all compilers.
-    # This is for a 3x3 grid, goal is to go from (0,0)-->(m,n)
-    # https://www.geeksforgeeks.org/min-cost-path-dp-6/
-    R = 3
-    C = 3
-    tc = [[0 for x in range(C)] for x in range(R)]
-    tc[0][0] = cost[0][0]
-    # Initialize first column of total cost(tc) array
-    for i in range(1, m+1):
-        tc[i][0] = tc[i-1][0] + cost[i][0]
-    # Initialize first row of tc array
-    for j in range(1, n+1):
-        tc[0][j] = tc[0][j-1] + cost[0][j]
-    # Construct rest of the tc array
-    for i in range(1, m+1):
-        for j in range(1, n+1):
-            tc[i][j] = min(tc[i-1][j-1], tc[i-1][j], tc[i][j-1]) + cost[i][j]
-    return tc[m][n]
-
 def findPaths(pa, init, n):
     ''' This takes a network pa, a node init, and a length n. It recursively finds
     all paths of length n-1 starting from neighbors of init. '''
@@ -417,30 +393,14 @@ def findPaths(pa, init, n):
                 paths.append([init]+path)
     return paths
 
-def findPaths2(pa,init,n,excludeSet = None):
-    if excludeSet == None:
-        excludeSet = set([init])
-    else:
-        excludeSet.add(init)
-    if n==0:
-        return [[init]]
-    if init in pa.final:
-        return [[init]]
-    paths = [[init]+path for neighbor in pa.g.neighbors(init) if neighbor not in excludeSet for path in findPaths2(pa,neighbor,n-1,excludeSet)]
-    excludeSet.remove(init)
-    return paths
-
 def local_horizon(pa, weighted_nodes, num_hops, init_loc):
-    ''' Compute the n-hop lowest energy horizon without imminent conflict and
-    incorporating penalty for soft constraints based on number of hops from
-    the current state. '''
+    ''' Compute the n-hop lowest energy horizon without conflicts. '''
     # http://www2.hawaii.edu/~suthers/courses/ics311f17/Notes/Topic-19.html
     # Implement Floyd-Warshall method for Dynamic Programming approach, order O(V^3)
     # https://www.geeksforgeeks.org/floyd-warshall-algorithm-dp-16/
     # For python code on it, simple
     ts_policy = []
     pa_policy = []
-
     # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
     paths_temp = findPaths(pa, init_loc, num_hops)
     paths = copy.deepcopy(paths_temp)
@@ -450,7 +410,7 @@ def local_horizon(pa, weighted_nodes, num_hops, init_loc):
             if node[0] in weighted_nodes[ind]:
                 paths.remove(path)
                 break
-
+    # Compute the total energy associated with all nodes for each path
     all_node_energy = nx.get_node_attributes(pa.g,'energy')
     path_energy = []
     for path in paths:
@@ -459,9 +419,9 @@ def local_horizon(pa, weighted_nodes, num_hops, init_loc):
             node_energy = all_node_energy[node]
             temp_energy = temp_energy + node_energy
         path_energy.append(temp_energy)
-    # Get index of the minimum energy path
-    index_min = min(xrange(len(path_energy)), key=path_energy.__getitem__)
 
+    # Get index of the minimum energy path and return path for updated policy
+    index_min = min(xrange(len(path_energy)), key=path_energy.__getitem__)
     for node in paths[index_min][1::]:
         ts_policy.append(node[0])
         pa_policy.append(node)
