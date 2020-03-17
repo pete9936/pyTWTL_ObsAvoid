@@ -651,15 +651,15 @@ def plot_energy(agent_energy):
 if __name__ == '__main__':
     setup_logging()
     # case study 1: Synthesis
-    phi1 = '[H^2 r21]^[0, 6] * [H^1 r12]^[0, 5]'
-    phi2 = '[H^2 r21]^[0, 5] * [H^1 r23]^[0, 4]'
-    phi3 = '[H^1 r86]^[0, 4] * [H^2 r97]^[0, 4]'
-    phi4 = '[H^2 r89]^[0, 5] * [H^1 Base4]^[0, 3]'
-    phi5 = '[H^1 r105]^[0, 6] * [H^1 Base5]^[0, 6]'
+    phi1 = '[H^1 r29]^[0, 6] * [H^1 r105]^[0, 5]' # B, F
+    phi2 = '[H^2 r21]^[0, 5] * [H^1 r55]^[0, 4]' # A, E
+    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4]' # A, E
+    phi4 = '[H^1 r9]^[0, 5] * [H^1 r12]^[0, 5]' # * [H^1 Base4]^[0, 3]' # C, D
+    phi5 = '[H^1 r9]^[0, 5] * [H^2 r12]^[0, 5]' # * [H^1 Base5]^[0, 6]' #C, D
     # Set to use the same transition system
     phi = [phi1, phi2, phi3, phi4, phi5]
-    ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
-                '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
+    ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
+                '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

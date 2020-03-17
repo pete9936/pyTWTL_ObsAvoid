@@ -1071,12 +1071,12 @@ if __name__ == '__main__':
     TS, obs_mat, state_mat = create_ts(m,n,h)
     # Specify initial states and obstacles (row,column,altitude/height)
     # Indexed from (0,0,0) which is the upper left corner at ground height
-    init_states = [(5,0,0),(5,4,0),(0,1,0),(0,4,0),(1,0,0)]
-    obstacles = [(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)]
+    init_states = [(5,0,0),(5,2,0),(5,4,0),(0,1,0),(0,3,0)]
+    obstacles = [(0,2,0),(3,0,0),(3,1,0),(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)]
     # Names and locations of the output TS .txt files for each agent
-    paths = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
-            '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
-    bases = {(5,0,0): 'Base1', (5,4,0): 'Base2', (0,1,0): 'Base3', (0,4,0): 'Base4', (1,0,0): 'Base5'}
+    paths = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
+            '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
+    bases = {(5,0,0): 'Base1', (5,2,0): 'Base2', (5,4,0): 'Base3', (0,1,0): 'Base4', (0,3,0): 'Base5'}
     # Choose appropriate cell discretization for environment (meters)
     disc = 0.43
     for i in range(len(init_states)):

@@ -599,8 +599,8 @@ if __name__ == '__main__':
     phi5 = '[H^1 r105]^[0, 6] * [H^1 Base5]^[0, 6]'
     # Set to use the same transition system
     phi = [phi1, phi2, phi3, phi4, phi5]
-    ts_files = ['../data/ts_6x6x3_5Ag_1.txt', '../data/ts_6x6x3_5Ag_2.txt', '../data/ts_6x6x3_5Ag_3.txt', \
-                '../data/ts_6x6x3_5Ag_4.txt', '../data/ts_6x6x3_5Ag_5.txt']
+    ts_files = ['../data/iros_20/ts_6x6x3_5Ag_1.txt', '../data/iros_20/ts_6x6x3_5Ag_2.txt', '../data/iros_20/ts_6x6x3_5Ag_3.txt', \
+                '../data/iros_20/ts_6x6x3_5Ag_4.txt', '../data/iros_20/ts_6x6x3_5Ag_5.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
