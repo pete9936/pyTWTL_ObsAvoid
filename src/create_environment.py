@@ -1065,18 +1065,30 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
 
 
 if __name__ == '__main__':
-    m = 6
-    n = 6
-    h = 3
+    m = 12
+    n = 12
+    h = 6
     TS, obs_mat, state_mat = create_ts(m,n,h)
     # Specify initial states and obstacles (row,column,altitude/height)
     # Indexed from (0,0,0) which is the upper left corner at ground height
-    init_states = [(5,0,0),(5,2,0),(5,4,0),(0,1,0),(0,3,0)]
-    obstacles = [(0,2,0),(3,0,0),(3,1,0),(3,2,0),(3,2,1),(3,2,2),(2,5,0),(5,3,0),(5,3,1)]
+    init_states = [(7,9,0),(7,10,0),(8,9,0),(8,10,0),(11,9,0),\
+                    (0,5,0),(0,6,0),(0,7,0),(3,0,0),(4,0,0)]
+    obstacles = [(2,3,0),(2,4,0),(3,3,0),(3,4,0),(2,3,1),(2,4,1),(3,3,1),(3,4,1),\
+                    (2,3,2),(2,4,2),(3,3,2),(3,4,2),\
+                (2,11,0),(3,11,0),(2,11,1),(3,11,1),(2,11,2),(3,11,2),(2,11,3),(3,11,3),(2,11,4),(3,11,4),\
+                (5,5,0),(5,5,1),(5,5,2),(5,5,3),\
+                (4,9,0),(4,10,0),(5,9,0),(5,10,0),(4,9,1),(4,10,1),(5,9,1),(5,10,1),\
+                    (4,9,2),(4,10,2),(5,9,2),(5,10,2),(4,9,3),(4,10,3),(5,9,3),(5,10,3),\
+                (7,5,0),(7,6,0),(8,5,0),(8,6,0),(7,5,1),(7,6,1),(8,5,1),(8,6,1),\
+                    (7,5,2),(7,6,2),(8,5,2),(8,6,2),\
+                (9,2,0),(9,3,0),(9,2,1),(9,3,1),(9,2,2),(9,3,2),(9,2,3),(9,3,3)]
     # Names and locations of the output TS .txt files for each agent
-    paths = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
-            '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
-    bases = {(5,0,0): 'Base1', (5,2,0): 'Base2', (5,4,0): 'Base3', (0,1,0): 'Base4', (0,3,0): 'Base5'}
+    paths = ['../data/big_env/ts_12x12x6_10Ag_1.txt', '../data/big_env/ts_12x12x6_10Ag_2.txt', '../data/big_env/ts_12x12x6_10Ag_3.txt', \
+            '../data/big_env/ts_12x12x6_10Ag_4.txt', '../data/big_env/ts_12x12x6_10Ag_5.txt', '../data/big_env/ts_12x12x6_10Ag_6.txt', \
+            '../data/big_env/ts_12x12x6_10Ag_7.txt', '../data/big_env/ts_12x12x6_10Ag_8.txt', '../data/big_env/ts_12x12x6_10Ag_9.txt',
+            '../data/big_env/ts_12x12x6_10Ag_10.txt']
+    bases = {(7,9,0): 'Base1', (7,10,0): 'Base2', (8,9,0): 'Base3', (8,10,0): 'Base4', (11,9,0): 'Base5',\
+            (0,5,0): 'Base6', (0,6,0): 'Base7', (0,7,0): 'Base8', (3,0,0): 'Base9', (4,0,0): 'Base10'}
     # Choose appropriate cell discretization for environment (meters)
     disc = 0.43
     for i in range(len(init_states)):

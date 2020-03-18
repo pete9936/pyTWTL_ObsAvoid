@@ -55,6 +55,38 @@ def get_discretization(ts):
         disc_z = 0
     return disc, disc_z
 
+def downwash_checkDP(ts, ts_state, radius):
+    ''' Find nodes in transition directly above or below agent of higher priority in order
+    to avoid downwash instability for quadrotors. '''
+    downwash_nodes = []
+    downwash_zone = 7*radius  # (3.5 diameters should be sufficient)
+    node_set = nx.get_node_attributes(ts.g,"position")
+    state_pose = node_set[ts_state]
+    x_pose = state_pose[0]
+    y_pose = state_pose[1]
+    # determine if grid is defined in 2D or 3D
+    try:
+        z_pose = state_pose[2]
+        flag_3d = True
+    except IndexError:
+        flag_3d = False
+    # Find infeasible nodes and append to constraint set
+    if flag_3d == True:
+        a0 = np.array([x_pose, y_pose])
+        # Get neighboring nodes to check
+        neighbor_set = ts.g.neighbors(ts_state)
+        for neighbor_node in neighbor_set:
+            temp_pose = node_set[neighbor_node]
+            x_pose_neighbor = temp_pose[0]
+            y_pose_neighbor = temp_pose[1]
+            z_pose_neighbor = temp_pose[2]
+            b0 = np.array([x_pose_neighbor, y_pose_neighbor])
+            dist = np.linalg.norm(a0-b0)
+            if dist < 2*radius:
+                if abs(z_pose-z_pose_neighbor) < downwash_zone:
+                    downwash_nodes.append(neighbor_node)
+    return downwash_nodes
+
 def downwash_check(cur_ind, ts, ts_next_states, priority, key_list, radius):
     ''' Find nodes in transition directly above or below agent of higher priority in order
     to avoid downwash instability for quadrotors. '''

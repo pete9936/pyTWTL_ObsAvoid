@@ -23,7 +23,7 @@ import write_files
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_energy
-from geometric_funcs import check_intersect, downwash_check
+from geometric_funcs import check_intersect, downwash_checkDP
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
 from learning import learn_deadlines
@@ -171,50 +171,54 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             break
                     # Note that communication range needs to be 2*H, the receding horizon length
                     local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
-                    one_hop_set = ts_dict[p_val].g.neighbors(node)
-                    # Assign constraints for immediate transition
+
+                    # Get constraints for each transition
                     weighted_nodes = {}
-                    weighted_nodes[0] = []
-                    for pty in priority[0:p_ind]:
-                        for k, key in enumerate(key_list):
-                            if pty == key:
-                                prev_node = policy_match[0][k]
-                                if prev_node in one_hop_set:
-                                    weighted_nodes[0].append(prev_node)
-                                # Check if downwash constraint needs to be added, mostly for physical testing
-                                downwash_weight = downwash_check(k, ets_dict[key], policy_match[0], \
-                                                                priority[0:k], key_list, radius)
-                                if downwash_weight:
-                                    for downwash_node in downwash_weight:
-                                        if downwash_node not in weighted_nodes:
-                                            weighted_nodes[0].append(downwash_node)
-                                break
-                    # Get constraints for later transitions
                     for pty in priority[0:p_ind]:
                         for k, key in enumerate(key_list):
                             if pty == key:
                                 ts_length = len(ts_policy[key])
                                 if ts_length >= num_hops:
-                                    for i in range(num_hops-1):
-                                        if ts_policy[key][i+1] in local_set:
+                                    for i in range(num_hops):
+                                        if ts_policy[key][i] in local_set:
                                             try:
-                                                weighted_nodes[i+1]
-                                                weighted_nodes[i+1].append(ts_policy[key][i+1])
+                                                weighted_nodes[i].append(ts_policy[key][i])
+                                                # Add downwash nodes to constraint, mostly for physical testing
+                                                downwash_nodes = downwash_checkDP(ets_dict[key], ts_policy[key][i], radius)
+                                                if downwash_nodes:
+                                                    for downwash_node in downwash_nodes:
+                                                        if downwash_node not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(downwash_node)
                                             except KeyError:
-                                                weighted_nodes[i+1] = [ts_policy[key][i+1]]
+                                                weighted_nodes[i] = [ts_policy[key][i]]
+                                                downwash_nodes = downwash_checkDP(ets_dict[key], ts_policy[key][i], radius)
+                                                if downwash_nodes:
+                                                    for downwash_node in downwash_nodes:
+                                                        if downwash_node not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(downwash_node)
                                 else:
-                                    for i in range(ts_length-1):
-                                        if ts_policy[key][i+1] in local_set:
+                                    for i in range(ts_length):
+                                        if ts_policy[key][i] in local_set:
                                             try:
-                                                weighted_nodes[i+1]
-                                                weighted_nodes[i+1].append(ts_policy[key][i+1])
+                                                weighted_nodes[i].append(ts_policy[key][i])
+                                                # Add downwash nodes to constraint, mostly for physical testing
+                                                downwash_nodes = downwash_checkDP(ets_dict[key], ts_policy[key][i], radius)
+                                                if downwash_nodes:
+                                                    for downwash_node in downwash_nodes:
+                                                        if downwash_node not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(downwash_node)
                                             except KeyError:
-                                                weighted_nodes[i+1] = [ts_policy[key][i+1]]
-                                for i in range(num_hops-1):
+                                                weighted_nodes[i] = [ts_policy[key][i]]
+                                                downwash_nodes = downwash_checkDP(ets_dict[key], ts_policy[key][i], radius)
+                                                if downwash_nodes:
+                                                    for downwash_node in downwash_nodes:
+                                                        if downwash_node not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(downwash_node)
+                                for i in range(num_hops):
                                     try:
-                                        weighted_nodes[i+1]
+                                        weighted_nodes[i]
                                     except KeyError:
-                                        weighted_nodes[i+1] = []
+                                        weighted_nodes[i] = []
                     # Update constraint set with intersecting transitions
                     ts_prev_states = []
                     ts_index = []
@@ -229,52 +233,15 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                     if p_val2 == key:
                                         node = policy_match[0][k_c]
                                         break
-                                # Check if the trajectories will cross each other in transition
+                                # Check if the trajectories will cross each other in transition (or use same transition)
                                 cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
                                                                     priority[0:p_ind2], key_list, radius, time_wp)
                                 if cross_weight:
                                     for cross_node in cross_weight:
                                         if cross_node not in weighted_nodes[0]:
                                             weighted_nodes[0].append(cross_node)
-                                    # Check if agents using same transition
-                                    for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
-                                        for k, key in enumerate(key_list):
-                                            if p_val3 == key:
-                                                if ts_prev_states[k] == node:
-                                                    if policy_match[0][k] == ts_prev_states[k_c]:
-                                                        temp_node = policy_match[0][k]
-                                                        if temp_node not in weighted_nodes:
-                                                            weighted_nodes[0].append(temp_node)
-                                                        if node not in weighted_nodes:
-                                                            weighted_nodes[0].append(node)
-                                                        break
-                                        else:
-                                            continue
-                                        break
-                                    else:
-                                        continue
-                                    break
-                                else:
-                                    # Check if agents using same transition
-                                    for p_ind3, p_val3 in enumerate(priority[0:p_ind2]):
-                                        for k, key in enumerate(key_list):
-                                            if p_val3 == key:
-                                                if ts_prev_states[k] == node:
-                                                    if policy_match[0][k] == ts_prev_states[k_c]:
-                                                        temp_node = policy_match[0][k]
-                                                        if temp_node not in weighted_nodes:
-                                                            weighted_nodes[0].append(temp_node)
-                                                        if node not in weighted_nodes:
-                                                            weighted_nodes[0].append(node)
-                                                        break
-                                        else:
-                                            continue
-                                        break
-                                    else:
-                                        continue
-                                    break
-                # Compute local horizon function to account for receding horizon all the time
-                # while checking for termination
+
+                # Generate receding horizon all the time while checking for termination
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
                     # Compute receding horizon shortest path
@@ -408,22 +375,23 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
     for i in range(num_hops):
         # Expand subgraph for next time step
         old_local_set[i] = local_set
+        local_set_temp = []
         local_set = []
         if i == 0:
             temp_set = pa.g.neighbors(old_local_set[i])
             for node in temp_set:
-                if node not in local_set:
-                    local_set.append(node)
+                if node not in local_set_temp:
+                    local_set_temp.append(node)
         else:
             for loc_node in old_local_set[i]:
                 temp_set = pa.g.neighbors(loc_node)
                 for node in temp_set:
-                    if node not in local_set:
-                        local_set.append(node)
+                    if node not in local_set_temp:
+                        local_set_temp.append(node)
         # Remove conflicting nodes in the set
-        for neighbor in local_set:
-            if neighbor[0] in weighted_nodes[i]:
-                local_set.remove(neighbor)
+        for neighbor in local_set_temp:
+            if neighbor[0] not in weighted_nodes[i]:
+                local_set.append(neighbor)
         # Check if any of the nodes are in the final set and if so break and use node
         for node in local_set:
             if node in pa.final:
@@ -473,10 +441,20 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
                             trans_cost_temp = [trans_cost]
                             break
                 if advance_flag == False:
-                    new_edge = ((target_node[0],target_node[1]-1), target_node)
-                    trans_cost = all_node_energy[new_edge[0]] + edges_all[new_edge]
-                    node_dict[num_trans-1] = [new_edge[0]]
-                    node_costs[num_trans-1] = [trans_cost]
+                    try:
+                        new_edge = ((target_node[0],target_node[1]-1), target_node)
+                        trans_cost = all_node_energy[new_edge[0]] + edges_all[new_edge]
+                        node_dict[num_trans-1] = [new_edge[0]]
+                        node_costs[num_trans-1] = [trans_cost]
+                    except KeyError:
+                        edges = pa.g.in_edges(target_node)
+                        for edge in edges:
+                            if edge[0] in old_local_set[num_trans-1]:
+                                trans_cost = all_node_energy[edge[0]] + edges_all[edge]
+                                node_list_temp.append(edge[0])
+                                trans_cost_temp.append(trans_cost)
+                        node_dict[num_trans-1] = node_list_temp
+                        node_costs[num_trans-1] = trans_cost_temp
                 else:
                     node_dict[num_trans-1] = node_list_temp
                     node_costs[num_trans-1] = trans_cost_temp
@@ -508,11 +486,22 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
                                 break
                     # Save updated dictionary values for next step
                     if advance_flag == False:
-                        new_edge = ((old_node[0],old_node[1]-1), old_node)
-                        trans_cost = old_node_cost + all_node_energy[new_edge[0]] + edges_all[new_edge]
-                        node_dict[num_trans-j-1] = [new_edge[0]]
-                        node_costs[num_trans-j-1] = [trans_cost]
-                        break
+                        try:
+                            new_edge = ((old_node[0],old_node[1]-1), old_node)
+                            trans_cost = old_node_cost + all_node_energy[new_edge[0]] + edges_all[new_edge]
+                            node_dict[num_trans-j-1] = [new_edge[0]]
+                            node_costs[num_trans-j-1] = [trans_cost]
+                            break
+                        except KeyError:
+                            edges = pa.g.in_edges(old_node)
+                            for edge in edges:
+                                if edge[0] in old_local_set[num_trans-j-1]:
+                                    trans_cost = old_node_cost + all_node_energy[edge[0]] + edges_all[edge]
+                                    node_list_temp.append(edge[0])
+                                    trans_cost_temp.append(trans_cost)
+                            node_dict[num_trans-j-1] = node_list_temp
+                            node_costs[num_trans-j-1] = trans_cost_temp
+                            break
                 if advance_flag == True:
                     node_dict[num_trans-j-1] = node_list_temp
                     node_costs[num_trans-j-1] = trans_cost_temp
@@ -520,8 +509,8 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
         for ind, old_node in enumerate(node_dict[1]):
             edge = (init_loc, old_node)
             node_costs[1][ind] = node_costs[1][ind] + edges_all[edge]
+            
         # Construct lowest cost feasible path based on DP calculations above
-        # KeyError issue not a problem when traversing forward
         path = []
         for key in node_dict:
             if key == 1:
@@ -650,12 +639,12 @@ def plot_energy(agent_energy):
 
 if __name__ == '__main__':
     setup_logging()
-    # case study 1: Synthesis
-    phi1 = '[H^1 r29]^[0, 6] * [H^1 r105]^[0, 5]' # B, F
-    phi2 = '[H^2 r21]^[0, 5] * [H^1 r55]^[0, 4]' # A, E
-    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4]' # A, E
-    phi4 = '[H^1 r9]^[0, 5] * [H^1 r12]^[0, 5]' # * [H^1 Base4]^[0, 3]' # C, D
-    phi5 = '[H^1 r9]^[0, 5] * [H^2 r12]^[0, 5]' # * [H^1 Base5]^[0, 6]' #C, D
+    # Define TWTL Specifications for each agent
+    phi1 = '[H^1 r29]^[0, 6] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
+    phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 5] * [H^0 Base2]^[0, 4]' # A, E
+    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4] * [H^0 Base3]^[0, 4]' # A, E
+    phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 5] * [H^0 Base4]^[0, 4]'  # C, D
+    phi5 = '[H^1 r9]^[0, 4] * [H^2 r12]^[0, 5] * [H^0 Base5]^[0, 4]'  #C, D
     # Set to use the same transition system
     phi = [phi1, phi2, phi3, phi4, phi5]
     ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
