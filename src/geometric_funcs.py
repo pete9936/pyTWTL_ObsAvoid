@@ -213,6 +213,85 @@ def check_intersect(cur_ind, ts, ts_prev_states, ts_next_states, priority, key_l
                         # break
     return weighted_nodes
 
+def check_intersectDP(ts, cur_prev_state, cur_next_state, comp_prev_state, comp_next_state, radius, seg_time):
+    ''' Check if moving in diagonal directions causes any conflict. Look into only performing
+    this if local neighborhood is true, and only with the agents in the local neighborhood.
+    This method uses intersection of lines to test which should be more robust in environments
+    where discretization is non-uniform. '''
+    # first give some discretization of segments based on given agent dynamics
+    num_steps = 10
+    weighted_nodes = []
+    node_set = nx.get_node_attributes(ts.g,"position")
+    cur_prev_pose = node_set[cur_prev_state]
+    cur_next_pose = node_set[cur_next_state]
+    x_cur_prev = cur_prev_pose[0]
+    x_cur_next = cur_next_pose[0]
+    y_cur_prev = cur_prev_pose[1]
+    y_cur_next = cur_next_pose[1]
+    # determine if grid is defined in 2D or 3D
+    try:
+        cur_prev_pose[2]
+        flag_3d = True
+    except IndexError:
+        flag_3d = False
+    # Get the higher priority pose and compare transition
+    comp_prev_pose = node_set[comp_prev_state]
+    comp_next_pose = node_set[comp_next_state]
+    x_comp_prev = comp_prev_pose[0]
+    x_comp_next = comp_next_pose[0]
+    x_comp_dist = comp_prev_pose[0] - comp_next_pose[0]
+    y_comp_prev = comp_prev_pose[1]
+    y_comp_next = comp_next_pose[1]
+    y_comp_dist = comp_prev_pose[1] - comp_next_pose[1]
+    # Now perform the checks
+    if flag_3d == True:
+        z_cur_prev = cur_prev_pose[2]
+        z_cur_next = cur_next_pose[2]
+        z_comp_prev = comp_prev_pose[2]
+        z_comp_next = comp_next_pose[2]
+        a0 = np.array([x_cur_prev, y_cur_prev, z_cur_prev])
+        a1 = np.array([x_cur_next, y_cur_next, z_cur_next])
+        b0 = np.array([x_comp_prev, y_comp_prev, z_comp_prev])
+        b1 = np.array([x_comp_next, y_comp_next, z_comp_next])
+    else:
+        a0 = np.array([x_cur_prev, y_cur_prev])
+        a1 = np.array([x_cur_next, y_cur_next])
+        b0 = np.array([x_comp_prev, y_comp_prev])
+        b1 = np.array([x_comp_next, y_comp_next])
+    if flag_3d == False:
+        Xa, Ya, append = check_intersect_2d(x_cur_prev, y_cur_prev, x_cur_next, y_cur_next, \
+                                            x_comp_prev, y_comp_prev, x_comp_next, y_comp_next)
+        if append == True:
+            A = a1 - a0
+            B = b1 - b0
+            p_int = np.array([Xa, Ya])
+            pA_vec = a1 - p_int
+            pB_vec = b1 - p_int
+            pA_vec_percent = np.linalg.norm(pA_vec)/np.linalg.norm(A)
+            pB_vec_percent = np.linalg.norm(pB_vec)/np.linalg.norm(B)
+            if abs(pA_vec_percent - pB_vec_percent) < 1.0/num_steps:
+                weighted_nodes.append(cur_next_state)
+    else:
+        pA, pB, distance = closestDistanceBetweenLines(a0,a1,b0,b1)
+        print 'Distance between both segments:', distance
+        if distance == None:
+            weighted_nodes = []
+        elif pA is None:
+            if distance <= radius:
+                weighted_nodes.append(cur_next_state)
+        else:
+            A = a1 - a0
+            B = b1 - b0
+            pA_vec = a1 - pA
+            pB_vec = b1 - pB
+            pA_vec_percent = np.linalg.norm(pA_vec)/np.linalg.norm(A)
+            pB_vec_percent = np.linalg.norm(pB_vec)/np.linalg.norm(B)
+            if abs(pA_vec_percent - pB_vec_percent) < 1.0/num_steps:
+                if distance <= radius:
+                    # pdb.set_trace()
+                    weighted_nodes.append(cur_next_state)
+    return weighted_nodes
+
 def closestDistanceBetweenLines(a0,a1,b0,b1):
     ''' Given two lines defined by numpy.array pairs (a0,a1,b0,b1)
         Return the closest points on each finite vector and their distance '''
@@ -232,11 +311,12 @@ def closestDistanceBetweenLines(a0,a1,b0,b1):
     # If they don't overlap then there is a closest point solution.
     # If they do overlap, there are infinite closest positions, but there is a closest distance
     if not denom:
-        d0 = np.dot(_A,(b0-a0))
-        d1 = np.dot(_A,(b1-a0))
-        # dist = min(d0,d1)
+        d0 = abs(np.dot(_A,(b0/2-a1/2)))
+        d1 = abs(np.dot(_A,(b1/2-a0/2)))
+        dist = min(d0,d1)
+        # np.linalg.norm(((d0*_A)+a0)-b0)
         # Segments overlap, return distance between parallel segments
-        return None,None, np.linalg.norm(((d0*_A)+a0)-b0)
+        return None,None,dist
 
     # Lines cross at some point (skew): Calculate the projected closest points
     t = (b0 - a0);

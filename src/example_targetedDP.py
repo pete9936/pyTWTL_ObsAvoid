@@ -23,7 +23,7 @@ import write_files
 from dfa import DFAType
 from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_energy
-from geometric_funcs import check_intersect, downwash_checkDP
+from geometric_funcs import check_intersectDP, downwash_checkDP
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
                         write_to_iter_file, write_to_control_policy_file
 from learning import learn_deadlines
@@ -165,9 +165,9 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                         weighted_nodes[i] = []
                 else:
                     # Get local neighborhood (n-hop) of nodes to search for a conflict
-                    for k, key in enumerate(key_list):
-                        if p_val == key:
-                            node = policy_match[0][k]
+                    for k_c, key_c in enumerate(key_list):
+                        if p_val == key_c:
+                            node = policy_match[0][k_c]
                             break
                     # Note that communication range needs to be 2*H, the receding horizon length
                     local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
@@ -175,7 +175,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                     # Get constraints for each transition
                     weighted_nodes = {}
                     for pty in priority[0:p_ind]:
-                        for k, key in enumerate(key_list):
+                        for key in key_list:
                             if pty == key:
                                 ts_length = len(ts_policy[key])
                                 if ts_length >= num_hops:
@@ -220,27 +220,56 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                     except KeyError:
                                         weighted_nodes[i] = []
                     # Update constraint set with intersecting transitions
-                    ts_prev_states = []
-                    ts_index = []
-                    if len(policy_match[0]) > 1 and traj_length >= 1:
-                        for key in ts_control_policy_dict:
-                            if len(ts_control_policy_dict[key]) == traj_length:
-                                ts_prev_states.append(ts_control_policy_dict[key][-1])
-                    if ts_prev_states:
-                        for p_ind2, p_val2 in enumerate(priority[0:p_ind+1]):
-                            if p_ind2 > 0:
-                                for k_c, key in enumerate(key_list):
-                                    if p_val2 == key:
-                                        node = policy_match[0][k_c]
-                                        break
-                                # Check if the trajectories will cross each other in transition (or use same transition)
-                                cross_weight = check_intersect(k_c, ets_dict[key], ts_prev_states, policy_match[0], \
-                                                                    priority[0:p_ind2], key_list, radius, time_wp)
-                                if cross_weight:
-                                    for cross_node in cross_weight:
-                                        if cross_node not in weighted_nodes[0]:
-                                            weighted_nodes[0].append(cross_node)
-
+                    if traj_length >= 1:
+                        for p_ind2, p_val2 in enumerate(priority[0:p_ind]):
+                            for k, key in enumerate(key_list):
+                                if p_val2 == key:
+                                    # initialize previous state
+                                    comp_prev_state = ts_control_policy_dict[key][-1]
+                                    cur_prev_state = ts_control_policy_dict[key_c][-1]
+                                    cur_ts_policy_length = len(ts_policy[key_c])
+                                    ts_length = len(ts_policy[key])
+                                    if ts_length >= num_hops:
+                                        for i in range(num_hops):
+                                            comp_next_state = ts_policy[key][i]
+                                            if i < cur_ts_policy_length:
+                                                cur_next_state = ts_policy[key_c][i]
+                                                if comp_next_state in local_set:
+                                                    # Check if the trajectories cross during transition (or use same transition)
+                                                    cross_weight = check_intersectDP(ets_dict[key], cur_prev_state, cur_next_state, \
+                                                                                comp_prev_state, comp_next_state, radius, time_wp)
+                                                    if cross_weight:
+                                                        for cross_node in cross_weight:
+                                                            if cross_node not in weighted_nodes[i]:
+                                                                weighted_nodes[i].append(cross_node)
+                                                    # Set previous state for next iteration
+                                                    comp_prev_state = ts_policy[key][i]
+                                                    cur_prev_state = ts_policy[key_c][i]
+                                            else:
+                                                break
+                                    else:
+                                        for i in range(ts_length):
+                                            comp_next_state = ts_policy[key][i]
+                                            if i < cur_ts_policy_length:
+                                                cur_next_state = ts_policy[key_c][i]
+                                                if comp_next_state in local_set:
+                                                    # Check if the trajectories cross during transition (or use same transition)
+                                                    cross_weight = check_intersectDP(ets_dict[key], cur_prev_state, cur_next_state, \
+                                                                                comp_prev_state, comp_next_state, radius, time_wp)
+                                                    if cross_weight:
+                                                        for cross_node in cross_weight:
+                                                            if cross_node not in weighted_nodes[i]:
+                                                                weighted_nodes[i].append(cross_node)
+                                                    # Check if agents using same transition
+                                                    # if comp_prev_state == cur_next_state:
+                                                    #     if comp_next_state == cur_prev_state:
+                                                    #         if comp_prev_state not in weighted_nodes[i]:
+                                                    #             weighted_nodes[i].append(comp_prev_state)
+                                                    # Set previous state for next iteration
+                                                    comp_prev_state = ts_policy[key][i]
+                                                    cur_prev_state = ts_policy[key_c][i]
+                                            else:
+                                                break
                 # Generate receding horizon all the time while checking for termination
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
@@ -313,7 +342,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     print 'Average update time for single step: ', (stopOnline - startOnline)/traj_length
 
     # Print energy statistics from run
-    # plot_energy(agent_energy_dict)
+    plot_energy(agent_energy_dict)
 
     # Possibly just set the relaxation to the nominal + additional nodes added *** Change (10/28)
     for key in pa_nom_dict:
@@ -509,7 +538,7 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
         for ind, old_node in enumerate(node_dict[1]):
             edge = (init_loc, old_node)
             node_costs[1][ind] = node_costs[1][ind] + edges_all[edge]
-            
+
         # Construct lowest cost feasible path based on DP calculations above
         path = []
         for key in node_dict:
@@ -640,15 +669,43 @@ def plot_energy(agent_energy):
 if __name__ == '__main__':
     setup_logging()
     # Define TWTL Specifications for each agent
-    phi1 = '[H^1 r29]^[0, 6] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
-    phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 5] * [H^0 Base2]^[0, 4]' # A, E
-    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4] * [H^0 Base3]^[0, 4]' # A, E
-    phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 5] * [H^0 Base4]^[0, 4]'  # C, D
-    phi5 = '[H^1 r9]^[0, 4] * [H^2 r12]^[0, 5] * [H^0 Base5]^[0, 4]'  #C, D
+    # Scenario 1, standard environment
+    phi1 = '[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
+    phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]' # A, E
+    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]' # A, E
+    phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]'  # C, D
+    phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
     # Set to use the same transition system
     phi = [phi1, phi2, phi3, phi4, phi5]
     ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
                 '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
+
+    # Scenario 2, large enviroment
+    # phi1 = '[H^1 r54]^[0, 4] * [H^2 r46]^[0, 7] * [H^0 Base1]^[0, 5]' # C, E
+    # phi2 = '[H^1 r54]^[0, 4] * [H^2 r105]^[0, 7] * [H^0 Base2]^[0, 5]' # C, F
+    # phi3 = '[H^1 r50]^[0, 8] * [H^1 r105]^[0, 8] * [H^0 Base3]^[0, 5]' # B, F
+    # phi4 = '[H^1 r23]^[0, 8] * [H^1 r8]^[0, 5] * [H^0 Base4]^[0, 7]'  # D, H
+    # phi5 = '[H^1 r13]^[0, 5] * [H^1 r8]^[0, 9] * [H^0 Base5]^[0, 8]'  # A, H
+    # phi6 = '[H^1 r50]^[0, 5] * [H^1 r105]^[0, 8] * [H^0 Base6]^[0, 9]' # B, F
+    # phi7 = '[H^1 r50]^[0, 5] * [H^2 r208]^[0, 5] * [H^0 Base7]^[0, 5]' # B, G
+    # phi8 = '[H^1 r13]^[0, 4] * [H^1 r8]^[0, 8] * [H^0 Base8]^[0, 7]' # A, H
+    # phi9 = '[H^1 r13]^[0, 4] * [H^1 r46]^[0, 9] * [H^0 Base9]^[0, 8]'  # A, E
+    # phi10 = '[H^2 r54]^[0, 6] * [H^2 r208]^[0, 4] * [H^0 Base10]^[0, 7]' # C, G
+    # phi = [phi1, phi2, phi3, phi4, phi5, phi6, phi7, phi8, phi9, phi10]
+    # ts_files = ['../data/big_env/ts_6x12x4_10Ag_1.txt', '../data/big_env/ts_6x12x4_10Ag_2.txt', '../data/big_env/ts_6x12x4_10Ag_3.txt', \
+    #             '../data/big_env/ts_6x12x4_10Ag_4.txt', '../data/big_env/ts_6x12x4_10Ag_5.txt', '../data/big_env/ts_6x12x4_10Ag_6.txt', \
+    #             '../data/big_env/ts_6x12x4_10Ag_7.txt', '../data/big_env/ts_6x12x4_10Ag_8.txt', '../data/big_env/ts_6x12x4_10Ag_9.txt', \
+    #             '../data/big_env/ts_6x12x4_10Ag_10.txt']
+
+    # Scenario 3 (2 agents), tight corridor
+    # phi1 = '[H^1 r5]^[0, 6]' # B
+    # phi2 = '[H^1 r12]^[0, 7]' # A
+    # phi = [phi1, phi2]
+    # ts_files = ['../data/corr/ts_3x6x1_2Ag_1J.txt', '../data/corr/ts_3x6x1_2Ag_2J.txt']
+    # Scenarion 3 (3 agents), tight corridor
+    # phi3 = '[H^3 r6]^[0, 7]' # C
+    # phi = [phi1, phi2, phi3]
+    # ts_files = ['../data/corr/ts_3x6x1_3Ag_1.txt', '../data/corr/ts_3x6x1_3Ag_2.txt', '../data/corr/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

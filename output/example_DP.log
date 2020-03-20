@@ -1,14 +1,14 @@
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r29 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 6 DFA: (Hold 1 r29 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r105 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r105 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r29 ) 0 6 ) DFA2: (Eventually (Hold 1 r105 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: Base1 Duration: 0 Negation: False Props: set(['Base1', 'r105', 'r29'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base1 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r29 ) 0 6 ) (Eventually (Hold 1 r105 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base1 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [spec] spec: [H^1 r29]^[0, 6] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]
-03/18/2020 12:40:13 AM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Concat (Eventually (Hold 1 r29 ) 0 6 ) (Eventually (Hold 1 r105 ) 0 4 ) ) (Eventually (Hold 0 Base1 ) 0 4 ) )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r29 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r29 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r105 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r105 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r29 ) 0 5 ) DFA2: (Eventually (Hold 1 r105 ) 0 4 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: Base1 Duration: 0 Negation: False Props: set(['Base1', 'r105', 'r29'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base1 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r29 ) 0 5 ) (Eventually (Hold 1 r105 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base1 ) 0 4 )
+03/20/2020 03:37:42 AM DEBUG [spec] spec: [H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]
+03/20/2020 03:37:42 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r29 ) 0 5 ) (Eventually (Hold 1 r105 ) 0 4 ) ) (Eventually (Hold 0 Base1 ) 0 4 ) )
 Directed: True
 Multi: False
 Props: {'Base1': 1, 'r105': 2, 'r29': 4}
@@ -18,7 +18,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r29', 'weight': 0, 'label': u'r29'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r29', 'weight': 0, 'label': u'r29'}), (2, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r105', 'weight': 0, 'label': u'r105'}), (3, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3, 6, 7]), 'guard': u'r105', 'weight': 0, 'label': u'r105'}), (4, 4, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7]), 'guard': u'Base1', 'weight': 0, 'label': u'Base1'})]
 		
-03/18/2020 12:40:13 AM DEBUG [spec] tree:
+03/20/2020 03:37:42 AM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -51,25 +51,25 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([5])
 
-03/18/2020 12:40:13 AM DEBUG [spec] No of nodes: 6
-03/18/2020 12:40:13 AM DEBUG [spec] No of edges: 10
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM DEBUG [spec] No of nodes: 6
+03/20/2020 03:37:42 AM DEBUG [spec] No of edges: 10
+03/20/2020 03:37:42 AM DEBUG 
 End of translate
 
 
-03/18/2020 12:40:13 AM INFO The bound of formula "[H^1 r29]^[0, 6] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" is (4, 16)!
-03/18/2020 12:40:13 AM INFO Translated formula "[H^1 r29]^[0, 6] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" to infinity DFA of size (6, 10)!
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base2', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base2', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r55 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 5 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: Base2 Duration: 0 Negation: False Props: set(['Base2', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base2 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 5 ) ) DFA2: (Eventually (Hold 0 Base2 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 5] * [H^0 Base2]^[0, 4]
-03/18/2020 12:40:13 AM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 5 ) ) (Eventually (Hold 0 Base2 ) 0 4 ) )
+03/20/2020 03:37:42 AM INFO The bound of formula "[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" is (4, 15)!
+03/20/2020 03:37:42 AM INFO Translated formula "[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" to infinity DFA of size (6, 10)!
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base2', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base2', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r55 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: Base2 Duration: 0 Negation: False Props: set(['Base2', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base2 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) DFA2: (Eventually (Hold 0 Base2 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]
+03/20/2020 03:37:42 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) (Eventually (Hold 0 Base2 ) 0 3 ) )
 Directed: True
 Multi: False
 Props: {'Base2': 1, 'r21': 2, 'r55': 4}
@@ -79,7 +79,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (4, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (5, 5, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3, 5, 7]), 'guard': u'Base2', 'weight': 0, 'label': u'Base2'})]
 		
-03/18/2020 12:40:13 AM DEBUG [spec] tree:
+03/20/2020 03:37:42 AM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -112,25 +112,25 @@ Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([5])
      Final: set([6])
 
-03/18/2020 12:40:13 AM DEBUG [spec] No of nodes: 7
-03/18/2020 12:40:13 AM DEBUG [spec] No of edges: 12
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM DEBUG [spec] No of nodes: 7
+03/20/2020 03:37:42 AM DEBUG [spec] No of edges: 12
+03/20/2020 03:37:42 AM DEBUG 
 End of translate
 
 
-03/18/2020 12:40:13 AM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 5] * [H^0 Base2]^[0, 4]" is (5, 15)!
-03/18/2020 12:40:13 AM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 5] * [H^0 Base2]^[0, 4]" to infinity DFA of size (7, 12)!
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base3', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base3', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r55 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: Base3 Duration: 0 Negation: False Props: set(['Base3', 'r21', 'r55'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base3 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base3 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 4] * [H^0 Base3]^[0, 4]
-03/18/2020 12:40:13 AM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 4 ) ) (Eventually (Hold 0 Base3 ) 0 4 ) )
+03/20/2020 03:37:42 AM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]" is (5, 12)!
+03/20/2020 03:37:42 AM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]" to infinity DFA of size (7, 12)!
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base3', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base3', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r55 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: Base3 Duration: 0 Negation: False Props: set(['Base3', 'r21', 'r55'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base3 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) DFA2: (Eventually (Hold 0 Base3 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]
+03/20/2020 03:37:42 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) (Eventually (Hold 0 Base3 ) 0 3 ) )
 Directed: True
 Multi: False
 Props: {'Base3': 1, 'r21': 2, 'r55': 4}
@@ -140,7 +140,7 @@ Final: set([6])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
 Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (4, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (5, 5, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3, 5, 7]), 'guard': u'Base3', 'weight': 0, 'label': u'Base3'})]
 		
-03/18/2020 12:40:13 AM DEBUG [spec] tree:
+03/20/2020 03:37:42 AM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([6])
@@ -173,25 +173,25 @@ Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([5])
      Final: set([6])
 
-03/18/2020 12:40:13 AM DEBUG [spec] No of nodes: 7
-03/18/2020 12:40:13 AM DEBUG [spec] No of edges: 12
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM DEBUG [spec] No of nodes: 7
+03/20/2020 03:37:42 AM DEBUG [spec] No of edges: 12
+03/20/2020 03:37:42 AM DEBUG 
 End of translate
 
 
-03/18/2020 12:40:13 AM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4] * [H^0 Base3]^[0, 4]" is (5, 14)!
-03/18/2020 12:40:13 AM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 4] * [H^0 Base3]^[0, 4]" to infinity DFA of size (7, 12)!
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r12 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 1 r12 ) 0 5 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: Base4 Duration: 0 Negation: False Props: set(['Base4', 'r12', 'r9'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base4 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 5 ) ) DFA2: (Eventually (Hold 0 Base4 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^1 r12]^[0, 5] * [H^0 Base4]^[0, 4]
-03/18/2020 12:40:13 AM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 5 ) ) (Eventually (Hold 0 Base4 ) 0 4 ) )
+03/20/2020 03:37:42 AM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]" is (5, 12)!
+03/20/2020 03:37:42 AM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]" to infinity DFA of size (7, 12)!
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r12 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 1 r12 ) 0 4 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: Base4 Duration: 0 Negation: False Props: set(['Base4', 'r12', 'r9'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base4 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base4 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]
+03/20/2020 03:37:42 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) (Eventually (Hold 0 Base4 ) 0 3 ) )
 Directed: True
 Multi: False
 Props: {'Base4': 1, 'r12': 2, 'r9': 4}
@@ -201,7 +201,7 @@ Final: set([5])
 Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
 Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (2, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (3, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3, 6, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 4, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7]), 'guard': u'Base4', 'weight': 0, 'label': u'Base4'})]
 		
-03/18/2020 12:40:13 AM DEBUG [spec] tree:
+03/20/2020 03:37:42 AM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
  Final: set([5])
@@ -234,42 +234,42 @@ Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'lab
      Init: set([4])
      Final: set([5])
 
-03/18/2020 12:40:13 AM DEBUG [spec] No of nodes: 6
-03/18/2020 12:40:13 AM DEBUG [spec] No of edges: 10
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM DEBUG [spec] No of nodes: 6
+03/20/2020 03:37:42 AM DEBUG [spec] No of edges: 10
+03/20/2020 03:37:42 AM DEBUG 
 End of translate
 
 
-03/18/2020 12:40:13 AM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 5] * [H^0 Base4]^[0, 4]" is (4, 15)!
-03/18/2020 12:40:13 AM INFO Translated formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 5] * [H^0 Base4]^[0, 4]" to infinity DFA of size (6, 10)!
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['r12', 'r9', 'Base5'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: r12 Duration: 2 Negation: False Props: set(['r12', 'r9', 'Base5'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 2 r12 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 2 r12 ) 0 5 )
-03/18/2020 12:40:13 AM DEBUG [hold] Prop: Base5 Duration: 0 Negation: False Props: set(['r12', 'r9', 'Base5'])
-03/18/2020 12:40:13 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base5 )
-03/18/2020 12:40:13 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 2 r12 ) 0 5 ) ) DFA2: (Eventually (Hold 0 Base5 ) 0 4 )
-03/18/2020 12:40:13 AM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^2 r12]^[0, 5] * [H^0 Base5]^[0, 4]
-03/18/2020 12:40:13 AM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 2 r12 ) 0 5 ) ) (Eventually (Hold 0 Base5 ) 0 4 ) )
+03/20/2020 03:37:42 AM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]" is (4, 13)!
+03/20/2020 03:37:42 AM INFO Translated formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]" to infinity DFA of size (6, 10)!
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['r12', 'r9', 'Base5'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r9', 'Base5'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r12 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 1 r12 ) 0 4 )
+03/20/2020 03:37:42 AM DEBUG [hold] Prop: Base5 Duration: 0 Negation: False Props: set(['r12', 'r9', 'Base5'])
+03/20/2020 03:37:42 AM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base5 )
+03/20/2020 03:37:42 AM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base5 ) 0 3 )
+03/20/2020 03:37:42 AM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]
+03/20/2020 03:37:42 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) (Eventually (Hold 0 Base5 ) 0 3 ) )
 Directed: True
 Multi: False
 Props: {'r12': 1, 'r9': 2, 'Base5': 4}
 Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
 Initial: [0]
-Final: set([6])
-Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
-Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (5, 5, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([4, 5, 6, 7]), 'guard': u'Base5', 'weight': 0, 'label': u'Base5'})]
+Final: set([5])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 4, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'Base5', 'weight': 0, 'label': u'Base5'})]
 		
-03/18/2020 12:40:13 AM DEBUG [spec] tree:
+03/20/2020 03:37:42 AM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
- Final: set([6])
+ Final: set([5])
  Left:
    Op: Concatenation Flags[WDF, WWF, UNR]: True True False
    Init: set([0])
-   Final: set([5])
+   Final: set([4])
    Left:
      Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([0])
@@ -281,54 +281,54 @@ Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'lab
    Right:
      Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([2])
-     Final: set([5])
+     Final: set([4])
      Left:
        Op: Hold Flags[WDF, WWF, UNR]: True True True
        Init: set([2])
-       Final: set([5])
+       Final: set([4])
  Right:
    Op: Eventually Flags[WDF, WWF, UNR]: True True False
-   Init: set([5])
-   Final: set([6])
+   Init: set([4])
+   Final: set([5])
    Left:
      Op: Hold Flags[WDF, WWF, UNR]: True True True
-     Init: set([5])
-     Final: set([6])
+     Init: set([4])
+     Final: set([5])
 
-03/18/2020 12:40:13 AM DEBUG [spec] No of nodes: 7
-03/18/2020 12:40:13 AM DEBUG [spec] No of edges: 12
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM DEBUG [spec] No of nodes: 6
+03/20/2020 03:37:42 AM DEBUG [spec] No of edges: 10
+03/20/2020 03:37:42 AM DEBUG 
 End of translate
 
 
-03/18/2020 12:40:13 AM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^2 r12]^[0, 5] * [H^0 Base5]^[0, 4]" is (5, 15)!
-03/18/2020 12:40:13 AM INFO Translated formula "[H^1 r9]^[0, 4] * [H^2 r12]^[0, 5] * [H^0 Base5]^[0, 4]" to infinity DFA of size (7, 12)!
-03/18/2020 12:40:13 AM DEBUG 
+03/20/2020 03:37:42 AM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]" is (4, 13)!
+03/20/2020 03:37:42 AM INFO Translated formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]" to infinity DFA of size (6, 10)!
+03/20/2020 03:37:42 AM DEBUG 
 
 Start policy computation
 
-03/18/2020 12:40:13 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
-03/18/2020 12:40:13 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
-03/18/2020 12:40:14 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
-03/18/2020 12:40:14 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
-03/18/2020 12:40:14 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
-03/18/2020 12:40:14 AM INFO Constructing product automaton with infinity DFA!
-03/18/2020 12:40:14 AM INFO Product automaton size is: (297, 4549)
-03/18/2020 12:40:14 AM INFO Constructing product automaton with infinity DFA!
-03/18/2020 12:40:14 AM INFO Product automaton size is: (298, 4563)
-03/18/2020 12:40:14 AM INFO Constructing product automaton with infinity DFA!
-03/18/2020 12:40:14 AM INFO Product automaton size is: (298, 4563)
-03/18/2020 12:40:14 AM INFO Constructing product automaton with infinity DFA!
-03/18/2020 12:40:14 AM INFO Product automaton size is: (297, 4546)
-03/18/2020 12:40:14 AM INFO Constructing product automaton with infinity DFA!
-03/18/2020 12:40:14 AM INFO Product automaton size is: (298, 4556)
-03/18/2020 12:40:20 AM INFO Max deadline: 0
-03/18/2020 12:40:20 AM INFO Generated control policy is: Base1 -> 1 -> r61 -> 1 -> r26 -> 1 -> r21 -> 1 -> r58 -> 1 -> r29 -> 1 -> r29 -> 1 -> r70 -> 1 -> r105 -> 1 -> r105 -> 1 -> r104 -> 1 -> r61 -> 1 -> Base1
-03/18/2020 12:40:20 AM INFO Max deadline: 0
-03/18/2020 12:40:20 AM INFO Generated control policy is: Base2 -> 1 -> r62 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> Base2
-03/18/2020 12:40:20 AM INFO Max deadline: 3
-03/18/2020 12:40:20 AM INFO Generated control policy is: Base3 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> r63 -> 1 -> Base3
-03/18/2020 12:40:20 AM INFO Max deadline: -1
-03/18/2020 12:40:20 AM INFO Generated control policy is: Base4 -> 1 -> r8 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r42 -> 1 -> Base4
-03/18/2020 12:40:20 AM INFO Max deadline: 2
-03/18/2020 12:40:20 AM INFO Generated control policy is: Base5 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r12 -> 1 -> r49 -> 1 -> r44 -> 1 -> Base5
+03/20/2020 03:37:42 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+03/20/2020 03:37:43 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+03/20/2020 03:37:43 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+03/20/2020 03:37:43 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+03/20/2020 03:37:43 AM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+03/20/2020 03:37:43 AM INFO Constructing product automaton with infinity DFA!
+03/20/2020 03:37:43 AM INFO Product automaton size is: (297, 4549)
+03/20/2020 03:37:43 AM INFO Constructing product automaton with infinity DFA!
+03/20/2020 03:37:43 AM INFO Product automaton size is: (298, 4563)
+03/20/2020 03:37:43 AM INFO Constructing product automaton with infinity DFA!
+03/20/2020 03:37:43 AM INFO Product automaton size is: (298, 4563)
+03/20/2020 03:37:43 AM INFO Constructing product automaton with infinity DFA!
+03/20/2020 03:37:43 AM INFO Product automaton size is: (297, 4546)
+03/20/2020 03:37:43 AM INFO Constructing product automaton with infinity DFA!
+03/20/2020 03:37:43 AM INFO Product automaton size is: (297, 4546)
+03/20/2020 03:38:00 AM INFO Max deadline: 1
+03/20/2020 03:38:00 AM INFO Generated control policy is: Base1 -> 1 -> r61 -> 1 -> r26 -> 1 -> r21 -> 1 -> r58 -> 1 -> r29 -> 1 -> r29 -> 1 -> r70 -> 1 -> r105 -> 1 -> r105 -> 1 -> r104 -> 1 -> r61 -> 1 -> Base1
+03/20/2020 03:38:00 AM INFO Max deadline: 0
+03/20/2020 03:38:00 AM INFO Generated control policy is: Base2 -> 1 -> r62 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> Base2
+03/20/2020 03:38:00 AM INFO Max deadline: 3
+03/20/2020 03:38:00 AM INFO Generated control policy is: Base3 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> r63 -> 1 -> Base3
+03/20/2020 03:38:00 AM INFO Max deadline: -1
+03/20/2020 03:38:00 AM INFO Generated control policy is: Base4 -> 1 -> r8 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r42 -> 1 -> Base4
+03/20/2020 03:38:00 AM INFO Max deadline: 2
+03/20/2020 03:38:00 AM INFO Generated control policy is: Base5 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r13 -> 1 -> r8 -> 1 -> Base5
