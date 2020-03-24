@@ -136,10 +136,12 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     for key in ts_policy_dict_nom:
         prev_states[key] = pa_policy_dict_nom[key][0]
     priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list)
-    # Create Agent energy dictionary for post-processing
+    # Create Agent energy dictionary for post-processing, and deadlock flags
+    D_flags = {}
     agent_energy_dict = {}
     for key in ts_policy_dict_nom:
         agent_energy_dict[key] = []
+        D_flags[key] = False
 
     # Print time statistics
     stopOff = timeit.default_timer()
@@ -159,6 +161,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     while running:
         while policy_match:
             for p_ind, p_val in enumerate(priority):
+                D_flag_tot = False
                 if p_ind < 1:
                     weighted_nodes = {}
                     for i in range(num_hops):
@@ -242,6 +245,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                                         for cross_node in cross_weight:
                                                             if cross_node not in weighted_nodes[i]:
                                                                 weighted_nodes[i].append(cross_node)
+                                                    # Check if using same transition in updated case
+                                                    if comp_next_state == cur_prev_state:
+                                                        if comp_prev_state not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(comp_prev_state)
                                                     # Set previous state for next iteration
                                                     comp_prev_state = ts_policy[key][i]
                                                     cur_prev_state = ts_policy[key_c][i]
@@ -260,11 +267,10 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                                                         for cross_node in cross_weight:
                                                             if cross_node not in weighted_nodes[i]:
                                                                 weighted_nodes[i].append(cross_node)
-                                                    # Check if agents using same transition
-                                                    # if comp_prev_state == cur_next_state:
-                                                    #     if comp_next_state == cur_prev_state:
-                                                    #         if comp_prev_state not in weighted_nodes[i]:
-                                                    #             weighted_nodes[i].append(comp_prev_state)
+                                                    # Check if using same transition in updated case
+                                                    if comp_next_state == cur_prev_state:
+                                                        if comp_prev_state not in weighted_nodes[i]:
+                                                            weighted_nodes[i].append(comp_prev_state)
                                                     # Set previous state for next iteration
                                                     comp_prev_state = ts_policy[key][i]
                                                     cur_prev_state = ts_policy[key_c][i]
@@ -274,16 +280,31 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 if traj_length >= 1:
                     init_loc = pa_control_policy_dict[p_val][-1]
                     # Compute receding horizon shortest path
-                    ts_policy[p_val], pa_policy[p_val] = local_horizonDP(pa_nom_dict[p_val], weighted_nodes, num_hops, init_loc)
+                    ts_temp = ts_policy[p_val]
+                    pa_temp = pa_policy[p_val]
+                    ts_policy[p_val], pa_policy[p_val], D_flag = local_horizonDP(pa_nom_dict[p_val], weighted_nodes, num_hops, init_loc)
+                    # Check for deadlock, and if so update priority ordering
+                    if p_ind > 0:
+                        if D_flag == True:
+                            D_flags[p_val] = True
+                            D_flag_tot = True
+                            # Update priority and break
+                            priority = deadlock_priority(priority, D_flags, p_val)
+                            ts_policy[p_val] = ts_temp
+                            pa_policy[p_val] = pa_temp
+                            break
                     # Write updates to file
                     iter_step += 1
                     # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
-
-                # Update policy match
-                policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+            # Break out of another loop
+            if D_flag_tot == True:
+                break
+            # Update policy match
+            policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
 
             # Append trajectories
             for key in ts_policy:
+                D_flags[key] = False
                 agent_energy_dict[key].append(pa_nom_dict[key].g.node[pa_policy[key][0]]['energy'])
                 ts_control_policy_dict[key].append(ts_policy[key].pop(0))
                 pa_policy_temp = list(pa_policy[key])
@@ -370,32 +391,36 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
     # Generate set of priorities with lwoest energy given highest priority
     for key, energy_val in sorted_energy:
         priority.append(key)
-
     return priority
 
-def NonSimplePaths(path, extra_nodes):
-    ''' This takes a network pa, a node init, and a length n. It recursively finds
-    all paths of length n-1 starting from neighbors of init. '''
-    paths = []
-    for i in range(len(path)):
-        temp_path = []
-        for node in path[0:i+1]:
-            temp_path.append(node)
-        for j in range(extra_nodes):
-            temp_path.append(node)
-        if i < len(path)-1:
-            for append_node in path[i+1::]:
-                temp_path.append(append_node)
-        paths.append(temp_path)
-
-    return paths
+def deadlock_priority(priority, D_flags, cur_priority):
+    ''' Updates the priority ordering if a deadlock occurs. The highest
+    priority remains, but the remaining order is altered. '''
+    new_priority = []
+    # Need the number of D_flags raised to avoid oscillations and proper reprioritizing
+    num_deadlocks = 0
+    for key in D_flags:
+        if D_flags[key] == True:
+            num_deadlocks += 1
+    # Append highest priority and/or any previous deadlock agents already detected
+    for i in range(num_deadlocks):
+        new_priority.append(priority[i])
+    # Now include current deadlock priority
+    new_priority.append(cur_priority)
+    # Add all remaining agents in standard priority ordering
+    for p in priority[1::]:
+        if D_flags[p] == False:
+            new_priority.append(p)
+    return new_priority
 
 def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
     ''' Compute the n-hop lowest energy horizon without conflicts using
     a targeted Dynamic Programming (DP) method. '''
     # Compute the n-hop trajectory, ensures a minimum 2-hop trajectory
+    # Performs check on deadlock as well
     ts_policy = []
     pa_policy = []
+    D_flag = False
     # Initialize local set
     local_set = init_loc
     final_flag = False
@@ -421,6 +446,10 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
         for neighbor in local_set_temp:
             if neighbor[0] not in weighted_nodes[i]:
                 local_set.append(neighbor)
+        # Check if the agent is in a deadlock situation
+        if not local_set:
+            D_flag = True
+            return None, None, D_flag
         # Check if any of the nodes are in the final set and if so break and use node
         for node in local_set:
             if node in pa.final:
@@ -567,7 +596,7 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
         ts_policy.append(target_node[0])
         pa_policy.append(target_node)
 
-    return ts_policy, pa_policy
+    return ts_policy, pa_policy, D_flag
 
 def update_final_state(pa, pa_prime, weighted_nodes, init_loc):
     ''' Use of the energy function to get ideal final state to move to in
@@ -670,15 +699,15 @@ if __name__ == '__main__':
     setup_logging()
     # Define TWTL Specifications for each agent
     # Scenario 1, standard environment
-    phi1 = '[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
-    phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]' # A, E
-    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]' # A, E
-    phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]'  # C, D
-    phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
-    # Set to use the same transition system
-    phi = [phi1, phi2, phi3, phi4, phi5]
-    ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
-                '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
+    # phi1 = '[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
+    # phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]' # A, E
+    # phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]' # A, E
+    # phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]'  # C, D
+    # phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
+    # # Set to use the same transition system
+    # phi = [phi1, phi2, phi3, phi4, phi5]
+    # ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
+    #             '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
 
     # Scenario 2, large enviroment
     # phi1 = '[H^1 r54]^[0, 4] * [H^2 r46]^[0, 7] * [H^0 Base1]^[0, 5]' # C, E
@@ -697,15 +726,16 @@ if __name__ == '__main__':
     #             '../data/big_env/ts_6x12x4_10Ag_7.txt', '../data/big_env/ts_6x12x4_10Ag_8.txt', '../data/big_env/ts_6x12x4_10Ag_9.txt', \
     #             '../data/big_env/ts_6x12x4_10Ag_10.txt']
 
-    # Scenario 3 (2 agents), tight corridor
-    # phi1 = '[H^1 r5]^[0, 6]' # B
-    # phi2 = '[H^1 r12]^[0, 7]' # A
-    # phi = [phi1, phi2]
+    # Scenario 3 (3 or 4 agents), tight corridor
+    phi1 = '[H^1 r5]^[0, 6]' # B
+    phi2 = '[H^1 r12]^[0, 7]' # A
+    phi3 = '[H^3 r6]^[0, 7]' # C
+    phi4 = '[H^4 Base1]^[0, 8]'
+    phi = [phi1, phi2, phi3, phi4]
     # ts_files = ['../data/corr/ts_3x6x1_2Ag_1J.txt', '../data/corr/ts_3x6x1_2Ag_2J.txt']
-    # Scenarion 3 (3 agents), tight corridor
-    # phi3 = '[H^3 r6]^[0, 7]' # C
-    # phi = [phi1, phi2, phi3]
     # ts_files = ['../data/corr/ts_3x6x1_3Ag_1.txt', '../data/corr/ts_3x6x1_3Ag_2.txt', '../data/corr/ts_3x6x1_3Ag_3.txt']
+    ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
+                '../data/corr/ts_3x6x1_4Ag_4.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

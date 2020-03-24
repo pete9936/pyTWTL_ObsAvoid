@@ -1,0 +1,50 @@
+name Simple DTS
+init {'Base3':1}
+;
+Base1 {'prop':{'Base1'}, 'position': (0.43, 1.07, 0.40)}
+r5 {'prop':{'r5'}, 'position': (0.43, -1.07, 0.40)}
+r6 {'prop':{'r6'}, 'position': (0.00, 1.07, 0.40)}
+r7 {'prop':{'r7'}, 'position': (0.00, 0.65, 0.40)}
+r8 {'prop':{'r8'}, 'position': (0.00, 0.21, 0.40)}
+r9 {'prop':{'r9'}, 'position': (0.00, -0.22, 0.40)}
+Base4 {'prop':{'Base4'}, 'position': (0.00, -0.65, 0.40)}
+Base3 {'prop':{'Base3'}, 'position': (0.00, -1.07, 0.40)}
+r12 {'prop':{'r12'}, 'position': (-0.43, 1.07, 0.40)}
+Base2 {'prop':{'Base2'}, 'position': (-0.43, -1.07, 0.40)}
+;
+Base1 Base1 {'duration': 1, 'edge_weight': 0.500000}
+Base1 r6 {'duration': 1, 'edge_weight': 1.000000}
+Base1 r7 {'duration': 1, 'edge_weight': 1.414000}
+r5 r5 {'duration': 1, 'edge_weight': 0.500000}
+r5 Base4 {'duration': 1, 'edge_weight': 1.414000}
+r5 Base3 {'duration': 1, 'edge_weight': 1.000000}
+r6 Base1 {'duration': 1, 'edge_weight': 1.000000}
+r6 r6 {'duration': 1, 'edge_weight': 0.500000}
+r6 r7 {'duration': 1, 'edge_weight': 1.000000}
+r6 r12 {'duration': 1, 'edge_weight': 1.000000}
+r7 Base1 {'duration': 1, 'edge_weight': 1.414000}
+r7 r6 {'duration': 1, 'edge_weight': 1.000000}
+r7 r7 {'duration': 1, 'edge_weight': 0.500000}
+r7 r8 {'duration': 1, 'edge_weight': 1.000000}
+r7 r12 {'duration': 1, 'edge_weight': 1.414000}
+r8 r7 {'duration': 1, 'edge_weight': 1.000000}
+r8 r8 {'duration': 1, 'edge_weight': 0.500000}
+r8 r9 {'duration': 1, 'edge_weight': 1.000000}
+r9 r8 {'duration': 1, 'edge_weight': 1.000000}
+r9 r9 {'duration': 1, 'edge_weight': 0.500000}
+r9 Base4 {'duration': 1, 'edge_weight': 1.000000}
+Base4 r5 {'duration': 1, 'edge_weight': 1.414000}
+Base4 r9 {'duration': 1, 'edge_weight': 1.000000}
+Base4 Base4 {'duration': 1, 'edge_weight': 0.500000}
+Base4 Base3 {'duration': 1, 'edge_weight': 1.000000}
+Base4 Base2 {'duration': 1, 'edge_weight': 1.414000}
+Base3 r5 {'duration': 1, 'edge_weight': 1.000000}
+Base3 Base4 {'duration': 1, 'edge_weight': 1.000000}
+Base3 Base3 {'duration': 1, 'edge_weight': 0.500000}
+Base3 Base2 {'duration': 1, 'edge_weight': 1.000000}
+r12 r6 {'duration': 1, 'edge_weight': 1.000000}
+r12 r7 {'duration': 1, 'edge_weight': 1.414000}
+r12 r12 {'duration': 1, 'edge_weight': 0.500000}
+Base2 Base4 {'duration': 1, 'edge_weight': 1.414000}
+Base2 Base3 {'duration': 1, 'edge_weight': 1.000000}
+Base2 Base2 {'duration': 1, 'edge_weight': 0.500000}
