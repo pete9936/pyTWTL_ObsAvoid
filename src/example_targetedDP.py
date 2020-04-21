@@ -30,7 +30,7 @@ from learning import learn_deadlines
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
+def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, always_active):
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -137,11 +137,17 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
         prev_states[key] = pa_policy_dict_nom[key][0]
     priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list)
     # Create Agent energy dictionary for post-processing, and deadlock flags
+    # Create Termination indicator to assign terminated agents lowest priority
+    # and some temporary ts_policy
     D_flags = {}
+    F_indicator = {}
+    tsf_policy = {}
     agent_energy_dict = {}
     for key in ts_policy_dict_nom:
         agent_energy_dict[key] = []
         D_flags[key] = False
+        F_indicator[key] = False
+        tsf_policy[key] = []
 
     # Print time statistics
     stopOff = timeit.default_timer()
@@ -293,14 +299,35 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                             ts_policy[p_val] = ts_temp
                             pa_policy[p_val] = pa_temp
                             break
-                    # Write updates to file
+                    # Increase iteration step (for statistics at end)
                     iter_step += 1
-                    # write_to_iter_file(ts_policy[p_val], ts_dict[p_val], ets_dict[p_val], p_val, iter_step)
             # Break out of another loop
             if D_flag_tot == True:
                 break
             # Update policy match
             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
+
+            # Account for agents which have finished, also accouns for other finished agents through agent ID ordering
+            if always_active == True:
+                finished_ID = []
+                for key in F_indicator:
+                    if F_indicator[key] == True:
+                        finished_ID.append(key)
+                        current_node = ts_control_policy_dict[key][-1]
+                        hp_nodes_avoid = []
+                        for k in key_list:
+                            hp_nodes_avoid.append(ts_policy[k][0])
+                            hp_nodes_avoid.append(ts_control_policy_dict[k][-1])
+                        for fID in finished_ID[:-1]:
+                            hp_nodes_avoid.append(ts_control_policy_dict[fID][-1])
+                        if current_node in hp_nodes_avoid:
+                            local_set = ts_dict[key].g.neighbors(current_node)
+                            for node in local_set:
+                                if node not in hp_nodes_avoid:
+                                    ts_control_policy_dict[key].append(node)
+                                    break
+                        else:
+                            ts_control_policy_dict[key].append(current_node)
 
             # Append trajectories
             for key in ts_policy:
@@ -329,6 +356,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
                 land_keys = []
                 for key, val in ts_policy.items():
                     if len(val) == 0:
+                        F_indicator[key] = True
                         land_keys.append(key)
                         del ts_policy[key]
                         del pa_policy[key]
@@ -753,6 +781,8 @@ if __name__ == '__main__':
     time_wp = 1.9
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
+    # Set to True if all agents are active until the last agent terminates its task
+    always_active = False
     # Set to True if running on Crazyflies in the lab
     lab_testing = False
-    case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing)
+    case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing, always_active)
