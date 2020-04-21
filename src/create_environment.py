@@ -1085,11 +1085,15 @@ if __name__ == '__main__':
     #         '../data/big_env/ts_6x12x4_10Ag_10.txt']
     # bases = {(5,8,0): 'Base1', (5,9,0): 'Base2', (4,8,0): 'Base3', (4,9,0): 'Base4', (3,0,0): 'Base5',\
     #         (4,0,0): 'Base6', (5,0,0): 'Base7', (0,3,0): 'Base8', (0,4,0): 'Base9', (0,5,0): 'Base10'}
-    init_states = [(0,0,0),(2,5,0),(1,5,0),(1,4,0)]
-    obstacles = [(0,1,0),(0,2,0),(0,3,0),(0,4,0),(2,1,0),(2,2,0),(2,3,0),(2,4,0)]
-    paths = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
-             '../data/corr/ts_3x6x1_4Ag_4.txt']
-    bases = {(0,0,0): 'Base1', (2,5,0): 'Base2', (1,5,0): 'Base3', (1,4,0): 'Base4'}
+    # init_states = [(0,0,0),(2,5,0),(1,5,0),(1,4,0)]
+    # obstacles = [(0,1,0),(0,2,0),(0,3,0),(0,4,0),(2,1,0),(2,2,0),(2,3,0),(2,4,0)]
+    # paths = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
+    #          '../data/corr/ts_3x6x1_4Ag_4.txt']
+    # bases = {(0,0,0): 'Base1', (2,5,0): 'Base2', (1,5,0): 'Base3', (1,4,0): 'Base4'}
+    init_states = [(0,0,0),(2,0,0)]
+    obstacles = [(1,2,0),(1,3,0)]
+    paths = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
+    bases = {(0,0,0): 'Base1', (2,0,0): 'Base2'}
     # Choose appropriate cell discretization for environment (meters)
     disc = 0.43
     for i in range(len(init_states)):

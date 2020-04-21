@@ -130,7 +130,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing):
     tau_dict = tau_dict_nom
     # Choose parameter for n-horizon local trajectory and information sharing,
     # must be at least 2
-    num_hops = 2
+    num_hops = 3
     # Get agent priority based on lowest energy
     prev_states = {}
     for key in ts_policy_dict_nom:
@@ -726,16 +726,22 @@ if __name__ == '__main__':
     #             '../data/big_env/ts_6x12x4_10Ag_7.txt', '../data/big_env/ts_6x12x4_10Ag_8.txt', '../data/big_env/ts_6x12x4_10Ag_9.txt', \
     #             '../data/big_env/ts_6x12x4_10Ag_10.txt']
 
-    # Scenario 3 (3 or 4 agents), tight corridor
-    phi1 = '[H^1 r5]^[0, 6]' # B
-    phi2 = '[H^1 r12]^[0, 7]' # A
-    phi3 = '[H^3 r6]^[0, 7]' # C
-    phi4 = '[H^4 Base1]^[0, 8]'
-    phi = [phi1, phi2, phi3, phi4]
-    # ts_files = ['../data/corr/ts_3x6x1_2Ag_1J.txt', '../data/corr/ts_3x6x1_2Ag_2J.txt']
-    # ts_files = ['../data/corr/ts_3x6x1_3Ag_1.txt', '../data/corr/ts_3x6x1_3Ag_2.txt', '../data/corr/ts_3x6x1_3Ag_3.txt']
-    ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
-                '../data/corr/ts_3x6x1_4Ag_4.txt']
+    # Scenario 3, tight corridor
+    # phi1 = '[H^1 r5]^[0, 6]' # B
+    # phi2 = '[H^1 r12]^[0, 7]' # A
+    # phi3 = '[H^3 r6]^[0, 7]' # C
+    # phi4 = '[H^4 Base1]^[0, 8]'
+    # phi = [phi1, phi2, phi3, phi4]
+    # ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
+    #             '../data/corr/ts_3x6x1_4Ag_4.txt']
+
+    # Scenario 4, different drop-off points
+    phi1 = '[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P1, D1 or D2 or D3
+    phi2 = '[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P2, D1 or D2 or D3
+    # phi1 = '[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]' # P1, D1 or D2 or D3
+    # phi2 = '[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]' # P2, D1 or D2 or D3
+    phi = [phi1, phi2]
+    ts_files = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

@@ -434,3 +434,1997 @@ Start policy computation
 03/23/2020 10:39:09 PM INFO Generated control policy is: Base3 -> 1 -> Base4 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r6 -> 1 -> r6 -> 1 -> r6 -> 1 -> r6
 03/23/2020 10:39:09 PM INFO Max deadline: 7
 03/23/2020 10:39:09 PM INFO Generated control policy is: Base4 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> Base1 -> 1 -> Base1 -> 1 -> Base1 -> 1 -> Base1 -> 1 -> Base1
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r15', 'r10', 'r2', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r15', 'r10', 'r2', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r15', 'r10', 'r2', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r15 Duration: 1 Negation: False Props: set(['r15', 'r10', 'r2', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r15 )
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r15 ) 0 4 )
+04/20/2020 11:39:40 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r15 ) 0 4 ) )
+04/20/2020 11:39:40 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])
+04/20/2020 11:39:40 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r15 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r15': 1, 'r2': 4, 'r10': 2, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r15)', 'weight': 0, 'label': '(((else)) & (r11)) & (r15)'}), (2, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r15)', 'weight': 0, 'label': '((r10) & ((else))) & (r15)'}), (2, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r15)', 'weight': 0, 'label': '((r10) & (r11)) & (r15)'}), (2, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (2, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r15)) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r15)) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))))'}), (4, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r15)', 'weight': 0, 'label': '((r10) & ((else))) & (r15)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))'}), (5, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r15)', 'weight': 0, 'label': '(((else)) & (r11)) & (r15)'}), (5, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r15)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r15)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r15)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r15)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))))'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15)))'}), (9, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r15)) | ((((r10) & (r11)) & (r15)) | ((((r10) & ((else))) & (r15)) | ((((else)) & ((else))) & (r15))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r15)) | ((((r10) & (r11)) & (r15)) | ((((r10) & ((else))) & (r15)) | ((((else)) & ((else))) & (r15))))'}), (9, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15))'})]
+		
+04/20/2020 11:39:40 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       10 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:39:40 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:39:40 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:39:40 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:39:40 PM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])" is (3, 9)!
+04/20/2020 11:39:40 PM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r14', 'r15', 'r10', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r14', 'r15', 'r10', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r14', 'r15', 'r10', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:39:40 PM DEBUG [hold] Prop: r15 Duration: 1 Negation: False Props: set(['r14', 'r15', 'r10', 'r11'])
+04/20/2020 11:39:40 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r15 )
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM INFO No trap states were added.
+04/20/2020 11:39:40 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:39:40 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r15 ) 0 4 )
+04/20/2020 11:39:40 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r15 ) 0 4 ) )
+04/20/2020 11:39:40 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])
+04/20/2020 11:39:40 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r15 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r14': 1, 'r15': 2, 'r10': 4, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 2, 4, 6, 8, 10, 12, 14]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([10, 11]), 'guard': '(((else)) & (r11)) & (r15)', 'weight': 0, 'label': '(((else)) & (r11)) & (r15)'}), (2, 4, {'input': set([8, 9]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([4, 5]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([6, 7]), 'guard': '((r10) & ((else))) & (r15)', 'weight': 0, 'label': '((r10) & ((else))) & (r15)'}), (2, 8, {'input': set([14, 15]), 'guard': '((r10) & (r11)) & (r15)', 'weight': 0, 'label': '((r10) & (r11)) & (r15)'}), (2, 9, {'input': set([2, 3]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (2, 10, {'input': set([12, 13]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([4, 5]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r15)) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r15)) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))))'}), (4, 9, {'input': set([2, 3]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (4, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([4, 5]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([6, 7]), 'guard': '((r10) & ((else))) & (r15)', 'weight': 0, 'label': '((r10) & ((else))) & (r15)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r15))'}), (5, 9, {'input': set([2, 3]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (5, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([10, 11]), 'guard': '(((else)) & (r11)) & (r15)', 'weight': 0, 'label': '(((else)) & (r11)) & (r15)'}), (5, 4, {'input': set([8, 9]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))'}), (6, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 9]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([2, 3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r15)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r15)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r15)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r15)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r15))))'}), (8, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r15)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15)))'}), (9, 10, {'input': set([12, 13]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((else)) & (r11)) & (r15)) | ((((r10) & (r11)) & (r15)) | ((((r10) & ((else))) & (r15)) | ((((else)) & ((else))) & (r15))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r15)) | ((((r10) & (r11)) & (r15)) | ((((r10) & ((else))) & (r15)) | ((((else)) & ((else))) & (r15))))'}), (9, 4, {'input': set([8, 9]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([4, 5]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([2, 3]), 'guard': '(((else)) & ((else))) & (r15)', 'weight': 0, 'label': '(((else)) & ((else))) & (r15)'}), (10, 2, {'input': set([0, 1]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r15))'})]
+		
+04/20/2020 11:39:40 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([10, 11, 14, 15]) left=set([8, 9, 12, 13]) right=set([2, 3, 6, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     6 -> both=set([7, 6, 14, 15]) left=set([4, 12, 5, 13]) right=set([11, 2, 3, 10])
+     8 -> both=set([6, 7, 10, 11, 14, 15]) left=set([4, 5, 8, 9, 12, 13]) right=set([2, 3])
+     9 -> both=set([]) left=set([]) right=set([2, 3, 6, 7, 10, 11, 14, 15])
+     10 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       10 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:39:40 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:39:40 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:39:40 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:39:40 PM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])" is (3, 9)!
+04/20/2020 11:39:40 PM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r15]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:39:40 PM DEBUG 
+
+Start policy computation
+
+04/20/2020 11:39:40 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:39:40 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:39:40 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:39:40 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:39:40 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:39:40 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:40 PM DEBUG []
+04/20/2020 11:39:59 PM INFO Max deadline: -1
+04/20/2020 11:39:59 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:39:59 PM INFO Max deadline: -2
+04/20/2020 11:39:59 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/20/2020 11:43:36 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/20/2020 11:43:36 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/20/2020 11:43:36 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r2': 4, 'r10': 2, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/20/2020 11:43:36 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       10 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:43:36 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:43:36 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:43:36 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:43:36 PM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/20/2020 11:43:36 PM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:43:36 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:43:36 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM INFO No trap states were added.
+04/20/2020 11:43:36 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:43:36 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/20/2020 11:43:36 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/20/2020 11:43:36 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/20/2020 11:43:36 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r14': 2, 'r10': 4, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/20/2020 11:43:36 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     6 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
+     8 -> both=set([5, 7, 9, 11, 13, 15]) left=set([4, 6, 8, 10, 12, 14]) right=set([1, 3])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       10 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:43:36 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:43:36 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:43:36 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:43:36 PM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/20/2020 11:43:36 PM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:43:36 PM DEBUG 
+
+Start policy computation
+
+04/20/2020 11:43:36 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:43:36 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:43:36 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:43:36 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:43:36 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:43:36 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:36 PM DEBUG []
+04/20/2020 11:43:46 PM INFO Max deadline: -1
+04/20/2020 11:43:46 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:43:46 PM INFO Max deadline: 0
+04/20/2020 11:43:46 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r10 Duration: 2 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r10 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r11 Duration: 2 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r11 )
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0), (0, 2)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0), (0, 2)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(0, 0), (2, 0), (1, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(0, 0), (2, 0), (1, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG [union] DFA1: (Eventually (Hold 2 r10 ) 0 4 ) DFA2: (Eventually (Hold 2 r11 ) 0 4 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r5 Duration: 2 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r5 )
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM DEBUG state: Union 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(8, 0), (4, 0), (9, 0), (5, 0), (0, 0), (6, 0), (1, 0), (7, 0), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(8, 0), (4, 0), (9, 0), (5, 0), (0, 0), (6, 0), (1, 0), (7, 0), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG [union] DFA1: (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 2 r5 ) 0 4 )
+04/20/2020 11:45:24 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) (Eventually (Hold 2 r5 ) 0 4 ) )
+04/20/2020 11:45:24 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])
+04/20/2020 11:45:24 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) (Eventually (Hold 2 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r2': 4, 'r10': 2, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([12])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {}), (11, {}), (12, {}), (13, {}), (14, {}), (15, {}), (16, {}), (17, {}), (18, {}), (19, {}), (20, {}), (21, {}), (22, {}), (23, {}), (24, {}), (25, {}), (26, {}), (27, {}), (28, {}), (29, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 11, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (2, 13, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 24, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (3, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (3, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (3, 22, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (3, 25, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 28, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 7, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (4, 21, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (4, 24, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (4, 27, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (5, 11, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (5, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 19, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (5, 26, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (5, 29, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (6, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 12, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))))'}), (7, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (7, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (7, 12, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (7, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (7, 29, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 12, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (9, 13, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (9, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 12, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (10, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (11, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (11, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (11, 7, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (11, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (11, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (11, 16, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (11, 20, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (11, 25, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (13, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (13, 6, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (13, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (13, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (13, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (13, 21, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (13, 28, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (13, 29, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (14, 24, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (14, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (14, 12, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & ((else)))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & ((else)))'}), (14, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (14, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (15, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (15, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (15, 11, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (15, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (15, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (16, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (16, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (16, 19, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (16, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (16, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (17, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (17, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (17, 28, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (17, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (17, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (18, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (18, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (18, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (18, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (18, 13, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (18, 16, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (18, 17, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (18, 23, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (19, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (19, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (19, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (19, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (19, 21, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (20, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (20, 12, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'}), (20, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (21, 16, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (21, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (21, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (21, 12, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & ((else))) | ((r10) & (r11))) & (r5)) | ((((r10) & ((else))) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '((((r10) & ((else))) | ((r10) & (r11))) & (r5)) | ((((r10) & ((else))) | ((r10) & (r11))) & ((else)))'}), (21, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (22, 12, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (22, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (22, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (23, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (23, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))'}), (23, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (23, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (23, 7, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (24, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (24, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (24, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (24, 10, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (24, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (24, 19, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (24, 22, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (24, 23, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (25, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (25, 12, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else)))'}), (25, 5, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (26, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (26, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (26, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (26, 14, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (26, 25, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (27, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (27, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (27, 12, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))'}), (27, 22, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (27, 15, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (28, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (28, 12, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (28, 18, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (29, 9, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (29, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (29, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (29, 4, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (29, 23, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'})]
+		
+04/20/2020 11:45:24 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([12])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([12])
+   Choices:
+     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     7 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
+     9 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     10 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     14 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     15 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     16 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     17 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     19 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     20 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     21 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     22 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     23 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     25 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     26 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     27 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     28 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     29 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([12])
+     Choices:
+       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       7 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       9 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       10 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       14 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       16 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       17 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       20 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       21 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       22 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       23 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       25 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       27 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       28 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([12])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([12])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([12])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([12])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([12])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([12])
+
+04/20/2020 11:45:24 PM DEBUG [spec] No of nodes: 30
+04/20/2020 11:45:24 PM DEBUG [spec] No of edges: 148
+04/20/2020 11:45:24 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:45:24 PM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])" is (4, 9)!
+04/20/2020 11:45:24 PM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])" to infinity DFA of size (30, 148)!
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r10 Duration: 2 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r10 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r11 Duration: 2 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r11 )
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0), (0, 2)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0), (0, 2)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(0, 0), (2, 0), (1, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(0, 0), (2, 0), (1, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG [union] DFA1: (Eventually (Hold 2 r10 ) 0 4 ) DFA2: (Eventually (Hold 2 r11 ) 0 4 )
+04/20/2020 11:45:24 PM DEBUG [hold] Prop: r5 Duration: 2 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:45:24 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r5 )
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM INFO No trap states were added.
+04/20/2020 11:45:24 PM DEBUG state: Union 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(2, 1), (2, 2), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Eventually 
+ init: [(8, 0), (4, 0), (9, 0), (5, 0), (0, 0), (6, 0), (1, 0), (7, 0), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG state: Hold 
+ init: [(8, 0), (4, 0), (9, 0), (5, 0), (0, 0), (6, 0), (1, 0), (7, 0), (2, 0)]
+ final: [(3, 3)]
+04/20/2020 11:45:24 PM DEBUG [union] DFA1: (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 2 r5 ) 0 4 )
+04/20/2020 11:45:24 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) (Eventually (Hold 2 r5 ) 0 4 ) )
+04/20/2020 11:45:24 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])
+04/20/2020 11:45:24 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 2 r10 ) 0 4 ) (Eventually (Hold 2 r11 ) 0 4 ) ) (Eventually (Hold 2 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r14': 2, 'r10': 4, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([12])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {}), (11, {}), (12, {}), (13, {}), (14, {}), (15, {}), (16, {}), (17, {}), (18, {}), (19, {}), (20, {}), (21, {}), (22, {}), (23, {}), (24, {}), (25, {}), (26, {}), (27, {}), (28, {}), (29, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 11, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (2, 13, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 24, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (3, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 8, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (3, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (3, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (3, 22, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (3, 25, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 28, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 7, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (4, 21, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (4, 24, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (4, 27, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (5, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (5, 11, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (5, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 19, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (5, 26, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (5, 29, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (6, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 12, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))))'}), (7, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (7, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (7, 12, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (7, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (7, 29, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (8, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 12, {'input': set([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))'}), (9, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (9, 13, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (9, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 12, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (10, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (11, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (11, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (11, 7, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (11, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (11, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (11, 16, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (11, 20, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (11, 25, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (13, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (13, 6, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (13, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (13, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (13, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (13, 21, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (13, 28, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (13, 29, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (14, 24, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (14, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (14, 12, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & ((else)))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & ((else)))'}), (14, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (14, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (15, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (15, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (15, 11, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (15, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (15, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (16, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (16, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (16, 19, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (16, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (16, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (17, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (17, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (17, 28, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (17, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (17, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (18, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (18, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (18, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (18, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (18, 13, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (18, 16, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (18, 17, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (18, 23, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (19, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (19, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (19, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (19, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (19, 21, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (20, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (20, 12, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'}), (20, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (21, 16, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (21, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (21, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (21, 12, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & ((else))) | ((r10) & (r11))) & (r5)) | ((((r10) & ((else))) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '((((r10) & ((else))) | ((r10) & (r11))) & (r5)) | ((((r10) & ((else))) | ((r10) & (r11))) & ((else)))'}), (21, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (22, 12, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (22, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (22, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (23, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (23, 12, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & ((else)))'}), (23, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (23, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (23, 7, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (24, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (24, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (24, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (24, 10, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (24, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (24, 19, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (24, 22, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (24, 23, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (25, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (25, 12, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else)))'}), (25, 5, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (26, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (26, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (26, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '(((r10) & ((else))) & (r5)) | (((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (26, 14, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (26, 25, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (27, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (27, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (27, 12, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '((((r10) & ((else))) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) | ((r10) & (r11))) & (r5))'}), (27, 22, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (27, 15, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (28, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (28, 12, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (28, 18, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (29, 9, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (29, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (29, 12, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((else)) & ((else))) & (r5)) | ((((r10) & ((else))) & (r5)) | (((r10) & (r11)) & (r5))))'}), (29, 4, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (29, 23, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'})]
+		
+04/20/2020 11:45:24 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([12])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([12])
+   Choices:
+     6 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
+     7 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     8 -> both=set([5, 7, 9, 11, 13, 15]) left=set([4, 6, 8, 10, 12, 14]) right=set([1, 3])
+     9 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     10 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     14 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     15 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     16 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     17 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     19 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     20 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     21 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     22 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     23 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     25 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     26 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     27 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     28 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
+     29 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([12])
+     Choices:
+       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       7 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       9 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       10 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       14 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       16 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       17 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       20 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       21 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       22 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       23 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       25 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       27 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       28 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([12])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([12])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([12])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([12])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([12])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([12])
+
+04/20/2020 11:45:24 PM DEBUG [spec] No of nodes: 30
+04/20/2020 11:45:24 PM DEBUG [spec] No of edges: 148
+04/20/2020 11:45:24 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:45:24 PM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])" is (4, 9)!
+04/20/2020 11:45:24 PM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^2 r10]^[0,4] | [H^2 r11]^[0,4] | [H^2 r5]^[0,4])" to infinity DFA of size (30, 148)!
+04/20/2020 11:45:24 PM DEBUG 
+
+Start policy computation
+
+04/20/2020 11:45:24 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:45:24 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:45:24 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:45:24 PM INFO Product automaton size is: (38, 178)
+04/20/2020 11:45:24 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:45:24 PM INFO Product automaton size is: (38, 178)
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:24 PM DEBUG []
+04/20/2020 11:45:30 PM INFO Max deadline: -1
+04/20/2020 11:45:30 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:45:30 PM INFO Max deadline: 0
+04/20/2020 11:45:30 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/20/2020 11:47:47 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/20/2020 11:47:47 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/20/2020 11:47:47 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r2': 4, 'r10': 2, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/20/2020 11:47:47 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       10 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:47:47 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:47:47 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:47:47 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:47:47 PM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/20/2020 11:47:47 PM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/20/2020 11:47:47 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/20/2020 11:47:47 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM INFO No trap states were added.
+04/20/2020 11:47:47 PM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/20/2020 11:47:47 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/20/2020 11:47:47 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/20/2020 11:47:47 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/20/2020 11:47:47 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r14': 2, 'r10': 4, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/20/2020 11:47:47 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     6 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
+     8 -> both=set([5, 7, 9, 11, 13, 15]) left=set([4, 6, 8, 10, 12, 14]) right=set([1, 3])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       10 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/20/2020 11:47:47 PM DEBUG [spec] No of nodes: 11
+04/20/2020 11:47:47 PM DEBUG [spec] No of edges: 38
+04/20/2020 11:47:47 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:47:47 PM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/20/2020 11:47:47 PM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/20/2020 11:47:47 PM DEBUG 
+
+Start policy computation
+
+04/20/2020 11:47:47 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:47:47 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:47:47 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:47:47 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:47:47 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:47:47 PM INFO Product automaton size is: (35, 160)
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:47 PM DEBUG []
+04/20/2020 11:47:49 PM INFO Max deadline: -1
+04/20/2020 11:47:49 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:47:49 PM INFO Max deadline: 0
+04/20/2020 11:47:49 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:49:11 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r10', 'r2'])
+04/20/2020 11:49:12 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/20/2020 11:49:12 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r10', 'r2'])
+04/20/2020 11:49:12 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:49:12 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Eventually (Hold 1 r10 ) 0 4 )
+04/20/2020 11:49:12 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * [H^1 r10]^[0,4]
+04/20/2020 11:49:12 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Eventually (Hold 1 r10 ) 0 4 ) )
+Directed: True
+Multi: False
+Props: {'r2': 2, 'r10': 1}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([4])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {})]
+Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'}), (3, 2, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'})]
+		
+04/20/2020 11:49:12 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([4])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([4])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([2])
+     Final: set([4])
+
+04/20/2020 11:49:12 PM DEBUG [spec] No of nodes: 5
+04/20/2020 11:49:12 PM DEBUG [spec] No of edges: 8
+04/20/2020 11:49:12 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:49:12 PM INFO The bound of formula "[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]" is (3, 9)!
+04/20/2020 11:49:12 PM INFO Translated formula "[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]" to infinity DFA of size (5, 8)!
+04/20/2020 11:49:12 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r14', 'r10'])
+04/20/2020 11:49:12 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/20/2020 11:49:12 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r14', 'r10'])
+04/20/2020 11:49:12 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/20/2020 11:49:12 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Eventually (Hold 1 r10 ) 0 4 )
+04/20/2020 11:49:12 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * [H^1 r10]^[0,4]
+04/20/2020 11:49:12 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Eventually (Hold 1 r10 ) 0 4 ) )
+Directed: True
+Multi: False
+Props: {'r14': 1, 'r10': 2}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([4])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {})]
+Edges: [(0, 0, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1, 3]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1, 3]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'}), (3, 2, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'})]
+		
+04/20/2020 11:49:12 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([4])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([4])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([2])
+     Final: set([4])
+
+04/20/2020 11:49:12 PM DEBUG [spec] No of nodes: 5
+04/20/2020 11:49:12 PM DEBUG [spec] No of edges: 8
+04/20/2020 11:49:12 PM DEBUG 
+End of translate
+
+
+04/20/2020 11:49:12 PM INFO The bound of formula "[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]" is (3, 9)!
+04/20/2020 11:49:12 PM INFO Translated formula "[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]" to infinity DFA of size (5, 8)!
+04/20/2020 11:49:12 PM DEBUG 
+
+Start policy computation
+
+04/20/2020 11:49:12 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:49:12 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/20/2020 11:49:12 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:49:12 PM INFO Product automaton size is: (33, 160)
+04/20/2020 11:49:12 PM INFO Constructing product automaton with infinity DFA!
+04/20/2020 11:49:12 PM INFO Product automaton size is: (33, 160)
+04/20/2020 11:49:18 PM INFO Max deadline: -1
+04/20/2020 11:49:18 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/20/2020 11:49:18 PM INFO Max deadline: 1
+04/20/2020 11:49:18 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/21/2020 12:03:43 AM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r10', 'r2'])
+04/21/2020 12:03:43 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/21/2020 12:03:43 AM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r10', 'r2'])
+04/21/2020 12:03:43 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/21/2020 12:03:43 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Eventually (Hold 1 r10 ) 0 4 )
+04/21/2020 12:03:43 AM DEBUG [spec] spec: [H^1 r2]^[0, 4] * [H^1 r10]^[0,4]
+04/21/2020 12:03:43 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Eventually (Hold 1 r10 ) 0 4 ) )
+Directed: True
+Multi: False
+Props: {'r2': 2, 'r10': 1}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([4])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {})]
+Edges: [(0, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'}), (3, 2, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'})]
+		
+04/21/2020 12:03:43 AM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([4])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([4])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([2])
+     Final: set([4])
+
+04/21/2020 12:03:43 AM DEBUG [spec] No of nodes: 5
+04/21/2020 12:03:43 AM DEBUG [spec] No of edges: 8
+04/21/2020 12:03:43 AM DEBUG 
+End of translate
+
+
+04/21/2020 12:03:43 AM INFO The bound of formula "[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]" is (3, 9)!
+04/21/2020 12:03:43 AM INFO Translated formula "[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]" to infinity DFA of size (5, 8)!
+04/21/2020 12:03:43 AM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r14', 'r10'])
+04/21/2020 12:03:43 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/21/2020 12:03:43 AM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r14', 'r10'])
+04/21/2020 12:03:43 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/21/2020 12:03:43 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Eventually (Hold 1 r10 ) 0 4 )
+04/21/2020 12:03:43 AM DEBUG [spec] spec: [H^1 r14]^[0, 4] * [H^1 r10]^[0,4]
+04/21/2020 12:03:43 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Eventually (Hold 1 r10 ) 0 4 ) )
+Directed: True
+Multi: False
+Props: {'r14': 1, 'r10': 2}
+Alphabet: set([0, 1, 2, 3]) 
+Initial: [0]
+Final: set([4])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {})]
+Edges: [(0, 0, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1, 3]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 2]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1, 3]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'}), (3, 2, {'input': set([0, 1]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3]), 'guard': u'r10', 'weight': 0, 'label': u'r10'})]
+		
+04/21/2020 12:03:43 AM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([4])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([4])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([2])
+     Final: set([4])
+
+04/21/2020 12:03:43 AM DEBUG [spec] No of nodes: 5
+04/21/2020 12:03:43 AM DEBUG [spec] No of edges: 8
+04/21/2020 12:03:43 AM DEBUG 
+End of translate
+
+
+04/21/2020 12:03:43 AM INFO The bound of formula "[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]" is (3, 9)!
+04/21/2020 12:03:43 AM INFO Translated formula "[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]" to infinity DFA of size (5, 8)!
+04/21/2020 12:03:43 AM DEBUG 
+
+Start policy computation
+
+04/21/2020 12:03:43 AM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/21/2020 12:03:43 AM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/21/2020 12:03:43 AM INFO Constructing product automaton with infinity DFA!
+04/21/2020 12:03:43 AM INFO Product automaton size is: (33, 160)
+04/21/2020 12:03:43 AM INFO Constructing product automaton with infinity DFA!
+04/21/2020 12:03:43 AM INFO Product automaton size is: (33, 160)
+04/21/2020 12:04:20 AM INFO Max deadline: -1
+04/21/2020 12:04:20 AM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/21/2020 12:04:20 AM INFO Max deadline: 1
+04/21/2020 12:04:20 AM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/21/2020 12:05:26 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/21/2020 12:05:26 AM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/21/2020 12:05:26 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r2': 4, 'r10': 2, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/21/2020 12:05:26 AM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
+     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
+       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+       10 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/21/2020 12:05:26 AM DEBUG [spec] No of nodes: 11
+04/21/2020 12:05:26 AM DEBUG [spec] No of edges: 38
+04/21/2020 12:05:26 AM DEBUG 
+End of translate
+
+
+04/21/2020 12:05:26 AM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/21/2020 12:05:26 AM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 1), (0, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 0), (1, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
+04/21/2020 12:05:26 AM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
+04/21/2020 12:05:26 AM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM INFO No trap states were added.
+04/21/2020 12:05:26 AM DEBUG state: Union 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(1, 0), (1, 1)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Eventually 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG state: Hold 
+ init: [(0, 0), (3, 0), (1, 0), (4, 0)]
+ final: [(2, 2)]
+04/21/2020 12:05:26 AM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
+04/21/2020 12:05:26 AM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
+04/21/2020 12:05:26 AM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
+04/21/2020 12:05:26 AM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+Directed: True
+Multi: False
+Props: {'r5': 1, 'r14': 2, 'r10': 4, 'r11': 8}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Initial: [0]
+Final: set([7])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+		
+04/21/2020 12:05:26 AM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([7])
+ Left:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([2])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([0])
+     Final: set([2])
+ Right:
+   Op: Union Flags[WDF, WWF, UNR]: True True False
+   Init: set([2])
+   Final: set([7])
+   Choices:
+     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
+     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+     5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+     6 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
+     8 -> both=set([5, 7, 9, 11, 13, 15]) left=set([4, 6, 8, 10, 12, 14]) right=set([1, 3])
+     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
+     10 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
+   Left:
+     Op: Union Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Choices:
+       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
+       5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
+       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+       10 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
+     Left:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+     Right:
+       Op: Eventually Flags[WDF, WWF, UNR]: True True False
+       Init: set([2])
+       Final: set([7])
+       Left:
+         Op: Hold Flags[WDF, WWF, UNR]: True True True
+         Init: set([2])
+         Final: set([7])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([7])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([7])
+
+04/21/2020 12:05:26 AM DEBUG [spec] No of nodes: 11
+04/21/2020 12:05:26 AM DEBUG [spec] No of edges: 38
+04/21/2020 12:05:26 AM DEBUG 
+End of translate
+
+
+04/21/2020 12:05:26 AM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
+04/21/2020 12:05:26 AM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
+04/21/2020 12:05:26 AM DEBUG 
+
+Start policy computation
+
+04/21/2020 12:05:26 AM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/21/2020 12:05:26 AM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
+04/21/2020 12:05:26 AM INFO Constructing product automaton with infinity DFA!
+04/21/2020 12:05:26 AM INFO Product automaton size is: (35, 160)
+04/21/2020 12:05:26 AM INFO Constructing product automaton with infinity DFA!
+04/21/2020 12:05:26 AM INFO Product automaton size is: (35, 160)
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:26 AM DEBUG []
+04/21/2020 12:05:47 AM INFO Max deadline: -1
+04/21/2020 12:05:47 AM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
+04/21/2020 12:05:47 AM INFO Max deadline: 0
+04/21/2020 12:05:47 AM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
