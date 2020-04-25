@@ -130,7 +130,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
     tau_dict = tau_dict_nom
     # Choose parameter for n-horizon local trajectory and information sharing,
     # must be at least 2
-    num_hops = 3
+    num_hops = 2
     # Get agent priority based on lowest energy
     prev_states = {}
     for key in ts_policy_dict_nom:
@@ -727,15 +727,15 @@ if __name__ == '__main__':
     setup_logging()
     # Define TWTL Specifications for each agent
     # Scenario 1, standard environment
-    # phi1 = '[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
-    # phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]' # A, E
-    # phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]' # A, E
-    # phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]'  # C, D
-    # phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
-    # # Set to use the same transition system
-    # phi = [phi1, phi2, phi3, phi4, phi5]
-    # ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
-    #             '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
+    phi1 = '[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]' # B, F
+    phi2 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]' # A, E
+    phi3 = '[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]' # A, E
+    phi4 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]'  # C, D
+    phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
+    # Set to use the same transition system
+    phi = [phi1, phi2, phi3, phi4, phi5]
+    ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
+                '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
 
     # Scenario 2, large enviroment
     # phi1 = '[H^1 r54]^[0, 4] * [H^2 r46]^[0, 7] * [H^0 Base1]^[0, 5]' # C, E
@@ -764,12 +764,12 @@ if __name__ == '__main__':
     #             '../data/corr/ts_3x6x1_4Ag_4.txt']
 
     # Scenario 4, different drop-off points
-    phi1 = '[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P1, D1 or D2 or D3
-    phi2 = '[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P2, D1 or D2 or D3
+    # phi1 = '[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P1, D1 or D2 or D3
+    # phi2 = '[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P2, D1 or D2 or D3
     # phi1 = '[H^1 r2]^[0, 4] * [H^1 r10]^[0,4]' # P1, D1 or D2 or D3
     # phi2 = '[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]' # P2, D1 or D2 or D3
-    phi = [phi1, phi2]
-    ts_files = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
+    # phi = [phi1, phi2]
+    # ts_files = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

@@ -1,348 +1,334 @@
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r2 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r2 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 1), (0, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 1), (0, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 0), (1, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 0), (1, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r10', 'r2', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM DEBUG state: Union 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 0), (3, 0), (1, 0), (4, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 0), (3, 0), (1, 0), (4, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
-04/21/2020 06:32:23 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r2 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
-04/21/2020 06:32:23 PM DEBUG [spec] spec: [H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
-04/21/2020 06:32:23 PM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Eventually (Hold 1 r2 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r29 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 5 DFA: (Hold 1 r29 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r105 Duration: 1 Negation: False Props: set(['Base1', 'r105', 'r29'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r105 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r29 ) 0 5 ) DFA2: (Eventually (Hold 1 r105 ) 0 4 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: Base1 Duration: 0 Negation: False Props: set(['Base1', 'r105', 'r29'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 0 Base1 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r29 ) 0 5 ) (Eventually (Hold 1 r105 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base1 ) 0 4 )
+04/24/2020 05:30:27 PM DEBUG [spec] spec: [H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]
+04/24/2020 05:30:27 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r29 ) 0 5 ) (Eventually (Hold 1 r105 ) 0 4 ) ) (Eventually (Hold 0 Base1 ) 0 4 ) )
 Directed: True
 Multi: False
-Props: {'r5': 1, 'r2': 4, 'r10': 2, 'r11': 8}
-Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Props: {'Base1': 1, 'r105': 2, 'r29': 4}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
 Initial: [0]
-Final: set([7])
-Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
-Edges: [(0, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (1, 0, {'input': set([0, 1, 2, 3, 8, 9, 10, 11]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': u'r2', 'weight': 0, 'label': u'r2'}), (2, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([11, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([3, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 13]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 2, 3, 5, 6, 7, 9, 10, 11, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([10, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 12]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([2, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 5]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 4]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+Final: set([5])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r29', 'weight': 0, 'label': u'r29'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r29', 'weight': 0, 'label': u'r29'}), (2, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r105', 'weight': 0, 'label': u'r105'}), (3, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3, 6, 7]), 'guard': u'r105', 'weight': 0, 'label': u'r105'}), (4, 4, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7]), 'guard': u'Base1', 'weight': 0, 'label': u'Base1'})]
 		
-04/21/2020 06:32:23 PM DEBUG [spec] tree:
+04/24/2020 05:30:27 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
- Final: set([7])
+ Final: set([5])
  Left:
-   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
    Init: set([0])
-   Final: set([2])
+   Final: set([4])
    Left:
-     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([0])
      Final: set([2])
- Right:
-   Op: Union Flags[WDF, WWF, UNR]: True True False
-   Init: set([2])
-   Final: set([7])
-   Choices:
-     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
-     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
-     5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
-     6 -> both=set([3, 7, 11, 15]) left=set([2, 6, 10, 14]) right=set([1, 13, 5, 9])
-     8 -> both=set([3, 7, 9, 11, 13, 15]) left=set([2, 6, 8, 10, 12, 14]) right=set([1, 5])
-     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
-     10 -> both=set([]) left=set([2, 3, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
-   Left:
-     Op: Union Flags[WDF, WWF, UNR]: True True False
-     Init: set([2])
-     Final: set([7])
-     Choices:
-       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
-       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
-       5 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
-       6 -> both=set([]) left=set([2, 3, 6, 7, 10, 11, 14, 15]) right=set([])
-       8 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
-       10 -> both=set([10, 11, 14, 15]) left=set([2, 3, 6, 7]) right=set([8, 9, 12, 13])
      Left:
-       Op: Eventually Flags[WDF, WWF, UNR]: True True False
-       Init: set([2])
-       Final: set([7])
-       Left:
-         Op: Hold Flags[WDF, WWF, UNR]: True True True
-         Init: set([2])
-         Final: set([7])
-     Right:
-       Op: Eventually Flags[WDF, WWF, UNR]: True True False
-       Init: set([2])
-       Final: set([7])
-       Left:
-         Op: Hold Flags[WDF, WWF, UNR]: True True True
-         Init: set([2])
-         Final: set([7])
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([2])
    Right:
      Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([2])
-     Final: set([7])
+     Final: set([4])
      Left:
        Op: Hold Flags[WDF, WWF, UNR]: True True True
        Init: set([2])
-       Final: set([7])
+       Final: set([4])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([4])
+   Final: set([5])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([4])
+     Final: set([5])
 
-04/21/2020 06:32:23 PM DEBUG [spec] No of nodes: 11
-04/21/2020 06:32:23 PM DEBUG [spec] No of edges: 38
-04/21/2020 06:32:23 PM DEBUG 
+04/24/2020 05:30:27 PM DEBUG [spec] No of nodes: 6
+04/24/2020 05:30:27 PM DEBUG [spec] No of edges: 10
+04/24/2020 05:30:27 PM DEBUG 
 End of translate
 
 
-04/21/2020 06:32:23 PM INFO The bound of formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
-04/21/2020 06:32:23 PM INFO Translated formula "[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r14 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r14 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r10 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r10 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r11 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r11 )
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 1), (0, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 1), (0, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 0), (1, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 0), (1, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG [union] DFA1: (Eventually (Hold 1 r10 ) 0 4 ) DFA2: (Eventually (Hold 1 r11 ) 0 4 )
-04/21/2020 06:32:23 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5', 'r14', 'r10', 'r11'])
-04/21/2020 06:32:23 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r5 )
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM INFO No trap states were added.
-04/21/2020 06:32:23 PM DEBUG state: Union 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(1, 0), (1, 1)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Eventually 
- init: [(0, 0), (3, 0), (1, 0), (4, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG state: Hold 
- init: [(0, 0), (3, 0), (1, 0), (4, 0)]
- final: [(2, 2)]
-04/21/2020 06:32:23 PM DEBUG [union] DFA1: (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) DFA2: (Eventually (Hold 1 r5 ) 0 4 )
-04/21/2020 06:32:23 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r14 ) 0 4 ) DFA2: (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) )
-04/21/2020 06:32:23 PM DEBUG [spec] spec: [H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])
-04/21/2020 06:32:23 PM DEBUG [spec] mode: Infinity DFA: 
-Name: (Concat (Eventually (Hold 1 r14 ) 0 4 ) (Union (Union (Eventually (Hold 1 r10 ) 0 4 ) (Eventually (Hold 1 r11 ) 0 4 ) ) (Eventually (Hold 1 r5 ) 0 4 ) ) )
+04/24/2020 05:30:27 PM INFO The bound of formula "[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" is (4, 15)!
+04/24/2020 05:30:27 PM INFO Translated formula "[H^1 r29]^[0, 5] * [H^1 r105]^[0, 4] * [H^0 Base1]^[0, 4]" to infinity DFA of size (6, 10)!
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base2', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base2', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r55 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: Base2 Duration: 0 Negation: False Props: set(['Base2', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base2 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) DFA2: (Eventually (Hold 0 Base2 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]
+04/24/2020 05:30:27 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) (Eventually (Hold 0 Base2 ) 0 3 ) )
 Directed: True
 Multi: False
-Props: {'r5': 1, 'r14': 2, 'r10': 4, 'r11': 8}
-Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) 
+Props: {'Base2': 1, 'r21': 2, 'r55': 4}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
 Initial: [0]
-Final: set([7])
-Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {}), (7, {}), (8, {}), (9, {}), (10, {})]
-Edges: [(0, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (1, 0, {'input': set([0, 1, 4, 5, 8, 9, 12, 13]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7, 10, 11, 14, 15]), 'guard': u'r14', 'weight': 0, 'label': u'r14'}), (2, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (2, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (2, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (2, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (2, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (2, 8, {'input': set([13, 15]), 'guard': '((r10) & (r11)) & (r5)', 'weight': 0, 'label': '((r10) & (r11)) & (r5)'}), (2, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (2, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (3, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (3, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (3, 7, {'input': set([1, 3, 5, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | ((((r10) & ((else))) & (r5)) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))))'}), (4, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (4, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (4, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (4, 6, {'input': set([5, 7]), 'guard': '((r10) & ((else))) & (r5)', 'weight': 0, 'label': '((r10) & ((else))) & (r5)'}), (4, 7, {'input': set([8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | ((r10) & (r11))) & ((else))) | (((((else)) & (r11)) | ((r10) & (r11))) & (r5))'}), (5, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (5, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (5, 3, {'input': set([9, 11]), 'guard': '(((else)) & (r11)) & (r5)', 'weight': 0, 'label': '(((else)) & (r11)) & (r5)'}), (5, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (5, 7, {'input': set([4, 5, 6, 7, 12, 13, 14, 15]), 'guard': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))', 'weight': 0, 'label': '((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))'}), (6, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (6, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (6, 7, {'input': set([1, 3, 4, 5, 6, 7, 9, 11, 12, 13, 14, 15]), 'guard': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | (((((r10) & (r11)) | ((r10) & ((else)))) & ((else))) | (((((else)) & ((else))) & (r5)) | ((((r10) & (r11)) | ((r10) & ((else)))) & (r5))))'}), (8, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (8, 7, {'input': set([1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & ((else))) & (r5)) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5)))'}), (9, 10, {'input': set([12, 14]), 'guard': '((r10) & (r11)) & ((else))', 'weight': 0, 'label': '((r10) & (r11)) & ((else))'}), (9, 7, {'input': set([1, 3, 5, 7, 9, 11, 13, 15]), 'guard': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))', 'weight': 0, 'label': '((((else)) & (r11)) & (r5)) | ((((r10) & (r11)) & (r5)) | ((((r10) & ((else))) & (r5)) | ((((else)) & ((else))) & (r5))))'}), (9, 4, {'input': set([8, 10]), 'guard': '(((else)) & (r11)) & ((else))', 'weight': 0, 'label': '(((else)) & (r11)) & ((else))'}), (9, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (9, 5, {'input': set([4, 6]), 'guard': '((r10) & ((else))) & ((else))', 'weight': 0, 'label': '((r10) & ((else))) & ((else))'}), (10, 9, {'input': set([1, 3]), 'guard': '(((else)) & ((else))) & (r5)', 'weight': 0, 'label': '(((else)) & ((else))) & (r5)'}), (10, 2, {'input': set([0, 2]), 'guard': '(((else)) & ((else))) & ((else))', 'weight': 0, 'label': '(((else)) & ((else))) & ((else))'}), (10, 7, {'input': set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]), 'guard': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))', 'weight': 0, 'label': '(((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & ((else))) | (((((else)) & (r11)) | (((r10) & ((else))) | ((r10) & (r11)))) & (r5))'})]
+Final: set([6])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (4, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (5, 5, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3, 5, 7]), 'guard': u'Base2', 'weight': 0, 'label': u'Base2'})]
 		
-04/21/2020 06:32:23 PM DEBUG [spec] tree:
+04/24/2020 05:30:27 PM DEBUG [spec] tree:
  Op: Concatenation Flags[WDF, WWF, UNR]: True True False
  Init: set([0])
- Final: set([7])
+ Final: set([6])
  Left:
-   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
    Init: set([0])
-   Final: set([2])
+   Final: set([5])
+   Left:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([0])
+     Final: set([3])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([3])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([3])
+     Final: set([5])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([3])
+       Final: set([5])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([5])
+   Final: set([6])
    Left:
      Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([5])
+     Final: set([6])
+
+04/24/2020 05:30:27 PM DEBUG [spec] No of nodes: 7
+04/24/2020 05:30:27 PM DEBUG [spec] No of edges: 12
+04/24/2020 05:30:27 PM DEBUG 
+End of translate
+
+
+04/24/2020 05:30:27 PM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]" is (5, 12)!
+04/24/2020 05:30:27 PM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base2]^[0, 3]" to infinity DFA of size (7, 12)!
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r21 Duration: 2 Negation: False Props: set(['Base3', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 2 r21 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r55 Duration: 1 Negation: False Props: set(['Base3', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 1 r55 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Eventually (Hold 2 r21 ) 0 4 ) DFA2: (Eventually (Hold 1 r55 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: Base3 Duration: 0 Negation: False Props: set(['Base3', 'r21', 'r55'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base3 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) DFA2: (Eventually (Hold 0 Base3 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [spec] spec: [H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]
+04/24/2020 05:30:27 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 2 r21 ) 0 4 ) (Eventually (Hold 1 r55 ) 0 3 ) ) (Eventually (Hold 0 Base3 ) 0 3 ) )
+Directed: True
+Multi: False
+Props: {'Base3': 1, 'r21': 2, 'r55': 4}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
+Initial: [0]
+Final: set([6])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {}), (6, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (2, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r21', 'weight': 0, 'label': u'r21'}), (3, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (4, 3, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'r55', 'weight': 0, 'label': u'r55'}), (5, 5, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (5, 6, {'input': set([1, 3, 5, 7]), 'guard': u'Base3', 'weight': 0, 'label': u'Base3'})]
+		
+04/24/2020 05:30:27 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([6])
+ Left:
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([5])
+   Left:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([0])
+     Final: set([3])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([3])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([3])
+     Final: set([5])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([3])
+       Final: set([5])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([5])
+   Final: set([6])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([5])
+     Final: set([6])
+
+04/24/2020 05:30:27 PM DEBUG [spec] No of nodes: 7
+04/24/2020 05:30:27 PM DEBUG [spec] No of edges: 12
+04/24/2020 05:30:27 PM DEBUG 
+End of translate
+
+
+04/24/2020 05:30:27 PM INFO The bound of formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]" is (5, 12)!
+04/24/2020 05:30:27 PM INFO Translated formula "[H^2 r21]^[0, 4] * [H^1 r55]^[0, 3] * [H^0 Base3]^[0, 3]" to infinity DFA of size (7, 12)!
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['Base4', 'r12', 'r9'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r12 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 1 r12 ) 0 4 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: Base4 Duration: 0 Negation: False Props: set(['Base4', 'r12', 'r9'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base4 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base4 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]
+04/24/2020 05:30:27 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) (Eventually (Hold 0 Base4 ) 0 3 ) )
+Directed: True
+Multi: False
+Props: {'Base4': 1, 'r12': 2, 'r9': 4}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
+Initial: [0]
+Final: set([5])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
+Edges: [(0, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([4, 5, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (1, 0, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([4, 5, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (2, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([2, 3, 6, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (3, 2, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([2, 3, 6, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 4, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([1, 3, 5, 7]), 'guard': u'Base4', 'weight': 0, 'label': u'Base4'})]
+		
+04/24/2020 05:30:27 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([5])
+ Left:
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([4])
+   Left:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([0])
      Final: set([2])
- Right:
-   Op: Union Flags[WDF, WWF, UNR]: True True False
-   Init: set([2])
-   Final: set([7])
-   Choices:
-     3 -> both=set([9, 11, 13, 15]) left=set([8, 10, 12, 14]) right=set([1, 3, 5, 7])
-     4 -> both=set([]) left=set([8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
-     5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
-     6 -> both=set([7, 5, 13, 15]) left=set([4, 12, 6, 14]) right=set([11, 1, 3, 9])
-     8 -> both=set([5, 7, 9, 11, 13, 15]) left=set([4, 6, 8, 10, 12, 14]) right=set([1, 3])
-     9 -> both=set([]) left=set([]) right=set([1, 3, 5, 7, 9, 11, 13, 15])
-     10 -> both=set([]) left=set([4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]) right=set([])
-   Left:
-     Op: Union Flags[WDF, WWF, UNR]: True True False
-     Init: set([2])
-     Final: set([7])
-     Choices:
-       3 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
-       4 -> both=set([]) left=set([]) right=set([8, 9, 10, 11, 12, 13, 14, 15])
-       5 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
-       6 -> both=set([]) left=set([4, 5, 6, 7, 12, 13, 14, 15]) right=set([])
-       8 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
-       10 -> both=set([12, 13, 14, 15]) left=set([4, 5, 6, 7]) right=set([8, 9, 10, 11])
      Left:
-       Op: Eventually Flags[WDF, WWF, UNR]: True True False
-       Init: set([2])
-       Final: set([7])
-       Left:
-         Op: Hold Flags[WDF, WWF, UNR]: True True True
-         Init: set([2])
-         Final: set([7])
-     Right:
-       Op: Eventually Flags[WDF, WWF, UNR]: True True False
-       Init: set([2])
-       Final: set([7])
-       Left:
-         Op: Hold Flags[WDF, WWF, UNR]: True True True
-         Init: set([2])
-         Final: set([7])
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([2])
    Right:
      Op: Eventually Flags[WDF, WWF, UNR]: True True False
      Init: set([2])
-     Final: set([7])
+     Final: set([4])
      Left:
        Op: Hold Flags[WDF, WWF, UNR]: True True True
        Init: set([2])
-       Final: set([7])
+       Final: set([4])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([4])
+   Final: set([5])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([4])
+     Final: set([5])
 
-04/21/2020 06:32:23 PM DEBUG [spec] No of nodes: 11
-04/21/2020 06:32:23 PM DEBUG [spec] No of edges: 38
-04/21/2020 06:32:23 PM DEBUG 
+04/24/2020 05:30:27 PM DEBUG [spec] No of nodes: 6
+04/24/2020 05:30:27 PM DEBUG [spec] No of edges: 10
+04/24/2020 05:30:27 PM DEBUG 
 End of translate
 
 
-04/21/2020 06:32:23 PM INFO The bound of formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" is (3, 9)!
-04/21/2020 06:32:23 PM INFO Translated formula "[H^1 r14]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])" to infinity DFA of size (11, 38)!
-04/21/2020 06:32:23 PM DEBUG 
+04/24/2020 05:30:27 PM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]" is (4, 13)!
+04/24/2020 05:30:27 PM INFO Translated formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base4]^[0, 3]" to infinity DFA of size (6, 10)!
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r9 Duration: 1 Negation: False Props: set(['r12', 'r9', 'Base5'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r9 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12', 'r9', 'Base5'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 4 DFA: (Hold 1 r12 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Eventually (Hold 1 r9 ) 0 4 ) DFA2: (Eventually (Hold 1 r12 ) 0 4 )
+04/24/2020 05:30:27 PM DEBUG [hold] Prop: Base5 Duration: 0 Negation: False Props: set(['r12', 'r9', 'Base5'])
+04/24/2020 05:30:27 PM DEBUG [eventually] Low: 0 High: 3 DFA: (Hold 0 Base5 )
+04/24/2020 05:30:27 PM DEBUG [concatenation] DFA1: (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) DFA2: (Eventually (Hold 0 Base5 ) 0 3 )
+04/24/2020 05:30:27 PM DEBUG [spec] spec: [H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]
+04/24/2020 05:30:27 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Concat (Concat (Eventually (Hold 1 r9 ) 0 4 ) (Eventually (Hold 1 r12 ) 0 4 ) ) (Eventually (Hold 0 Base5 ) 0 3 ) )
+Directed: True
+Multi: False
+Props: {'r12': 1, 'r9': 2, 'Base5': 4}
+Alphabet: set([0, 1, 2, 3, 4, 5, 6, 7]) 
+Initial: [0]
+Final: set([5])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {}), (5, {})]
+Edges: [(0, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (1, 0, {'input': set([0, 1, 4, 5]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([2, 3, 6, 7]), 'guard': u'r9', 'weight': 0, 'label': u'r9'}), (2, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (3, 2, {'input': set([0, 2, 4, 6]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1, 3, 5, 7]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (4, 4, {'input': set([0, 1, 2, 3]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (4, 5, {'input': set([4, 5, 6, 7]), 'guard': u'Base5', 'weight': 0, 'label': u'Base5'})]
+		
+04/24/2020 05:30:27 PM DEBUG [spec] tree:
+ Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([5])
+ Left:
+   Op: Concatenation Flags[WDF, WWF, UNR]: True True False
+   Init: set([0])
+   Final: set([4])
+   Left:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([0])
+     Final: set([2])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([0])
+       Final: set([2])
+   Right:
+     Op: Eventually Flags[WDF, WWF, UNR]: True True False
+     Init: set([2])
+     Final: set([4])
+     Left:
+       Op: Hold Flags[WDF, WWF, UNR]: True True True
+       Init: set([2])
+       Final: set([4])
+ Right:
+   Op: Eventually Flags[WDF, WWF, UNR]: True True False
+   Init: set([4])
+   Final: set([5])
+   Left:
+     Op: Hold Flags[WDF, WWF, UNR]: True True True
+     Init: set([4])
+     Final: set([5])
+
+04/24/2020 05:30:27 PM DEBUG [spec] No of nodes: 6
+04/24/2020 05:30:27 PM DEBUG [spec] No of edges: 10
+04/24/2020 05:30:27 PM DEBUG 
+End of translate
+
+
+04/24/2020 05:30:27 PM INFO The bound of formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]" is (4, 13)!
+04/24/2020 05:30:27 PM INFO Translated formula "[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]" to infinity DFA of size (6, 10)!
+04/24/2020 05:30:27 PM DEBUG 
 
 Start policy computation
 
-04/21/2020 06:32:23 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
-04/21/2020 06:32:23 PM DEBUG [extend_ts] TS: (16, 80) ETS:(16, 80)
-04/21/2020 06:32:23 PM INFO Constructing product automaton with infinity DFA!
-04/21/2020 06:32:23 PM INFO Product automaton size is: (35, 160)
-04/21/2020 06:32:23 PM INFO Constructing product automaton with infinity DFA!
-04/21/2020 06:32:23 PM INFO Product automaton size is: (35, 160)
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:23 PM DEBUG []
-04/21/2020 06:32:26 PM INFO Max deadline: -1
-04/21/2020 06:32:26 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r2 -> 1 -> r2 -> 1 -> r3 -> 1 -> r10 -> 1 -> r10
-04/21/2020 06:32:26 PM INFO Max deadline: 0
-04/21/2020 06:32:26 PM INFO Generated control policy is: Base2 -> 1 -> r7 -> 1 -> r14 -> 1 -> r14 -> 1 -> r15 -> 1 -> r10 -> 1 -> r10
+04/24/2020 05:30:27 PM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+04/24/2020 05:30:27 PM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+04/24/2020 05:30:27 PM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+04/24/2020 05:30:27 PM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+04/24/2020 05:30:27 PM DEBUG [extend_ts] TS: (99, 1519) ETS:(99, 1519)
+04/24/2020 05:30:27 PM INFO Constructing product automaton with infinity DFA!
+04/24/2020 05:30:27 PM INFO Product automaton size is: (297, 4549)
+04/24/2020 05:30:27 PM INFO Constructing product automaton with infinity DFA!
+04/24/2020 05:30:27 PM INFO Product automaton size is: (298, 4563)
+04/24/2020 05:30:27 PM INFO Constructing product automaton with infinity DFA!
+04/24/2020 05:30:27 PM INFO Product automaton size is: (298, 4563)
+04/24/2020 05:30:27 PM INFO Constructing product automaton with infinity DFA!
+04/24/2020 05:30:27 PM INFO Product automaton size is: (297, 4546)
+04/24/2020 05:30:27 PM INFO Constructing product automaton with infinity DFA!
+04/24/2020 05:30:27 PM INFO Product automaton size is: (297, 4546)
+04/24/2020 05:30:37 PM INFO Max deadline: 1
+04/24/2020 05:30:37 PM INFO Generated control policy is: Base1 -> 1 -> r61 -> 1 -> r26 -> 1 -> r21 -> 1 -> r58 -> 1 -> r29 -> 1 -> r29 -> 1 -> r70 -> 1 -> r105 -> 1 -> r105 -> 1 -> r104 -> 1 -> r61 -> 1 -> Base1
+04/24/2020 05:30:37 PM INFO Max deadline: 0
+04/24/2020 05:30:37 PM INFO Generated control policy is: Base2 -> 1 -> r62 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> Base2
+04/24/2020 05:30:37 PM INFO Max deadline: 3
+04/24/2020 05:30:37 PM INFO Generated control policy is: Base3 -> 1 -> r28 -> 1 -> r21 -> 1 -> r21 -> 1 -> r21 -> 1 -> r50 -> 1 -> r55 -> 1 -> r55 -> 1 -> r26 -> 1 -> r63 -> 1 -> Base3
+04/24/2020 05:30:37 PM INFO Max deadline: -1
+04/24/2020 05:30:37 PM INFO Generated control policy is: Base4 -> 1 -> r8 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r42 -> 1 -> Base4
+04/24/2020 05:30:37 PM INFO Max deadline: 2
+04/24/2020 05:30:37 PM INFO Generated control policy is: Base5 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r13 -> 1 -> r8 -> 1 -> Base5
