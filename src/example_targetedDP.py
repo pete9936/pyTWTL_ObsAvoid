@@ -145,7 +145,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
     agent_energy_dict = {}
     for key in ts_policy_dict_nom:
         agent_energy_dict[key] = []
-        D_flags[key] = False
+        # D_flags[key] = False
         F_indicator[key] = False
         tsf_policy[key] = []
 
@@ -167,7 +167,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
     while running:
         while policy_match:
             for p_ind, p_val in enumerate(priority):
-                D_flag_tot = False
+                # D_flag_tot = False
                 if p_ind < 1:
                     weighted_nodes = {}
                     for i in range(num_hops):
@@ -180,7 +180,6 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
                             break
                     # Note that communication range needs to be 2*H, the receding horizon length
                     local_set = get_neighborhood(node, ts_dict[p_val], 2*num_hops)
-
                     # Get constraints for each transition
                     weighted_nodes = {}
                     for pty in priority[0:p_ind]:
@@ -289,21 +288,52 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
                     ts_temp = ts_policy[p_val]
                     pa_temp = pa_policy[p_val]
                     ts_policy[p_val], pa_policy[p_val], D_flag = local_horizonDP(pa_nom_dict[p_val], weighted_nodes, num_hops, init_loc)
-                    # Check for deadlock, and if so update priority ordering
+                    # Check for deadlock, and if so resolve deadlock
                     if p_ind > 0:
                         if D_flag == True:
-                            D_flags[p_val] = True
-                            D_flag_tot = True
-                            # Update priority and break
-                            priority = deadlock_priority(priority, D_flags, p_val)
-                            ts_policy[p_val] = ts_temp
-                            pa_policy[p_val] = pa_temp
-                            break
+                            # Agent in deadlock is to remain stationary
+                            ts_policy[p_val] = [ts_control_policy_dict[p_val][-1],ts_control_policy_dict[p_val][-1]]
+                            pa_policy[p_val] = [pa_control_policy_dict[p_val][-1],pa_control_policy_dict[p_val][-1]]
+                            # Assign deadlock node
+                            x_d = ts_control_policy_dict[p_val][-1]
+                            x_d_val = p_val
+                            x_d_flag = True
+                            hp_set = priority[0:p_ind]
+                            while x_d_flag == True and hp_set:
+                                x_d_flag = False
+                                for hp in hp_set:
+                                    if ts_policy[hp][0] == x_d:
+                                        if hp == priority[0]:
+                                            # Make all agents stationary and perform Dijkstra's shortest path
+                                            for j in priority[1:p_ind]:
+                                                ts_policy[j] = [ts_control_policy_dict[j][-1],ts_control_policy_dict[j][-1]]
+                                                pa_policy[j] = [pa_control_policy_dict[j][-1],pa_control_policy_dict[j][-1]]
+                                            occupied_nodes = [ts_control_policy_dict[x_d_val][-1]]
+                                            for j in priority[0:p_ind]:
+                                                occupied_nodes.append(ts_control_policy_dict[j][-1])
+                                            init_loc = pa_control_policy_dict[x_d_val][-1]
+                                            ts_policy[x_d_val], pa_policy[x_d_val] = deadlock_path(pa_nom_dict[x_d_val], occupied_nodes, init_loc)
+                                            for j in priority[1:p_ind]:
+                                                for ind, node in enumerate(ts_policy[x_d_val][:-1]):
+                                                    if ts_policy[j][0] == node:
+                                                        ts_policy[j] = [ts_policy[x_d_val][ind+1],ts_policy[x_d_val][ind+1]]
+                                                        # Find the actual state on PA that corresponds to this
+                                                        neighbors = pa_nom_dict[j].g.neighbors(pa_policy[j][0])
+                                                        for node in neighbors:
+                                                            if node[0] == ts_policy[j][0]:
+                                                                pa_policy[j] = [node, node]
+                                            break
+                                        else:
+                                            ts_policy[hp] = [ts_control_policy_dict[hp][-1],ts_control_policy_dict[hp][-1]]
+                                            pa_policy[hp] = [pa_control_policy_dict[hp][-1],pa_control_policy_dict[hp][-1]]
+                                            x_d = ts_control_policy_dict[hp][-1]
+                                            x_d_val = hp
+                                            x_d_flag = True
+                                            hp_set.remove(hp)
+                                            break
                     # Increase iteration step (for statistics at end)
                     iter_step += 1
-            # Break out of another loop
-            if D_flag_tot == True:
-                break
+
             # Update policy match
             policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
 
@@ -421,25 +451,206 @@ def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
         priority.append(key)
     return priority
 
-def deadlock_priority(priority, D_flags, cur_priority):
-    ''' Updates the priority ordering if a deadlock occurs. The highest
-    priority remains, but the remaining order is altered. '''
-    new_priority = []
-    # Need the number of D_flags raised to avoid oscillations and proper reprioritizing
-    num_deadlocks = 0
-    for key in D_flags:
-        if D_flags[key] == True:
-            num_deadlocks += 1
-    # Append highest priority and/or any previous deadlock agents already detected
-    for i in range(num_deadlocks):
-        new_priority.append(priority[i])
-    # Now include current deadlock priority
-    new_priority.append(cur_priority)
-    # Add all remaining agents in standard priority ordering
-    for p in priority[1::]:
-        if D_flags[p] == False:
-            new_priority.append(p)
-    return new_priority
+def deadlock_path(pa, occupied_nodes, init_loc):
+    ''' Find the sortest path to the nearest unoccupied node for
+    deadlock resolution. '''
+    ts_path = []
+    pa_path = []
+    conflict_nodes = [occupied_nodes[0], occupied_nodes[1]]
+    # Initialize local set
+    local_set = init_loc
+    old_local_set = {}
+    open_flag = False
+    target_set = []
+    i = 0
+    # Expand subgraph of nodes out until unoccupied node is found
+    while open_flag == False:
+        # Expand subgraph for next time step
+        old_local_set[i] = local_set
+        local_set_temp = []
+        local_set = []
+        if i == 0:
+            temp_set = pa.g.neighbors(old_local_set[i])
+            for node in temp_set:
+                if node not in local_set_temp:
+                    local_set_temp.append(node)
+        else:
+            for loc_node in old_local_set[i]:
+                temp_set = pa.g.neighbors(loc_node)
+                for node in temp_set:
+                    if node not in local_set_temp:
+                        local_set_temp.append(node)
+        # Remove conflicting nodes in the set
+        for neighbor in local_set_temp:
+            if neighbor[0] not in conflict_nodes:
+                local_set.append(neighbor)
+        # Check if unoccupied nodes
+        for node in local_set:
+            if node not in occupied_nodes:
+                target_set.append(node)
+                open_flag = True
+        # Perform another hop
+        if not target_set:
+            local_set = local_set_temp
+        i = i+1
+    # Search for lowest energy value in remaining set of nodes and use for shortest path
+    all_node_energy = nx.get_node_attributes(pa.g,'energy')
+    target_set_energy = []
+    for node in target_set:
+        node_energy = all_node_energy[node]
+        target_set_energy.append(node_energy)
+    # Get index of the minimum energy path
+    index_min = min(xrange(len(target_set_energy)), key=target_set_energy.__getitem__)
+    target_node = target_set[index_min]
+    # Perform the targeted DP method
+    num_trans = i
+    edges_all = nx.get_edge_attributes(pa.g,'new_weight')
+    all_node_energy = nx.get_node_attributes(pa.g,'energy')
+    node_dict = {}
+    node_costs = {}
+    if num_trans > 1:
+        for j in range(num_trans-1):
+            advance_flag = False
+            node_list_temp = []
+            trans_cost_temp = []
+            if j == 0:
+                check_nodes = pa.g.neighbors(target_node)
+                for check_node in check_nodes:
+                    if check_node in old_local_set[num_trans-1]:
+                        advance_flag = True
+                        edge = (check_node, target_node)
+                        try:
+                            trans_cost = all_node_energy[check_node] + edges_all[edge]
+                            node_list_temp.append(check_node)
+                            trans_cost_temp.append(trans_cost)
+                        except KeyError:
+                            # If we are traversing on the same state (i.e. ('r21',1)->('r21',2))
+                            new_edge = pa.g.in_edges(target_node)[0]
+                            trans_cost = all_node_energy[new_edge[0]] + edges_all[new_edge]
+                            node_list_temp = [new_edge[0]]
+                            trans_cost_temp = [trans_cost]
+                            break
+                if advance_flag == False:
+                    try:
+                        new_edge = ((target_node[0],target_node[1]-1), target_node)
+                        trans_cost = all_node_energy[new_edge[0]] + edges_all[new_edge]
+                        node_dict[num_trans-1] = [new_edge[0]]
+                        node_costs[num_trans-1] = [trans_cost]
+                    except KeyError:
+                        edges = pa.g.in_edges(target_node)
+                        for edge in edges:
+                            if edge[0] in old_local_set[num_trans-1]:
+                                trans_cost = all_node_energy[edge[0]] + edges_all[edge]
+                                node_list_temp.append(edge[0])
+                                trans_cost_temp.append(trans_cost)
+                        node_dict[num_trans-1] = node_list_temp
+                        node_costs[num_trans-1] = trans_cost_temp
+                else:
+                    node_dict[num_trans-1] = node_list_temp
+                    node_costs[num_trans-1] = trans_cost_temp
+            else:
+                for old_node in node_dict[num_trans-j]:
+                    old_node_index = node_dict[num_trans-j].index(old_node)
+                    old_node_cost = node_costs[num_trans-j][old_node_index]
+                    check_nodes = pa.g.neighbors(old_node)
+                    for check_node in check_nodes:
+                        if check_node in old_local_set[num_trans-j-1]:
+                            advance_flag = True
+                            edge = (check_node, old_node)
+                            try:
+                                trans_cost = old_node_cost + all_node_energy[check_node] + edges_all[edge]
+                                # Need a check on trans_cost to see if it's the lowest (replace if needed)
+                                if check_node in node_list_temp:
+                                    check_index = node_list_temp.index(check_node)
+                                    if trans_cost_temp[check_index] > trans_cost:
+                                        trans_cost_temp[check_index] = trans_cost
+                                else:
+                                    node_list_temp.append(check_node)
+                                    trans_cost_temp.append(trans_cost)
+                            except KeyError:
+                                # If we are traversing on the same state (i.e. ('r21',1)->('r21',2))
+                                new_edge = pa.g.in_edges(old_node)[0]
+                                trans_cost = old_node_cost + all_node_energy[new_edge[0]] + edges_all[new_edge]
+                                node_list_temp = [new_edge[0]]
+                                trans_cost_temp = [trans_cost]
+                                break
+                    # Save updated dictionary values for next step
+                    if advance_flag == False:
+                        try:
+                            new_edge = ((old_node[0],old_node[1]-1), old_node)
+                            trans_cost = old_node_cost + all_node_energy[new_edge[0]] + edges_all[new_edge]
+                            node_dict[num_trans-j-1] = [new_edge[0]]
+                            node_costs[num_trans-j-1] = [trans_cost]
+                            break
+                        except KeyError:
+                            edges = pa.g.in_edges(old_node)
+                            for edge in edges:
+                                if edge[0] in old_local_set[num_trans-j-1]:
+                                    trans_cost = old_node_cost + all_node_energy[edge[0]] + edges_all[edge]
+                                    node_list_temp.append(edge[0])
+                                    trans_cost_temp.append(trans_cost)
+                            node_dict[num_trans-j-1] = node_list_temp
+                            node_costs[num_trans-j-1] = trans_cost_temp
+                            break
+                if advance_flag == True:
+                    node_dict[num_trans-j-1] = node_list_temp
+                    node_costs[num_trans-j-1] = trans_cost_temp
+        # Handle the last transition differently by just adding in the edge_weight
+        for ind, old_node in enumerate(node_dict[1]):
+            edge = (init_loc, old_node)
+            node_costs[1][ind] = node_costs[1][ind] + edges_all[edge]
+
+        # Construct lowest cost feasible path based on DP calculations above
+        path = []
+        for key in node_dict:
+            if key == 1:
+                # Get index of the minimum cost reachable node
+                index_min = min(xrange(len(node_costs[1])), key=node_costs[1].__getitem__)
+                path_node_prior = node_dict[1][index_min]
+                path.append(path_node_prior)
+            else:
+                check_nodes = pa.g.neighbors(path_node_prior)
+                path_node_cost = float('inf')
+                for check_node in check_nodes:
+                    if check_node in node_dict[key]:
+                        temp_cost = node_costs[key][node_dict[key].index(check_node)]
+                        if temp_cost < path_node_cost:
+                            path_node_cost = temp_cost
+                            path_node_prior = check_node
+                path.append(path_node_prior)
+        # Append the final target node to path
+        path.append(target_node)
+        # generate policy based on the generated path
+        for p in path:
+            ts_path.append(p[0])
+            pa_path.append(p)
+    else:
+        ts_path.append(target_node[0])
+        ts_path.append(target_node[0])
+        pa_path.append(target_node)
+        pa_path.append(target_node)
+
+    return ts_path, pa_path
+
+# def deadlock_priority(priority, D_flags, cur_priority):
+#     ''' Updates the priority ordering if a deadlock occurs. The highest
+#     priority remains, but the remaining order is altered. '''
+#     new_priority = []
+#     # Need the number of D_flags raised to avoid oscillations and proper reprioritizing
+#     num_deadlocks = 0
+#     for key in D_flags:
+#         if D_flags[key] == True:
+#             num_deadlocks += 1
+#     # Append highest priority and/or any previous deadlock agents already detected
+#     for i in range(num_deadlocks):
+#         new_priority.append(priority[i])
+#     # Now include current deadlock priority
+#     new_priority.append(cur_priority)
+#     # Add all remaining agents in standard priority ordering
+#     for p in priority[1::]:
+#         if D_flags[p] == False:
+#             new_priority.append(p)
+#     return new_priority
 
 def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
     ''' Compute the n-hop lowest energy horizon without conflicts using
@@ -474,10 +685,15 @@ def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
         for neighbor in local_set_temp:
             if neighbor[0] not in weighted_nodes[i]:
                 local_set.append(neighbor)
-        # Check if the agent is in a deadlock situation
+        # Check if the agent is in a deadlock situation, or there are no feasible transitions
         if not local_set:
-            D_flag = True
-            return None, None, D_flag
+            if i==0:
+                D_flag = True
+                return None, None, D_flag
+            else:
+                i = i-1
+                local_set = old_local_set[i]
+                break
         # Check if any of the nodes are in the final set and if so break and use node
         for node in local_set:
             if node in pa.final:
@@ -758,10 +974,10 @@ if __name__ == '__main__':
     phi1 = '[H^1 r5]^[0, 6]' # B
     phi2 = '[H^1 r12]^[0, 7]' # A
     phi3 = '[H^3 r6]^[0, 7]' # C
-    phi4 = '[H^4 Base1]^[0, 8]'
-    phi = [phi1, phi2, phi3, phi4]
-    ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
-                '../data/corr/ts_3x6x1_4Ag_4.txt']
+    # phi4 = '[H^4 Base1]^[0, 8]'
+    phi = [phi1, phi2, phi3] #, phi4]
+    ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt'] #, \
+                # '../data/corr/ts_3x6x1_4Ag_4.txt']
 
     # Scenario 4, different drop-off points
     # phi1 = '[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P1, D1 or D2 or D3
@@ -778,7 +994,7 @@ if __name__ == '__main__':
               Otherwise it is a multi-objective cost minimization of the two factors. '''
     alpha = 0.5
     # Set the time to go from one waypoint to the next (seconds), accounts for agent dynamics
-    time_wp = 1.9
+    time_wp = 2.0
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
     # Set to True if all agents are active until the last agent terminates its task

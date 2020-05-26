@@ -516,35 +516,6 @@ def compute_multiagent_policy(pa):
         return None
     return optimal_pa_path
 
-def compute_time_energy(pa, dfa):
-    ''' Calculates the energy for each node in the nominal product automaton in
-    order to use this in a local gradient descent scheme for online execution to
-    avoid computing full path and use local communication protocol '''
-    energy_dict = {}
-    # Get the shortest simple path for each node
-    for ind, node in enumerate(pa.g.nodes()):
-        optimal_pa_path = simple_control_policy2(pa, node)
-        energy_dict[node] = len(optimal_pa_path)
-    # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy_t', energy_dict)
-
-def compute_weight_energy(pa, dfa):
-    ''' Calculates the energy for each node in the nominal product automaton in
-    order to use this in a local gradient descent scheme for online execution to
-    avoid computing full path and use local communication protocol '''
-    weight_dict = {}
-    edges_all = nx.get_edge_attributes(pa.g,'edge_weight')
-    # Get the shortest simple path for each node
-    for ind, node in enumerate(pa.g.nodes()):
-        optimal_pa_path = simple_control_policy2(pa, node, edge_weight=True)
-        weight = 0
-        for i in range(len(optimal_pa_path)-1):
-            edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
-            weight = weight + edges_all[edge_temp]
-        weight_dict[node] = weight
-    # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy_w', weight_dict)
-
 def compute_energy(pa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
@@ -562,33 +533,33 @@ def compute_energy(pa):
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy', energy_dict)
 
-def compute_energy_local(pa, local_set):
-    ''' Calculates the updated energy for each node in the neighboring set
-    which allows for proper updates of energy in online manner '''
-    energy_dict = {}
-    edges_all = nx.get_edge_attributes(pa.g,'new_weight')
-    # Get the shortest simple path for each node
-    for node in local_set:
-        optimal_pa_path = simple_control_policy_moc(pa, node)
-        if optimal_pa_path == None:
-            energy_dict[node] = float('inf')
-        else:
-            energy = 0
-            for i in range(len(optimal_pa_path)-1):
-                edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
-                energy = energy + edges_all[edge_temp]
-            energy_dict[node] = energy
-    # Update the PA graph with the energy attribute found
-    nx.set_node_attributes(pa.g,'energy', energy_dict)
+# def compute_energy_local(pa, local_set):
+#     ''' Calculates the updated energy for each node in the neighboring set
+#     which allows for proper updates of energy in online manner '''
+#     energy_dict = {}
+#     edges_all = nx.get_edge_attributes(pa.g,'new_weight')
+#     # Get the shortest simple path for each node
+#     for node in local_set:
+#         optimal_pa_path = simple_control_policy_moc(pa, node)
+#         if optimal_pa_path == None:
+#             energy_dict[node] = float('inf')
+#         else:
+#             energy = 0
+#             for i in range(len(optimal_pa_path)-1):
+#                 edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
+#                 energy = energy + edges_all[edge_temp]
+#             energy_dict[node] = energy
+#     # Update the PA graph with the energy attribute found
+#     nx.set_node_attributes(pa.g,'energy', energy_dict)
 
 
-def compute_distance(ts):
-    ''' Calculate the distance from a given node to its surrounding transitions
-    giving a true cost of transition. '''
-    node_set = nx.get_node_attributes(ts.g,"position")
-    distance = []
-    for key, (u, v) in node_set.items():
-        temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
+# def compute_distance(ts):
+#     ''' Calculate the distance from a given node to its surrounding transitions
+#     giving a true cost of transition. '''
+#     node_set = nx.get_node_attributes(ts.g,"position")
+#     distance = []
+#     for key, (u, v) in node_set.items():
+#         temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal
