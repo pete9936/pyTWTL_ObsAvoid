@@ -47,3 +47,33 @@ Optimal relaxation is: 2
 Generated PA control policy is: (Base5 0) -> (r9 1) -> (r10 0) -> (r10 0) -> (r9 1) -> (r9 2) -> (r14 2) -> (r13 2) -> (r12 3) -> (r12 4) -> (r7 4) -> (r8 4) -> (Base5 5) 
 Generated TS control policy is:  ['Base5', 'r9', 'r10', 'r10', 'r9', 'r9', 'r14', 'r13', 'r12', 'r12', 'r7', 'r8', 'Base5'] 
 
+Nominal Control Policy for agent 1.
+Optimal relaxation is: 0 
+Generated PA control policy is: (Base1 0) -> (r7 0) -> (r8 0) -> (r9 0) -> (Base4 0) -> (r5 1) -> (r5 2) 
+Generated TS control policy is: ['Base1', 'r7', 'r8', 'r9', 'Base4', 'r5', 'r5'] 
+
+Final Control policy for agent 1.
+Optimal relaxation is: 0 
+Generated PA control policy is: (Base1 0) -> (r7 0) -> (r8 0) -> (r9 0) -> (Base4 0) -> (r5 1) -> (r5 2) 
+Generated TS control policy is:  ['Base1', 'r7', 'r8', 'r9', 'Base4', 'r5', 'r5'] 
+
+Nominal Control Policy for agent 2.
+Optimal relaxation is: 3 
+Generated PA control policy is: (Base2 0) -> (Base4 0) -> (r9 0) -> (r8 0) -> (r7 0) -> (r12 1) -> (r12 2) 
+Generated TS control policy is: ['Base2', 'Base4', 'r9', 'r8', 'r7', 'r12', 'r12'] 
+
+Final Control policy for agent 2.
+Optimal relaxation is: 3 
+Generated PA control policy is: (Base2 0) -> (Base4 0) -> (r9 0) -> (Base4 0) -> (Base3 0) -> (Base4 0) -> (r9 0) -> (r8 0) -> (r7 0) -> (r12 1) -> (r12 2) 
+Generated TS control policy is:  ['Base2', 'Base4', 'r9', 'Base4', 'Base3', 'Base4', 'r9', 'r8', 'r7', 'r12', 'r12'] 
+
+Nominal Control Policy for agent 3.
+Optimal relaxation is: 7 
+Generated PA control policy is: (Base3 0) -> (Base4 0) -> (r9 0) -> (r8 0) -> (r7 0) -> (r6 1) -> (r6 2) -> (r6 3) -> (r6 4) 
+Generated TS control policy is: ['Base3', 'Base4', 'r9', 'r8', 'r7', 'r6', 'r6', 'r6', 'r6'] 
+
+Final Control policy for agent 3.
+Optimal relaxation is: 7 
+Generated PA control policy is: (Base3 0) -> (Base3 0) -> (Base3 0) -> (Base3 0) -> (Base2 0) -> (Base3 0) -> (Base3 0) -> (Base4 0) -> (r9 0) -> (r8 0) -> (r7 0) -> (r6 1) -> (r6 2) -> (r6 3) -> (r6 4) 
+Generated TS control policy is:  ['Base3', 'Base3', 'Base3', 'Base3', 'Base2', 'Base3', 'Base3', 'Base4', 'r9', 'r8', 'r7', 'r6', 'r6', 'r6', 'r6'] 
+

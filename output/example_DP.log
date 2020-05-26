@@ -332,3 +332,115 @@ Start policy computation
 04/24/2020 05:30:37 PM INFO Generated control policy is: Base4 -> 1 -> r8 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r42 -> 1 -> Base4
 04/24/2020 05:30:37 PM INFO Max deadline: 2
 04/24/2020 05:30:37 PM INFO Generated control policy is: Base5 -> 1 -> r9 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12 -> 1 -> r13 -> 1 -> r8 -> 1 -> Base5
+05/17/2020 01:26:15 PM DEBUG [hold] Prop: r5 Duration: 1 Negation: False Props: set(['r5'])
+05/17/2020 01:26:15 PM DEBUG [eventually] Low: 0 High: 6 DFA: (Hold 1 r5 )
+05/17/2020 01:26:15 PM DEBUG [spec] spec: [H^1 r5]^[0, 6]
+05/17/2020 01:26:15 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Eventually (Hold 1 r5 ) 0 6 )
+Directed: True
+Multi: False
+Props: {'r5': 1}
+Alphabet: set([0, 1]) 
+Initial: [0]
+Final: set([2])
+Nodes: [(0, {}), (1, {}), (2, {})]
+Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'r5', 'weight': 0, 'label': u'r5'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'r5', 'weight': 0, 'label': u'r5'})]
+		
+05/17/2020 01:26:15 PM DEBUG [spec] tree:
+ Op: Eventually Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([2])
+ Left:
+   Op: Hold Flags[WDF, WWF, UNR]: True True True
+   Init: set([0])
+   Final: set([2])
+
+05/17/2020 01:26:15 PM DEBUG [spec] No of nodes: 3
+05/17/2020 01:26:15 PM DEBUG [spec] No of edges: 4
+05/17/2020 01:26:15 PM DEBUG 
+End of translate
+
+
+05/17/2020 01:26:15 PM INFO The bound of formula "[H^1 r5]^[0, 6]" is (1, 6)!
+05/17/2020 01:26:15 PM INFO Translated formula "[H^1 r5]^[0, 6]" to infinity DFA of size (3, 4)!
+05/17/2020 01:26:15 PM DEBUG [hold] Prop: r12 Duration: 1 Negation: False Props: set(['r12'])
+05/17/2020 01:26:15 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 1 r12 )
+05/17/2020 01:26:15 PM DEBUG [spec] spec: [H^1 r12]^[0, 7]
+05/17/2020 01:26:15 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Eventually (Hold 1 r12 ) 0 7 )
+Directed: True
+Multi: False
+Props: {'r12': 1}
+Alphabet: set([0, 1]) 
+Initial: [0]
+Final: set([2])
+Nodes: [(0, {}), (1, {}), (2, {})]
+Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'r12', 'weight': 0, 'label': u'r12'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'r12', 'weight': 0, 'label': u'r12'})]
+		
+05/17/2020 01:26:15 PM DEBUG [spec] tree:
+ Op: Eventually Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([2])
+ Left:
+   Op: Hold Flags[WDF, WWF, UNR]: True True True
+   Init: set([0])
+   Final: set([2])
+
+05/17/2020 01:26:15 PM DEBUG [spec] No of nodes: 3
+05/17/2020 01:26:15 PM DEBUG [spec] No of edges: 4
+05/17/2020 01:26:15 PM DEBUG 
+End of translate
+
+
+05/17/2020 01:26:15 PM INFO The bound of formula "[H^1 r12]^[0, 7]" is (1, 7)!
+05/17/2020 01:26:15 PM INFO Translated formula "[H^1 r12]^[0, 7]" to infinity DFA of size (3, 4)!
+05/17/2020 01:26:15 PM DEBUG [hold] Prop: r6 Duration: 3 Negation: False Props: set(['r6'])
+05/17/2020 01:26:15 PM DEBUG [eventually] Low: 0 High: 7 DFA: (Hold 3 r6 )
+05/17/2020 01:26:15 PM DEBUG [spec] spec: [H^3 r6]^[0, 7]
+05/17/2020 01:26:15 PM DEBUG [spec] mode: Infinity DFA: 
+Name: (Eventually (Hold 3 r6 ) 0 7 )
+Directed: True
+Multi: False
+Props: {'r6': 1}
+Alphabet: set([0, 1]) 
+Initial: [0]
+Final: set([4])
+Nodes: [(0, {}), (1, {}), (2, {}), (3, {}), (4, {})]
+Edges: [(0, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (0, 1, {'input': set([1]), 'guard': u'r6', 'weight': 0, 'label': u'r6'}), (1, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (1, 2, {'input': set([1]), 'guard': u'r6', 'weight': 0, 'label': u'r6'}), (2, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (2, 3, {'input': set([1]), 'guard': u'r6', 'weight': 0, 'label': u'r6'}), (3, 0, {'input': set([0]), 'guard': '(else)', 'weight': 0, 'label': '(else)'}), (3, 4, {'input': set([1]), 'guard': u'r6', 'weight': 0, 'label': u'r6'})]
+		
+05/17/2020 01:26:15 PM DEBUG [spec] tree:
+ Op: Eventually Flags[WDF, WWF, UNR]: True True False
+ Init: set([0])
+ Final: set([4])
+ Left:
+   Op: Hold Flags[WDF, WWF, UNR]: True True True
+   Init: set([0])
+   Final: set([4])
+
+05/17/2020 01:26:15 PM DEBUG [spec] No of nodes: 5
+05/17/2020 01:26:15 PM DEBUG [spec] No of edges: 8
+05/17/2020 01:26:15 PM DEBUG 
+End of translate
+
+
+05/17/2020 01:26:15 PM INFO The bound of formula "[H^3 r6]^[0, 7]" is (3, 7)!
+05/17/2020 01:26:15 PM INFO Translated formula "[H^3 r6]^[0, 7]" to infinity DFA of size (5, 8)!
+05/17/2020 01:26:15 PM DEBUG 
+
+Start policy computation
+
+05/17/2020 01:26:15 PM DEBUG [extend_ts] TS: (10, 36) ETS:(10, 36)
+05/17/2020 01:26:15 PM DEBUG [extend_ts] TS: (10, 36) ETS:(10, 36)
+05/17/2020 01:26:15 PM DEBUG [extend_ts] TS: (10, 36) ETS:(10, 36)
+05/17/2020 01:26:15 PM INFO Constructing product automaton with infinity DFA!
+05/17/2020 01:26:15 PM INFO Product automaton size is: (11, 36)
+05/17/2020 01:26:15 PM INFO Constructing product automaton with infinity DFA!
+05/17/2020 01:26:15 PM INFO Product automaton size is: (11, 36)
+05/17/2020 01:26:15 PM INFO Constructing product automaton with infinity DFA!
+05/17/2020 01:26:15 PM INFO Product automaton size is: (13, 44)
+05/17/2020 01:27:03 PM INFO Max deadline: 0
+05/17/2020 01:27:03 PM INFO Generated control policy is: Base1 -> 1 -> r7 -> 1 -> r8 -> 1 -> r9 -> 1 -> Base4 -> 1 -> r5 -> 1 -> r5
+05/17/2020 01:27:03 PM INFO Max deadline: 3
+05/17/2020 01:27:03 PM INFO Generated control policy is: Base2 -> 1 -> Base4 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r12 -> 1 -> r12
+05/17/2020 01:27:03 PM INFO Max deadline: 7
+05/17/2020 01:27:03 PM INFO Generated control policy is: Base3 -> 1 -> Base4 -> 1 -> r9 -> 1 -> r8 -> 1 -> r7 -> 1 -> r6 -> 1 -> r6 -> 1 -> r6 -> 1 -> r6
