@@ -264,19 +264,6 @@ def policy_output_word(path_ts, ap):
         output_word = [set([x]) & ap for x in path_ts]
     return output_word
 
-def multi_control_policy(pa):
-    '''Computes a control policy which minimizes the total length (makespan)
-    of the policy. It can be used on product automata obtained from both normal
-    and infinity specification FSAs. In the infinity automata case, the returned
-    policy corresponds to a valid relaxation, but it may not in general provide
-    the best temporal relaxation. '''
-    if not pa.final:
-        return None
-    target_node = tuple(pa.final)
-    # compute optimal path in PA and then project onto the TS
-    pa_path = nx.shortest_path(pa.g, source=pa.init.keys()[0], target=target_node, weight='weight')
-    return pa_path
-
 def simple_control_policy(pa):
     '''Computes a control policy which minimizes the total length (makespan)
     of the policy. It can be used on product automata obtained from both normal
@@ -294,28 +281,6 @@ def simple_control_policy(pa):
     assert pa_path[-2] in pa.final
     pa.g.remove_node('virtual')
     return [x for x, _ in pa_path[:-1]]
-
-def simple_control_policy2(pa, init_key, edge_weight=False):
-    '''Computes a control policy which minimizes the total length (makespan)
-    of the policy. It can be used on product automata obtained from both normal
-    and infinity specification FSAs. In the infinity automata case, the returned
-    policy corresponds to a valid relaxation, but it may not in general provide
-    the best temporal relaxation.
-    '''
-    if not pa.final:
-        return None
-    # add virtual node with incoming edges from all final states
-    pa.g.add_edges_from([(p, 'virtual') for p in pa.final])
-
-    # compute optimal path in PA and then project onto the TS
-    if edge_weight == True:
-        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='edge_weight')
-    else:
-        pa_path = nx.shortest_path(pa.g, source=init_key, target='virtual', weight='weight')
-
-    assert pa_path[-2] in pa.final
-    pa.g.remove_node('virtual')
-    return pa_path[:-1]
 
 def simple_control_policy_moc(pa, init_key):
     '''Computes a control policy which minimizes the total length (makespan)
@@ -373,45 +338,6 @@ def partial_control_policies(pa, dfa, init, finish, constraint=None):
         if not [p for p in path[:-1] if p[1] in finish]:
             sat_paths_aux.append(path)
     sat_paths = sat_paths_aux
-    return sat_paths
-
-def partial_control_policies2(pa, dfa, init, finish, constraint=None):
-    '''An optimized version of ``partial_control_policies'' based on
-    breath-first search traversal of the graph associated with ``pa''. It also,
-    returns paths lengths.
-    Note: It is still experimental and needs testing.
-    '''
-    logging.debug('[PartialControl] init: %s, final: %s, constraint: %s',
-                  init, finish, constraint)
-    if constraint is not None:
-        C = constraint.viewkeys()
-
-    sat_paths = []
-    for source in (p for p in pa.g.nodes_iter() if p[1] in init):
-        level=1                  # the current level
-        nextlevel={source:1}     # list of nodes to check at next level
-        paths={source:[source]}  # paths dictionary  (paths to key from source)
-        lengths={source:0}
-        while nextlevel:
-            thislevel=nextlevel
-            nextlevel={}
-            for v in thislevel:
-                if v[1] not in finish: #if not a final state
-                    for w in pa.g[v]:
-                        if w not in paths:
-                            paths[w]=paths[v]+[w]
-                            lengths[w] = level
-                            nextlevel[w]=1
-            level=level+1
-        if constraint is None:
-            sat_paths.extend([(paths[p], lengths[p]) for p in paths
-                                                         if p[1] in finish])
-        else:
-            sat_paths.extend([(path, lengths[p]) for p, path in paths.iteritems()
-               if p[1] in finish and # is final
-                  path[-2][1] in C and # is in restriction
-                  # the edge activates properly
-                  dfa.g[path[-2][1]][p[1]]['input'] <= constraint[path[-2][1]]])
     return sat_paths
 
 def relaxed_control_policy(tree, dfa, pa, constraint=None):
@@ -507,15 +433,6 @@ def compute_control_policy(pa, dfa, kind):
     # output_word = policy_output_word(optimal_ts_path, set(dfa.props.keys()))
     return optimal_ts_path, optimal_pa_path.path, optimal_tau
 
-def compute_multiagent_policy(pa):
-    ''' This calculates the shortest path on a combined product automaton
-    for multiple agents to find the optimal centralized path '''
-    # Get the shortest simple path
-    optimal_pa_path = multi_control_policy(pa)
-    if optimal_pa_path is None:
-        return None
-    return optimal_pa_path
-
 def compute_energy(pa):
     ''' Calculates the energy for each node in the nominal product automaton in
     order to use this in a local gradient descent scheme for online execution to
@@ -532,34 +449,6 @@ def compute_energy(pa):
         energy_dict[node] = energy
     # Update the PA graph with the energy attribute found
     nx.set_node_attributes(pa.g,'energy', energy_dict)
-
-# def compute_energy_local(pa, local_set):
-#     ''' Calculates the updated energy for each node in the neighboring set
-#     which allows for proper updates of energy in online manner '''
-#     energy_dict = {}
-#     edges_all = nx.get_edge_attributes(pa.g,'new_weight')
-#     # Get the shortest simple path for each node
-#     for node in local_set:
-#         optimal_pa_path = simple_control_policy_moc(pa, node)
-#         if optimal_pa_path == None:
-#             energy_dict[node] = float('inf')
-#         else:
-#             energy = 0
-#             for i in range(len(optimal_pa_path)-1):
-#                 edge_temp = (optimal_pa_path[i], optimal_pa_path[i+1])
-#                 energy = energy + edges_all[edge_temp]
-#             energy_dict[node] = energy
-#     # Update the PA graph with the energy attribute found
-#     nx.set_node_attributes(pa.g,'energy', energy_dict)
-
-
-# def compute_distance(ts):
-#     ''' Calculate the distance from a given node to its surrounding transitions
-#     giving a true cost of transition. '''
-#     node_set = nx.get_node_attributes(ts.g,"position")
-#     distance = []
-#     for key, (u, v) in node_set.items():
-#         temp = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
 
 def verify(ts, dfa):
     '''Verifies if all trajectories of a transition system satisfy a temporal
