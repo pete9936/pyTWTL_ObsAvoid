@@ -1,8 +1,7 @@
 '''
 alt_funcs.py
 
-This file will store alternatives to current function implementations
-we may want to pursue in the future.
+This file will store old functions we may want to reference (set of notes).
 
 '''
 
@@ -47,23 +46,27 @@ def update_weight(ts, pa_prime, obs_loc):
                     temp.append(weight_new)
                     pa_prime.g.add_weighted_edges_from([tuple(temp)])
                     break
-
-    # Need to implement a method which goes beyond the first ring, essentially
-    # updating the weights of edges based on the distance function *****
-    # C_k = 10 # a scalar parameter related to the radius of obstacle update
-    # neighborhood = 0.6 # defines influence region of obstacle upd
-    # for key, (u, v) in node_set.items():
-    #   distance = math.sqrt((u-obs_loc[0])**2+(v-obs_loc[1])**2)
-    #   if distance <= neighborhood:
-    #       weight_new = C_k*math.exp(-distance/(2*sig**2))
-    #       for i in pa_prime.g.edges():
-    #           for item in i:
-    #               if key in item and weight > 1:
-    #                   temp = list(i)
-    #                   temp.append(weight_new)
-    #                   pa_prime.g.add_weighted_edges_from([tuple(temp)])
-    #                   break
     return pa_prime
+
+def deadlock_priority(priority, D_flags, cur_priority):
+    ''' Updates the priority ordering if a deadlock occurs. The highest
+    priority remains, but the remaining order is altered. '''
+    new_priority = []
+    # Need the number of D_flags raised to avoid oscillations and proper reprioritizing
+    num_deadlocks = 0
+    for key in D_flags:
+        if D_flags[key] == True:
+            num_deadlocks += 1
+    # Append highest priority and/or any previous deadlock agents already detected
+    for i in range(num_deadlocks):
+        new_priority.append(priority[i])
+    # Now include current deadlock priority
+    new_priority.append(cur_priority)
+    # Add all remaining agents in standard priority ordering
+    for p in priority[1::]:
+        if D_flags[p] == False:
+            new_priority.append(p)
+    return new_priority
 
 
 def compute_control_policy2(pa, dfa, init_loc=None):

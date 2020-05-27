@@ -632,26 +632,6 @@ def deadlock_path(pa, occupied_nodes, init_loc):
 
     return ts_path, pa_path
 
-# def deadlock_priority(priority, D_flags, cur_priority):
-#     ''' Updates the priority ordering if a deadlock occurs. The highest
-#     priority remains, but the remaining order is altered. '''
-#     new_priority = []
-#     # Need the number of D_flags raised to avoid oscillations and proper reprioritizing
-#     num_deadlocks = 0
-#     for key in D_flags:
-#         if D_flags[key] == True:
-#             num_deadlocks += 1
-#     # Append highest priority and/or any previous deadlock agents already detected
-#     for i in range(num_deadlocks):
-#         new_priority.append(priority[i])
-#     # Now include current deadlock priority
-#     new_priority.append(cur_priority)
-#     # Add all remaining agents in standard priority ordering
-#     for p in priority[1::]:
-#         if D_flags[p] == False:
-#             new_priority.append(p)
-#     return new_priority
-
 def local_horizonDP(pa, weighted_nodes, num_hops, init_loc):
     ''' Compute the n-hop lowest energy horizon without conflicts using
     a targeted Dynamic Programming (DP) method. '''
@@ -950,8 +930,8 @@ if __name__ == '__main__':
     # phi5 = '[H^1 r9]^[0, 4] * [H^1 r12]^[0, 4] * [H^0 Base5]^[0, 3]'  #C, D
     # # Set to use the same transition system
     # phi = [phi1, phi2, phi3, phi4, phi5]
-    # ts_files = ['../data/ts_6x6x3_5Ag_1J.txt', '../data/ts_6x6x3_5Ag_2J.txt', '../data/ts_6x6x3_5Ag_3J.txt', \
-    #             '../data/ts_6x6x3_5Ag_4J.txt', '../data/ts_6x6x3_5Ag_5J.txt']
+    # ts_files = ['../data/scenario1ths/ts_6x6x3_5Ag_1.txt', '../data/scenario1ths/ts_6x6x3_5Ag_2.txt', \
+    #       '../data/scenario1ths/ts_6x6x3_5Ag_3.txt', '../data/scenario1ths/ts_6x6x3_5Ag_4.txt', '../data/scenario1ths/ts_6x6x3_5Ag_5.txt']
 
     # Scenario 2, large enviroment
     # phi1 = '[H^1 r54]^[0, 4] * [H^2 r46]^[0, 7] * [H^0 Base1]^[0, 5]' # C, E
@@ -971,13 +951,13 @@ if __name__ == '__main__':
     #             '../data/big_env/ts_6x12x4_10Ag_10.txt']
 
     # Scenario 3, tight corridor
-    phi1 = '[H^1 r5]^[0, 6]' # B
-    phi2 = '[H^1 r12]^[0, 7]' # A
-    phi3 = '[H^3 r6]^[0, 7]' # C
+    # phi1 = '[H^1 r5]^[0, 6]' # B
+    # phi2 = '[H^1 r12]^[0, 7]' # A
+    # phi3 = '[H^3 r6]^[0, 7]' # C
     # phi4 = '[H^4 Base1]^[0, 8]'
-    phi = [phi1, phi2, phi3] #, phi4]
-    ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt'] #, \
-                # '../data/corr/ts_3x6x1_4Ag_4.txt']
+    # phi = [phi1, phi2, phi3, phi4]
+    # ts_files = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
+    #             '../data/corr/ts_3x6x1_4Ag_4.txt']
 
     # Scenario 4, different drop-off points
     # phi1 = '[H^1 r2]^[0, 4] * ([H^1 r10]^[0,4] | [H^1 r11]^[0,4] | [H^1 r5]^[0,4])' # P1, D1 or D2 or D3
@@ -986,6 +966,17 @@ if __name__ == '__main__':
     # phi2 = '[H^1 r14]^[0, 4] * [H^1 r10]^[0,4]' # P2, D1 or D2 or D3
     # phi = [phi1, phi2]
     # ts_files = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
+
+    # Scenario 1J, Journal complete example
+    phi1 = '[H^2 r16]^[0, 3] * [H^1 r27]^[0, 6] * [H^0 Base1]^[0, 5]' # A, D
+    phi2 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^1 Base2]^[0, 3]' # B or C, E
+    phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^1 Base3]^[0, 3]' # B or C, E
+    phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^1 Base4]^[0, 3]'  # B or C, E
+    phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^1 Base5]^[0, 6]'  # A, F
+    # Set to use the same transition system
+    phi = [phi1, phi2, phi3, phi4, phi5]
+    ts_files = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
+                '../data/scenario1J/ts_4x7x1_5Ag_4.txt', '../data/scenario1J/ts_4x7x1_5Ag_5.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

@@ -1065,8 +1065,8 @@ def create_input_file(adj_mat, state_mat, obs_mat, path, bases, disc, m, n, h, i
 
 
 if __name__ == '__main__':
-    m = 3
-    n = 6
+    m = 4
+    n = 7
     h = 1
     TS, obs_mat, state_mat = create_ts(m,n,h)
     # Specify initial states and obstacles (row,column,altitude/height)
@@ -1090,10 +1090,16 @@ if __name__ == '__main__':
     # paths = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
     #          '../data/corr/ts_3x6x1_4Ag_4.txt']
     # bases = {(0,0,0): 'Base1', (2,5,0): 'Base2', (1,5,0): 'Base3', (1,4,0): 'Base4'}
-    init_states = [(0,0,0),(2,0,0)]
-    obstacles = [(1,2,0),(1,3,0)]
-    paths = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
-    bases = {(0,0,0): 'Base1', (2,0,0): 'Base2'}
+    # init_states = [(0,0,0),(2,0,0)]
+    # obstacles = [(1,2,0),(1,3,0)]
+    # paths = ['../data/scenario4/ts_3x6x1_2Ag_1.txt', '../data/scenario4/ts_3x6x1_2Ag_2.txt']
+    # bases = {(0,0,0): 'Base1', (2,0,0): 'Base2'}
+    init_states = [(1,1,0),(1,2,0),(3,1,0),(3,2,0),(2,5,0)]
+    obstacles = [(0,3,0),(0,4,0),(0,5,0),(0,6,0),(1,3,0),(1,4,0),(3,3,0),(3,4,0),(3,5,0)]
+    paths = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
+                '../data/scenario1J/ts_4x7x1_5Ag_4.txt', '../data/scenario1J/ts_4x7x1_5Ag_5.txt']
+    bases = {(1,1,0): 'Base1', (1,2,0): 'Base2', (3,1,0): 'Base3', (3,2,0): 'Base4', (2,5,0): 'Base5'}
+
     # Choose appropriate cell discretization for environment (meters)
     disc = 0.43
     for i in range(len(init_states)):
