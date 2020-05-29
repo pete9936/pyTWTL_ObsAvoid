@@ -545,11 +545,11 @@ if __name__ == '__main__':
     setup_logging()
     # Define TWTL Specifications for each agent
     # Scenario 1J, Journal complete example
-    phi1 = '[H^2 r16]^[0, 3] * [H^1 r27]^[0, 6] * [H^0 Base1]^[0, 5]' # A, D
-    phi2 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^1 Base2]^[0, 3]' # B or C, E
-    phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^1 Base3]^[0, 3]' # B or C, E
-    phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^1 Base4]^[0, 3]'  # B or C, E
-    phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^1 Base5]^[0, 6]'  # A, F
+    phi1 = '[H^2 r16]^[0, 3] * [H^1 r27]^[0, 5] * [H^0 Base1]^[0, 5]' # A, D
+    phi2 = '([H^3 r12]^[0, 6] | [H^3 r13]^[0, 6] | [H^3 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^0 Base2]^[0, 3]' # B or C, E
+    phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
+    phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
+    phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
     phi = [phi1, phi2, phi3, phi4, phi5]
     ts_files = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
                 '../data/scenario1J/ts_4x7x1_5Ag_4.txt', '../data/scenario1J/ts_4x7x1_5Ag_5.txt']
