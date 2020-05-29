@@ -239,7 +239,7 @@ def deadlock_path(pa, occupied_nodes, init_loc):
                 local_set.append(neighbor)
         # Check if unoccupied nodes
         for node in local_set:
-            if node not in occupied_nodes:
+            if node[0] not in occupied_nodes:
                 target_set.append(node)
                 open_flag = True
         # Perform another hop
@@ -384,7 +384,7 @@ def deadlock_path(pa, occupied_nodes, init_loc):
         pa_path.append(target_node)
 
     return ts_path, pa_path
-    
+
 
 if __name__ == '__main__':
     pass
