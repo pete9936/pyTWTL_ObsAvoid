@@ -174,6 +174,7 @@ def ts_times_fsa(ts, fsa): #FIXME: product automaton convention
         product_model.final.add(init_state)
 
     stack = [init_state]
+
     # Consume the stack
     while(stack):
         cur_state = stack.pop()
@@ -194,11 +195,34 @@ def ts_times_fsa(ts, fsa): #FIXME: product automaton convention
                     # Mark as final if final in fsa
                     if fsa_next_state in fsa.final:
                         product_model.final.add(next_state)
+                        final_state = next_state
                     # Continue search from next state
                     stack.append(next_state)
 
                 elif(next_state not in product_model.g[cur_state]):
                     product_model.g.add_edge(cur_state, next_state)
+
+    # Add self-loop to final accepting state
+    stack = [final_state]
+    # Consume the stack
+    while(stack):
+        cur_state = stack.pop()
+        ts_state, fsa_state = cur_state
+
+        for ts_next in ts.next_states_of_wts(ts_state, traveling_states = False):
+            ts_next_state = ts_next[0]
+            ts_prop = ts.g.node[ts_next_state].get('prop',set())
+
+            next_state = (ts_next_state, final_state[1])
+            if(next_state not in product_model.g):
+                # Add the new state
+                product_model.g.add_node(next_state)
+                # Add transition w/ weight
+                product_model.g.add_edge(cur_state, next_state)
+                # Continue search from next state
+                stack.append(next_state)
+            elif(next_state not in product_model.g[cur_state]):
+                product_model.g.add_edge(cur_state, next_state)
     return product_model
 
 def expand_duration_ts(ts):

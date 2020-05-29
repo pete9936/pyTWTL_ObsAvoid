@@ -367,7 +367,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
 
             # publish waypoint to a csv file
             write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
-            write_to_priority(priority)
+            # write_to_priority(priority)
             # Execute waypoint in crazyswarm lab testing
             if lab_testing:
                 startWaypoint = timeit.default_timer()
