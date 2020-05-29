@@ -305,7 +305,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
                                                 ts_policy[j] = [ts_control_policy_dict[j][-1],ts_control_policy_dict[j][-1]]
                                                 pa_policy[j] = [pa_control_policy_dict[j][-1],pa_control_policy_dict[j][-1]]
                                             occupied_nodes = [ts_control_policy_dict[x_d_val][-1]]
-                                            for j in priority[0:p_ind]:
+                                            for j in priority[0:p_ind+1]:
                                                 occupied_nodes.append(ts_control_policy_dict[j][-1])
                                             init_loc = pa_control_policy_dict[x_d_val][-1]
                                             ts_policy[x_d_val], pa_policy[x_d_val] = deadlock_path(pa_nom_dict[x_d_val], occupied_nodes, init_loc)
