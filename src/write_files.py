@@ -74,6 +74,24 @@ def write_to_csv(ts, ts_policy, id, time_wp):
                         break
     f.close()
 
+def write_to_priority(priority_order):
+    ''' Writes the priority ordering for every time step to a CSV file. '''
+    if os.path.isfile('../output/priority.csv'):
+        with open('../output/priority.csv', 'a') as f:
+            writer = csv.writer(f)
+            p_row = []
+            for p in priority_order:
+                p_row.append(p)
+            writer.writerow(p_row)
+    else:
+        with open('../output/priority.csv', 'w') as f:
+            writer = csv.writer(f)
+            p_row = []
+            for p in priority_order:
+                p_row.append(p)
+            writer.writerow(p_row)
+    f.close()
+
 def write_to_iter_file(policy, ts, ets, key, iter_step):
     ''' Writes each iteration of the control policy to an output file
     to keep track of the changes and updates being made. '''

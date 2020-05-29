@@ -26,7 +26,7 @@ from synthesis import expand_duration_ts, compute_control_policy, ts_times_fsa,\
                       verify, compute_energy
 from geometric_funcs import check_intersectDP, downwash_checkDP
 from write_files import write_to_land_file, write_to_csv_iter, write_to_csv,\
-                        write_to_iter_file, write_to_control_policy_file
+                        write_to_iter_file, write_to_control_policy_file, write_to_priority
 from DP_paths import local_horizonDP, deadlock_path
 from lomap import Ts
 
@@ -367,6 +367,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
 
             # publish waypoint to a csv file
             write_to_csv_iter(ts_dict, ts_write, key_list, time_wp)
+            write_to_priority(priority)
             # Execute waypoint in crazyswarm lab testing
             if lab_testing:
                 startWaypoint = timeit.default_timer()
