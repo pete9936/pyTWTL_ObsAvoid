@@ -555,7 +555,7 @@ if __name__ == '__main__':
     phi2 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
     phi3 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/scenario2J/ts_3x6x1_3Ag_3.txt', '../data/scenario2J/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/ts_3x6x1_3Ag_3.txt']
+    ts_files = ['../data/scenario2J/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
