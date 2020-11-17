@@ -5,7 +5,6 @@ Base1 {'prop':{'Base1'}, 'position': (0.50, 1.25, 0.40)}
 r1 {'prop':{'r1'}, 'position': (0.50, 0.75, 0.40)}
 r2 {'prop':{'r2'}, 'position': (0.50, 0.25, 0.40)}
 r3 {'prop':{'r3'}, 'position': (0.50, -0.25, 0.40)}
-r4 {'prop':{'r4'}, 'position': (0.50, -0.75, 0.40)}
 r5 {'prop':{'r5'}, 'position': (0.50, -1.25, 0.40)}
 Base2 {'prop':{'Base2'}, 'position': (0.00, 1.25, 0.40)}
 r7 {'prop':{'r7'}, 'position': (0.00, 0.75, 0.40)}
@@ -33,14 +32,7 @@ r2 r3 {'duration': 1, 'edge_weight': 1.000000}
 r2 r7 {'duration': 1, 'edge_weight': 1.414000}
 r3 r2 {'duration': 1, 'edge_weight': 1.000000}
 r3 r3 {'duration': 1, 'edge_weight': 0.500000}
-r3 r4 {'duration': 1, 'edge_weight': 1.000000}
 r3 r10 {'duration': 1, 'edge_weight': 1.414000}
-r4 r3 {'duration': 1, 'edge_weight': 1.000000}
-r4 r4 {'duration': 1, 'edge_weight': 0.500000}
-r4 r5 {'duration': 1, 'edge_weight': 1.000000}
-r4 r10 {'duration': 1, 'edge_weight': 1.000000}
-r4 r11 {'duration': 1, 'edge_weight': 1.414000}
-r5 r4 {'duration': 1, 'edge_weight': 1.000000}
 r5 r5 {'duration': 1, 'edge_weight': 0.500000}
 r5 r10 {'duration': 1, 'edge_weight': 1.414000}
 r5 r11 {'duration': 1, 'edge_weight': 1.000000}
@@ -59,14 +51,12 @@ r7 Base3 {'duration': 1, 'edge_weight': 1.414000}
 r7 r13 {'duration': 1, 'edge_weight': 1.000000}
 r7 r14 {'duration': 1, 'edge_weight': 1.414000}
 r10 r3 {'duration': 1, 'edge_weight': 1.414000}
-r10 r4 {'duration': 1, 'edge_weight': 1.000000}
 r10 r5 {'duration': 1, 'edge_weight': 1.414000}
 r10 r10 {'duration': 1, 'edge_weight': 0.500000}
 r10 r11 {'duration': 1, 'edge_weight': 1.000000}
 r10 r15 {'duration': 1, 'edge_weight': 1.414000}
 r10 r16 {'duration': 1, 'edge_weight': 1.000000}
 r10 r17 {'duration': 1, 'edge_weight': 1.414000}
-r11 r4 {'duration': 1, 'edge_weight': 1.414000}
 r11 r5 {'duration': 1, 'edge_weight': 1.000000}
 r11 r10 {'duration': 1, 'edge_weight': 1.000000}
 r11 r11 {'duration': 1, 'edge_weight': 0.500000}
