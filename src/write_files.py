@@ -101,13 +101,13 @@ def write_to_iter_file(policy, ts, ets, key, iter_step):
         print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
     print>>out, policy[-1],
     logging.info('Generated control policy is: %s', out.getvalue())
-    if os.path.isfile('../output/control_policy_updates_S1J.txt'):
-        with open('../output/control_policy_updates_S1J.txt', 'a+') as f1:
+    if os.path.isfile('../output/control_policy_updates_S2J.txt'):
+        with open('../output/control_policy_updates_S2J.txt', 'a+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
     else:
-        with open('../output/control_policy_updates_S1J.txt', 'w+') as f1:
+        with open('../output/control_policy_updates_S2J.txt', 'w+') as f1:
             f1.write('Control Policy for agent %s at step ' % key)
             f1.write('%s:  ' % iter_step)
             f1.write('%s\n\n' % out.getvalue())
@@ -126,8 +126,8 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, tau, dfa, ts, ets
             print>>out, u, '->', ts.g[u][v][0]['duration'], '->',
         print>>out, policy[-1],
         logging.info('Generated control policy is: %s', out.getvalue())
-        if os.path.isfile('../output/control_policy_S1J.txt'):
-            with open('../output/control_policy_S1J.txt', 'a+') as f2:
+        if os.path.isfile('../output/control_policy_S2J.txt'):
+            with open('../output/control_policy_S2J.txt', 'a+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')
@@ -139,7 +139,7 @@ def write_to_control_policy_file(ts_nom_policy, pa_nom_policy, tau, dfa, ts, ets
                 f2.write(') -> ('.join('%s %s' % x for x in pa_policy))
                 f2.write(') \nGenerated TS control policy is:  %s \n\n' % ts_policy)
         else:
-            with open('../output/control_policy_S1J.txt', 'w+') as f2:
+            with open('../output/control_policy_S2J.txt', 'w+') as f2:
                 f2.write('Nominal Control Policy for agent %s.\n' % key)
                 f2.write('Optimal relaxation is: %s \n' % tau)
                 f2.write('Generated PA control policy is: (')

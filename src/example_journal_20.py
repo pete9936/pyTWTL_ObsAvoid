@@ -509,7 +509,7 @@ def update_policy_match(ts_policy):
 def setup_logging():
     fs, dfs = '%(asctime)s %(levelname)s %(message)s', '%m/%d/%Y %I:%M:%S %p'
     loglevel = logging.DEBUG
-    logging.basicConfig(filename='../output/example_S1J.log', level=loglevel,
+    logging.basicConfig(filename='../output/example_S2J.log', level=loglevel,
                         format=fs, datefmt=dfs)
     root = logging.getLogger()
     ch = logging.StreamHandler(sys.stdout)
@@ -546,14 +546,16 @@ if __name__ == '__main__':
     setup_logging()
     # Define TWTL Specifications for each agent
     # Scenario 1J, Journal complete example
-    phi1 = '[H^2 r16]^[0, 3] * [H^1 r27]^[0, 5] * [H^0 Base1]^[0, 5]' # A, D
-    phi2 = '([H^3 r12]^[0, 6] | [H^3 r13]^[0, 6] | [H^3 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^0 Base2]^[0, 3]' # B or C, E
-    phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
-    phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
-    phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
-    phi = [phi1, phi2, phi3, phi4, phi5]
-    ts_files = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
-                '../data/scenario1J/ts_4x7x1_5Ag_4.txt', '../data/scenario1J/ts_4x7x1_5Ag_5.txt']
+    # phi1 = '[H^2 r16]^[0, 3] * [H^1 r27]^[0, 5] * [H^0 Base1]^[0, 5]' # A, D
+    # phi2 = '([H^3 r12]^[0, 6] | [H^3 r13]^[0, 6] | [H^3 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^0 Base2]^[0, 3]' # B or C, E
+    # phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
+    # phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
+    # phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
+    phi1 = '[H^1 r2]^[0, 5] * ([H^3 r10]^[0, 6] | [H^3 r11]^[0, 6] | [H^3 r5]^[0, 6])' # P1, D1 or D2 or D3
+    phi2 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 6] | [H^3 r11]^[0, 6] | [H^3 r5]^[0, 6])' # P2, D1 or D2 or D3
+    phi3 = '[H^1 r7]^[0, 5] * ([H^3 r10]^[0, 6] | [H^3 r11]^[0, 6] | [H^3 r5]^[0, 6])' # P3, D1 or D2 or D3
+    phi = [phi1, phi2, phi3]
+    ts_files = ['../data/scenario2J/ts_3x6x1_3Ag_3.txt', '../data/scenario2J/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
