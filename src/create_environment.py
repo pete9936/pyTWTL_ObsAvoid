@@ -1090,10 +1090,10 @@ if __name__ == '__main__':
     # paths = ['../data/corr/ts_3x6x1_4Ag_1.txt', '../data/corr/ts_3x6x1_4Ag_2.txt', '../data/corr/ts_3x6x1_4Ag_3.txt', \
     #          '../data/corr/ts_3x6x1_4Ag_4.txt']
     # bases = {(0,0,0): 'Base1', (2,5,0): 'Base2', (1,5,0): 'Base3', (1,4,0): 'Base4'}
-    init_states = [(0,0,0),(2,0,0),(1,0,0)]
+    init_states = [(0,0,0),(1,0,0),(2,0,0)]
     obstacles = [(1,2,0),(1,3,0),(0,4,0)]
     paths = ['../data/scenario2J/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/ts_3x6x1_3Ag_3.txt']
-    bases = {(0,0,0): 'Base1', (2,0,0): 'Base2', (1,0,0): 'Base3'}
+    bases = {(0,0,0): 'Base1', (1,0,0): 'Base2', (2,0,0): 'Base3'}
     # init_states = [(1,1,0),(1,2,0),(3,1,0),(3,2,0),(2,5,0)]
     # obstacles = [(0,3,0),(0,4,0),(0,5,0),(0,6,0),(1,3,0),(1,4,0),(3,3,0),(3,4,0),(3,5,0)]
     # paths = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
