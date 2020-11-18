@@ -46,8 +46,8 @@ def write_to_csv(ts, ts_policy, id, time_wp):
     as waypoints for a trajectory run by our Crazyflies. '''
     altitude = 1.0 # meters
     node_set = nx.get_node_attributes(ts.g,"position")
-    if os.path.isfile('../output/waypoints_full.csv'):
-        with open('../output/waypoints_full.csv', 'a') as f:
+    if os.path.isfile('../output/waypoints_S2J.csv'):
+        with open('../output/waypoints_S2J.csv', 'a') as f:
             writer = csv.writer(f)
             for ind, elem in enumerate(ts_policy):
                 for node in ts_policy:
@@ -59,7 +59,7 @@ def write_to_csv(ts, ts_policy, id, time_wp):
                         writer.writerow([id, node_set[node][0], node_set[node][1], z, time_wp*ind])
                         break
     else:
-        with open('../output/waypoints_full.csv', 'w') as f:
+        with open('../output/waypoints_S2J.csv', 'w') as f:
             writer = csv.writer(f)
             header = ['id', 'x[m]', 'y[m]', 'z[m]', 't[s]']
             writer.writerow(header)
@@ -76,15 +76,15 @@ def write_to_csv(ts, ts_policy, id, time_wp):
 
 def write_to_priority(priority_order):
     ''' Writes the priority ordering for every time step to a CSV file. '''
-    if os.path.isfile('../output/priority.csv'):
-        with open('../output/priority.csv', 'a') as f:
+    if os.path.isfile('../output/priority_S2J.csv'):
+        with open('../output/priority_S2J.csv', 'a') as f:
             writer = csv.writer(f)
             p_row = []
             for p in priority_order:
                 p_row.append(p)
             writer.writerow(p_row)
     else:
-        with open('../output/priority.csv', 'w') as f:
+        with open('../output/priority_S2J.csv', 'w') as f:
             writer = csv.writer(f)
             p_row = []
             for p in priority_order:

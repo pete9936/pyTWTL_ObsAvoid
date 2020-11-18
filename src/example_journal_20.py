@@ -131,11 +131,12 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
     tau_dict = tau_dict_nom
     # Choose parameter for n-horizon local trajectory, must be at least 2
     num_hops = 2
-    # Get agent priority based on lowest energy
+    # Get agent priority based on lowest energy and write to output file
     prev_states = {}
     for key in ts_policy_dict_nom:
         prev_states[key] = pa_policy_dict_nom[key][0]
-    priority = get_priority(pa_nom_dict, pa_policy_dict_nom, prev_states, key_list)
+    priority = get_priority(pa_nom_dict, prev_states, key_list)
+    write_to_priority(priority)
     # Create Agent energy dictionary for post-processing
     # Create Termination indicator to assign terminated agents lowest priority
     F_indicator = {}
@@ -399,10 +400,11 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
                     break
                 # Update policy match
                 policy_match, key_list, policy_match_index = update_policy_match(ts_policy)
-                # Get agent priority based on lowest energy
+                # Get agent priority based on lowest energy and write to output file
                 for key in key_list:
                     prev_states[key] = pa_control_policy_dict[key][-1]
-                priority = get_priority(pa_nom_dict, pa_policy, prev_states, key_list)
+                priority = get_priority(pa_nom_dict, prev_states, key_list)
+                write_to_priority(priority)
             else:
                 running = False
 
@@ -436,16 +438,15 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
 
 ################################################################################
 
-def get_priority(pa_nom_dict, pa_policy, prev_states, key_list):
+def get_priority(pa_nom_dict, prev_states, key_list):
     ''' Computes the agent priority based on lowest energy. '''
     priority = []
     temp_energy = {}
-    progress_check = {}
     for key in key_list:
-        temp_energy[key] = pa_nom_dict[key].g.node[pa_policy[key][0]]['energy']
+        temp_energy[key] = pa_nom_dict[key].g.node[prev_states[key]]['energy'] # pa_policy[key][0]
     # Sort the energy values found for all agents in descending energy order
     sorted_energy = sorted(temp_energy.items(), key=operator.itemgetter(1))
-    # Generate set of priorities with lwoest energy given highest priority
+    # Generate set of priorities with lowest energy given highest priority
     for key, energy_val in sorted_energy:
         priority.append(key)
     return priority
@@ -551,11 +552,11 @@ if __name__ == '__main__':
     # phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
     # phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
     # phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
-    phi1 = '[H^1 r2]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P1, D1 or D2 or D3
-    phi2 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
-    phi3 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
+    phi1 = '[H^1 r2]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P1, D1 or D2 or D3
+    phi2 = '[H^1 r3]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P2, D1 or D2 or D3
+    phi3 = '[H^1 r3]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P2, D1 or D2 or D3
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/scenario2J/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/ts_3x6x1_3Ag_3.txt']
+    ts_files = ['../data/scenario2J/Env10/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/Env10/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/Env10/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),

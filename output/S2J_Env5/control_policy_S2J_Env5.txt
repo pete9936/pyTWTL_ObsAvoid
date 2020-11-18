@@ -1,0 +1,29 @@
+Nominal Control Policy for agent 1.
+Optimal relaxation is: 3 
+Generated PA control policy is: (Base1 0) -> (Base2 0) -> (Base3 0) -> (r10 0) -> (r5 1) -> (r5 2) -> (r10 2) -> (r9 65) -> (r8 54) -> (r8 41) -> (r8 45) -> (r8 32) 
+Generated control policy is: ['Base1', 'Base2', 'Base3', 'r10', 'r5', 'r5', 'r10', 'r9', 'r8', 'r8', 'r8', 'r8'] 
+
+Final Control policy for agent 1.
+Generated PA control policy is: (Base1 0) -> (r8 0) -> (r9 0) -> (r9 0) -> (r9 0) -> (r16 0) -> (r10 0) -> (r5 1) -> (r5 2) -> (r10 2) -> (Base3 2) -> (r8 54) -> (r8 41) -> (r8 45) -> (r8 32) 
+Generated TS control policy is:  ['Base1', 'r8', 'r9', 'r9', 'r9', 'r16', 'r10', 'r5', 'r5', 'r10', 'Base3', 'r8', 'r8', 'r8', 'r8'] 
+
+Nominal Control Policy for agent 2.
+Optimal relaxation is: 4 
+Generated PA control policy is: (Base2 0) -> (Base3 0) -> (r10 0) -> (r11 1) -> (r11 2) -> (r10 2) -> (r9 65) -> (r9 23) -> (r9 6) -> (r9 32) 
+Generated TS control policy is: ['Base2', 'Base3', 'r10', 'r11', 'r11', 'r10', 'r9', 'r9', 'r9', 'r9'] 
+
+Final Control policy for agent 2.
+Optimal relaxation is: 4 
+Generated PA control policy is: (Base2 0) -> (r9 0) -> (r10 0) -> (r10 0) -> (r5 0) -> (r11 1) -> (r11 2) -> (r10 2) -> (r10 2) -> (r9 65) -> (r9 23) -> (r9 6) -> (r9 32) 
+Generated TS control policy is:  ['Base2', 'r9', 'r10', 'r10', 'r5', 'r11', 'r11', 'r10', 'r10', 'r9', 'r9', 'r9', 'r9', 'r9', 'r9'] 
+
+Nominal Control Policy for agent 3.
+Optimal relaxation is: 4 
+Generated PA control policy is: (Base3 0) -> (r10 0) -> (r11 1) -> (r11 2) -> (r10 2) -> (r9 65) -> (r9 23) -> (r9 6) -> (r9 32) 
+Generated TS control policy is: ['Base3', 'r10', 'r11', 'r11', 'r10', 'r9', 'r9', 'r9', 'r9'] 
+
+Final Control policy for agent 3.
+Optimal relaxation is: 4 
+Generated PA control policy is: (Base3 0) -> (r10 0) -> (r11 1) -> (r11 2) -> (r10 2) -> (r9 65) -> (r9 23) -> (r9 6) -> (r9 32) 
+Generated TS control policy is:  ['Base3', 'r10', 'r11', 'r11', 'r10', 'r9', 'r9', 'r9', 'r9', 'r16', 'r16', 'r16', 'r16', 'r16', 'r16'] 
+

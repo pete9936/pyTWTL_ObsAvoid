@@ -278,7 +278,8 @@ def check_intersectDP(ts, cur_prev_state, cur_next_state, comp_prev_state, comp_
             weighted_nodes = []
         elif pA is None:
             if distance <= radius:
-                weighted_nodes.append(cur_next_state)
+                weighted_nodes = [] # Updated 11/17/20
+                # weighted_nodes.append(cur_next_state) # Uncertain why this is here (this indicates parallel segments)
         else:
             A = a1 - a0
             B = b1 - b0
@@ -288,7 +289,6 @@ def check_intersectDP(ts, cur_prev_state, cur_next_state, comp_prev_state, comp_
             pB_vec_percent = np.linalg.norm(pB_vec)/np.linalg.norm(B)
             if abs(pA_vec_percent - pB_vec_percent) < 1.0/num_steps:
                 if distance <= radius:
-                    # pdb.set_trace()
                     weighted_nodes.append(cur_next_state)
     return weighted_nodes
 
