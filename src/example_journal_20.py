@@ -552,11 +552,11 @@ if __name__ == '__main__':
     # phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
     # phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
     # phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
-    phi1 = '[H^1 r2]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P1, D1 or D2 or D3
-    phi2 = '[H^1 r3]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P2, D1 or D2 or D3
-    phi3 = '[H^1 r3]^[0, 5] * ([H^3 r16]^[0, 7] | [H^3 r17]^[0, 7] | [H^3 r11]^[0, 7])' # P2, D1 or D2 or D3
+    phi1 = '[H^1 r11]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P1, D1 or D2 or D3
+    phi2 = '[H^1 r10]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P2, D1 or D2 or D3
+    phi3 = '[H^1 r10]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P2, D1 or D2 or D3
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/scenario2J/Env10/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/Env10/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/Env10/ts_3x6x1_3Ag_3.txt']
+    ts_files = ['../data/scenario2J/Env7/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/Env7/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/Env7/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
