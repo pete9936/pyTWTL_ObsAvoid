@@ -1,7 +1,7 @@
 '''
 .. module:: example_journal_20.py
-   :synopsis: Case studies for TWTL package and lab testing for journal 2020
-                submission.
+   :synopsis: Case studies for TWTL package and lab testing for RAS journal 2021
+              submission.
 
 .. moduleauthor:: Ryan Peterson <pete9936@umn.edu.edu>
 
@@ -31,7 +31,25 @@ from DP_paths import local_horizonDP, deadlock_path
 from lomap import Ts
 
 
-def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, always_active):
+def case1_synthesis(formulas, ts_files, alpha, radius, **kwargs):
+    # Perform initial checks on key_word_arguments and assign defaults if needed
+    if 'time_wp' in kwargs:
+        time_wp = kwargs.pop('time_wp')
+    else:
+        time_wp = 2.0
+    if 'lab_testing' in kwargs:
+        lab_testing = kwargs.pop('lab_testing')
+    else:
+        lab_testing = False
+    if 'always_active' in kwargs:
+        always_active = kwargs.pop('always_active')
+    else:
+        always_active = True
+    if 'horizon' in kwargs:
+        num_hops = kwargs.pop('horizon')
+    else:
+        num_hops = 2
+
     startFull = timeit.default_timer()
     startOff = timeit.default_timer()
     dfa_dict = {}
@@ -75,7 +93,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
         # Make a copy of the nominal PA to change
         pa_nom_dict[key] = copy.deepcopy(pa)
     stopPA = timeit.default_timer()
-    print 'Run Time (s) to get all three PAs is: ', stopPA - startPA
+    print 'Run Time (s) to get all PAs is: ', stopPA - startPA
 
     for key in pa_nom_dict:
         print 'Size of PA:', pa_nom_dict[key].size()
@@ -129,8 +147,7 @@ def case1_synthesis(formulas, ts_files, alpha, radius, time_wp, lab_testing, alw
     ts_policy = copy.deepcopy(ts_policy_dict_nom)
     pa_policy = copy.deepcopy(pa_policy_dict_nom)
     tau_dict = tau_dict_nom
-    # Choose parameter for n-horizon local trajectory, must be at least 2
-    num_hops = 2
+
     # Get agent priority based on lowest energy and write to output file
     prev_states = {}
     for key in ts_policy_dict_nom:
@@ -551,12 +568,17 @@ if __name__ == '__main__':
     # phi2 = '([H^3 r12]^[0, 6] | [H^3 r13]^[0, 6] | [H^3 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7])  * [H^0 Base2]^[0, 3]' # B or C, E
     # phi3 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base3]^[0, 3]' # B or C, E
     # phi4 = '([H^2 r12]^[0, 6] | [H^2 r13]^[0, 6] | [H^2 r20]^[0, 6]) * ([H^2 r7]^[0, 7] | [H^2 r14]^[0, 7]) * [H^0 Base4]^[0, 3]'  # B or C, E
-    # phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
-    phi1 = '[H^1 r11]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P1, D1 or D2 or D3
-    phi2 = '[H^1 r10]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P2, D1 or D2 or D3
-    phi3 = '[H^1 r10]^[0, 5] * ([H^3 r6]^[0, 7] | [H^3 r7]^[0, 7] | [H^3 r0]^[0, 7])' # P2, D1 or D2 or D3
+    # phi5 = '[H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5] * [H^2 r16]^[0, 5] * [H^2 r0]^[0, 5] * [H^0 Base5]^[0, 5]'  # A, F
+    # phi = [phi1, phi2, phi3, phi4, phi5]
+    # ts_files = ['../data/scenario1J/ts_4x7x1_5Ag_1.txt', '../data/scenario1J/ts_4x7x1_5Ag_2.txt', '../data/scenario1J/ts_4x7x1_5Ag_3.txt', \
+    #             '../data/scenario1J/ts_4x7x1_5Ag_4.txt', '../data/scenario1J/ts_4x7x1_5Ag_5.txt']
+
+    # Scenario 2J
+    phi1 = '[H^1 r2]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P1, D1 or D2 or D3
+    phi2 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
+    phi3 = '[H^1 r14]^[0, 5] * ([H^3 r10]^[0, 7] | [H^3 r11]^[0, 7] | [H^3 r5]^[0, 7])' # P2, D1 or D2 or D3
     phi = [phi1, phi2, phi3]
-    ts_files = ['../data/scenario2J/Env7/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/Env7/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/Env7/ts_3x6x1_3Ag_3.txt']
+    ts_files = ['../data/scenario2J/Env1/ts_3x6x1_3Ag_1.txt', '../data/scenario2J/Env1/ts_3x6x1_3Ag_2.txt', '../data/scenario2J/Env1/ts_3x6x1_3Ag_3.txt']
 
     ''' Define alpha [0:1] for weighted average function: w' = min[alpha*time_weight + (1-alpha)*edge_weight]
         Note: For alpha=0 we only account for the weighted transition system (edge_weight),
@@ -568,8 +590,8 @@ if __name__ == '__main__':
     time_wp = 2.0
     # Define the radius (m) of agents considered, used for diagonal collision avoidance and to avoid downwash
     radius = 0.1
-    # Set to True if all agents are active until the last agent terminates its task
-    always_active = True
-    # Set to True if running on Crazyflies in the lab
-    lab_testing = False
-    case1_synthesis(phi, ts_files, alpha, radius, time_wp, lab_testing, always_active)
+    # Choose parameter for n-horizon local trajectory, must be at least 2
+    # Set lab_testing to True if running on Crazyflies in the lab
+    # Set always_active to True if all agents are active until the last agent terminates its task
+    case1_synthesis(phi, ts_files, alpha, radius, horizon = 2, time_wp = time_wp, lab_testing = False, always_active = True)
+#end __main__
